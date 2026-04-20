@@ -1,0 +1,71 @@
+---
+import db from '../lib/db.js';
+import '../styles/global.css';
+
+const kanjiList = db.prepare("SELECT * FROM kanji ORDER BY urutan_slide ASC, id ASC").all();
+---
+
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kamus Kanji - JPASELI</title>
+  <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+</head>
+<body data-theme="light">
+  <div class="dashboard-container">
+    <header class="dashboard-header" style="flex-direction: column; align-items: flex-start; gap: 1rem;">
+      <div style="display: flex; gap: 2rem; align-items: center; width: 100%; justify-content: space-between;">
+        <h1 style="font-size: 3rem;">Kamus Kanji</h1>
+        <a href="/" class="btn-action">KEMBALI</a>
+      </div>
+      <p style="font-size: 1.2rem; color: var(--text-muted);">Total: {kanjiList.length} Kanji</p>
+    </header>
+
+    <div class="search-wrapper">
+      <input type="text" class="search-bar" id="search-input" placeholder="Cari huruf kanji, onyomi, kunyomi, atau artinya..." />
+    </div>
+    
+    <main class="day-list" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem;">
+      {kanjiList.map(item => (
+        <div class="day-card" style="padding: 1.5rem; text-align: center;">
+          <strong style="font-size: 4rem; line-height: 1.1; font-weight: normal;">{item.karakter}</strong>
+          <div style="margin-top: 1rem; border-top: 1px dashed var(--border-color); padding-top: 1rem; width: 100%;">
+            <p style="font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">{item.arti}</p>
+            <div style="display:flex; justify-content: center; gap: 1rem; margin-top: 0.5rem; font-size: 0.85rem;">
+               <span title="Onyomi">O: {item.onyomi || '-'}</span>
+               <span title="Kunyomi">K: {item.kunyomi || '-'}</span>
+            </div>
+          </div>
+        </div>
+      ))}
+    </main>
+  </div>
+  <script is:inline>
+    const savedTheme = localStorage.getItem('app-theme') || 'light';
+    document.body.setAttribute('data-theme', savedTheme);
+
+    // Search logic
+    const searchInput = document.getElementById('search-input');
+    const cards = document.querySelectorAll('.day-card');
+    
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        const val = e.target.value.toLowerCase().trim();
+        cards.forEach(c => {
+          const text = c.innerText.toLowerCase();
+          c.style.display = text.includes(val) ? 'flex' : 'none';
+        });
+      });
+    }
+
+    // Keyboard shortcut "/" to focus search
+    document.addEventListener('keydown', (e) => {
+      if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        if (searchInput) searchInput.focus();
+      }
+    });
+  </script>
+</body>
+</html>

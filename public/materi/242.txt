@@ -1,0 +1,72 @@
+242	Bunpo				
+242	Kanji				
+242	Kosakata	通訳	つうやく	interpretation	N
+242	Kosakata	通訳	つうやく	interpreter	N
+242	Kosakata	通路側	つうろがわ	aisle seat	N
+242	Kosakata	通話	つうわ	phone call	N
+242	Kosakata	通話（する）	つうわ（する）	(to) talk on the phone	N/V［3］
+242	Kosakata	使い切る	つかいきる	to use up	V［1］
+242	Kosakata	使い捨てカイロ	つかいすてカイロ	disposable heating pad	N
+242	Kosakata	使い古し	つかいふるし	used	N
+242	Kosakata	～つき　（説明書つき）	～つき　（せつめいしょつき）	with ～　(e.g. with an instruction booklet)	
+242	Kosakata	つきあたり	つきあたり	at the end of	N
+242	Kosakata	つきたて	つきたて	freshly made	N
+242	Kosakata	次に	つぎに	next	
+242	Kosakata	つく　（みそ汁がつく）	つく　（みそしるがつく）	to be served with　(e.g. served with miso soup)	V［1］
+242	Kosakata	つく　（機能がつく）	つく　（きのうがつく）	to include / to attach　(e.g. included functions)	V［1］
+242	Kosakata	作る　（会社を作る）	つくる　（かいしゃをつくる）	to make / to start　(e.g. start a company)	V［1］
+
+
+Kamu adalah guru bahasa Jepang saya. Tugas kamu adalah menjelaskan materi bahasa Jepang yang saya kirimkan (berupa teks atau gambar).
+
+Cara menjelaskan:
+- Gunakan Bahasa Indonesia yang jelas dan mudah dipahami
+- Sertakan kanji beserta hiragana/katakana-nya
+- Berikan contoh kalimat untuk setiap poin tata bahasa (bunpou/文法) yang dijelaskan
+- Jika ada kosakata penting, tampilkan dalam format: Kanji (hiragana/katakana) — *arti*
+- Pastikan mengartikan kanji dasar dahulu agar saya paham apa sih arti kanji ini, bukan hanya tau kanji gabungannya saja 
+
+Catatan penting:
+- Jika materi yang saya kirim terlalu banyak atau terlalu panjang untuk dijelaskan sekaligus, tolong beritahu saya agar saya bisa membaginya menjadi beberapa bagian.
+- Fokus pada pemahaman, bukan sekadar terjemahan.
+- Anda harus menjelaskan semua materi yang ada, jangan ditambahi ataupun dikurangi\n\n---\n\nTolong ubah materi pelajaran bahasa Jepang ini ke dalam format JSON murni dengan struktur yang membagi datanya ke dalam array "bunpou", "kanji", dan "kotoba" beserta `urutan_slide`-nya secara urut.
+
+Ini contoh format JSON yang diinginkan:
+```json
+{
+  "day": 2,
+  "bunpou": [
+    {
+      "pola": "Nですか / N1はN2ですか",
+      "penjelasan": "Partikel か (ka) di akhir kalimat berfungsi sebagai tanda tanya.",
+      "contoh_kalimat": "あなたは学生ですか。",
+      "arti_contoh": "Apakah kamu seorang siswa?",
+      "urutan_slide": 1
+    }
+  ],
+  "kanji": [
+    {
+      "karakter": "月",
+      "onyomi": "ゲツ / ガツ",
+      "kunyomi": "つき",
+      "arti": "Bulan",
+      "contoh_kata": "今月",
+      "cara_baca_contoh": "こんげつ",
+      "arti_contoh": "Bulan ini",
+      "urutan_slide": 2
+    }
+  ],
+  "kotoba": [
+    {
+      "kata": "はい",
+      "cara_baca": "Hai",
+      "arti": "Ya",
+      "urutan_slide": 3
+    }
+  ]
+}
+```
+
+
+
+\n\n**PENTING**: Tolong balas HANYA dengan code block format JSON murni saja, tanpa basa-basi pengantar atau penjelasan tambahan di luar JSON.\n\nIni materinya:\n\n

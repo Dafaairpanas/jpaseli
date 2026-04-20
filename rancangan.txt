@@ -1,0 +1,150 @@
+Untuk menampung semua jenis materi (Bunpou, Kanji, dan Goi) dalam satu struktur yang rapi namun tetap fleksibel untuk tampilan ala PPT, kamu bisa menggunakan satu tabel utama dengan kolom `type` sebagai pembeda.
+
+Berikut adalah rancangan skema SQLite yang mencakup semua kebutuhanmu:
+
+### Skema Database
+
+```sql
+CREATE TABLE materi_belajar (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    hari INTEGER NOT NULL,
+    tipe TEXT NOT NULL, -- 'bunpou', 'kanji', 'goi'
+    poin_utama TEXT NOT NULL, -- Kata besar/Pola
+    cara_baca TEXT, -- Hiragana/Romaji
+    penjelasan TEXT, -- Teks kecil penjelasan
+    contoh_ja TEXT, -- Contoh kalimat Jepang
+    contoh_id TEXT  -- Arti contoh kalimat
+);
+```
+
+### Contoh Input Data (Berdasarkan Materi Day 1)
+
+```sql
+INSERT INTO materi_belajar (hari, tipe, poin_utama, cara_baca, penjelasan, contoh_ja, contoh_id) VALUES 
+(1, 'bunpou', 'N1 は N2 です', 'wa... desu', 'Digunakan untuk menyatakan "N1 adalah N2".', '私はマルシアです。', 'Saya adalah Marcia.'),
+(1, 'kanji', '年', 'NEN / toshi', 'Tahun', '去年 (きょねん)', 'Tahun lalu.'),
+(1, 'goi', '牛丼', 'ぎゅうどん', 'Nasi mangkuk daging sapi (beef bowl)', '牛丼を食べます。', 'Makan beef bowl.');
+```
+
+### Kenapa Struktur Ini Cocok?
+
+1.  **Fleksibilitas Tampilan:** Saat kamu membuat UI, kamu tinggal melakukan *query* berdasarkan hari:
+    `SELECT * FROM materi_belajar WHERE hari = 1;`
+    Datanya bisa langsung di-*map* ke komponen slide PPT kamu.
+2.  **Kapasitas:** Untuk 200 hari dengan estimasi 50 item per hari, totalnya hanya 10.000 baris. File SQLite-nya mungkin tidak akan sampai 5MB. Sangat ringan untuk dijalankan di laptop atau HP.
+3.  **Pengembangan:** Jika nanti kamu ingin menambahkan sistem *quiz* atau *flashcard*, kamu tinggal menambah kolom `status_hafal` (boolean) di tabel yang sama.
+
+Jika kamu menggunakan **Astro** atau **SolidStart**, kamu bisa menyimpan file `.sqlite` ini di folder proyek dan melakukan *query* langsung di sisi server untuk merender halaman belajarnya secara instan.Untuk menampung semua jenis materi (Bunpou, Kanji, dan Goi) dalam satu struktur yang rapi namun tetap fleksibel untuk tampilan ala PPT, kamu bisa menggunakan satu tabel utama dengan kolom `type` sebagai pembeda.
+
+Berikut adalah rancangan skema SQLite yang mencakup semua kebutuhanmu:
+
+### Skema Database
+
+```sql
+CREATE TABLE materi_belajar (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    hari INTEGER NOT NULL,
+    tipe TEXT NOT NULL, -- 'bunpou', 'kanji', 'goi'
+    poin_utama TEXT NOT NULL, -- Kata besar/Pola
+    cara_baca TEXT, -- Hiragana/Romaji
+    penjelasan TEXT, -- Teks kecil penjelasan
+    contoh_ja TEXT, -- Contoh kalimat Jepang
+    contoh_id TEXT  -- Arti contoh kalimat
+);
+```
+
+### Contoh Input Data (Berdasarkan Materi Day 1)
+
+```sql
+INSERT INTO materi_belajar (hari, tipe, poin_utama, cara_baca, penjelasan, contoh_ja, contoh_id) VALUES 
+(1, 'bunpou', 'N1 は N2 です', 'wa... desu', 'Digunakan untuk menyatakan "N1 adalah N2".', '私はマルシアです。', 'Saya adalah Marcia.'),
+(1, 'kanji', '年', 'NEN / toshi', 'Tahun', '去年 (きょねん)', 'Tahun lalu.'),
+(1, 'goi', '牛丼', 'ぎゅうどん', 'Nasi mangkuk daging sapi (beef bowl)', '牛丼を食べます。', 'Makan beef bowl.');
+```
+
+### Kenapa Struktur Ini Cocok?
+
+1.  **Fleksibilitas Tampilan:** Saat kamu membuat UI, kamu tinggal melakukan *query* berdasarkan hari:
+    `SELECT * FROM materi_belajar WHERE hari = 1;`
+    Datanya bisa langsung di-*map* ke komponen slide PPT kamu.
+2.  **Kapasitas:** Untuk 200 hari dengan estimasi 50 item per hari, totalnya hanya 10.000 baris. File SQLite-nya mungkin tidak akan sampai 5MB. Sangat ringan untuk dijalankan di laptop atau HP.
+3.  **Pengembangan:** Jika nanti kamu ingin menambahkan sistem *quiz* atau *flashcard*, kamu tinggal menambah kolom `status_hafal` (boolean) di tabel yang sama.
+
+Jika kamu menggunakan **Astro** atau **SolidStart**, kamu bisa menyimpan file `.sqlite` ini di folder proyek dan melakukan *query* langsung di sisi server untuk merender halaman belajarnya secara instan.
+
+
+Pemisahan tabel memang lebih rapi dan terstruktur. Atribut untuk Kanji, Tata Bahasa, dan Kosakata pada dasarnya memiliki kebutuhan kolom yang berbeda.
+
+Berikut skema jika dipisah menjadi 3 tabel khusus:
+
+```sql
+CREATE TABLE bunpou (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    hari INTEGER NOT NULL,
+    pola TEXT NOT NULL,
+    penjelasan TEXT,
+    contoh_kalimat TEXT,
+    arti_contoh TEXT
+);
+
+CREATE TABLE kanji (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    hari INTEGER NOT NULL,
+    karakter TEXT NOT NULL,
+    onyomi TEXT,
+    kunyomi TEXT,
+    arti TEXT,
+    contoh_kata TEXT
+);
+
+CREATE TABLE kotoba (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    hari INTEGER NOT NULL,
+    kata TEXT NOT NULL,
+    cara_baca TEXT,
+    arti TEXT
+);
+```
+
+Keuntungannya, skema menjadi sangat ketat dan tidak ada kolom yang dibiarkan kosong (NULL) hanya karena beda tipe materi. Saat menampilkan materi "Day 1", Anda tinggal menjalankan 3 *query* paralel ke masing-masing tabel.
+
+Apakah skema terpisah ini lebih sesuai dengan logika aplikasi yang sedang Anda rancang?
+
+Ada dua celah utama dari skema 3 tabel tersebut jika tujuannya untuk presentasi slide PPT:
+
+### 1. Celah Urutan Slide (Sorting)
+Tidak ada penanda slide mana yang muncul duluan. Apakah materi hari ke-1 akan menampilkan Bunpou dulu, Kanji dulu, atau selang-seling? Anda perlu menambahkan kolom urutan.
+
+```sql
+ALTER TABLE bunpou ADD COLUMN urutan_slide INTEGER;
+ALTER TABLE kanji ADD COLUMN urutan_slide INTEGER;
+ALTER TABLE kotoba ADD COLUMN urutan_slide INTEGER;
+```
+
+### 2. Celah Detail Contoh Kanji
+Tabel `kanji` hanya punya `contoh_kata`. Padahal, pelajar butuh tahu cara baca contoh kata tersebut beserta artinya.
+
+```sql
+ALTER TABLE kanji ADD COLUMN cara_baca_contoh TEXT;
+ALTER TABLE kanji ADD COLUMN arti_contoh TEXT;
+```
+
+### Konsep 1 Data Pemanggilan
+Karena beda tabel, Anda tidak perlu memaksakan gabung lewat SQL `JOIN` atau `UNION`. Cukup panggil ketiganya secara paralel di sisi *backend* (misalnya menggunakan ElysiaJS atau Astro), lalu jadikan satu *object* JSON untuk dikirim ke *frontend*.
+
+```javascript
+const materiBunpou = db.query('SELECT * FROM bunpou WHERE hari = 1 ORDER BY urutan_slide').all();
+const materiKanji = db.query('SELECT * FROM kanji WHERE hari = 1 ORDER BY urutan_slide').all();
+const materiKotoba = db.query('SELECT * FROM kotoba WHERE hari = 1 ORDER BY urutan_slide').all();
+
+return {
+    hari: 1,
+    bunpou: materiBunpou,
+    kanji: materiKanji,
+    kotoba: materiKotoba
+};
+```
+
+Nanti di antarmuka (React/Solid), Anda tinggal menggabungkan dan mengurutkan array tersebut untuk ditampilkan per slide.
+
+Apakah Anda akan mengatur urutan materinya di level *backend* API atau di *frontend*?

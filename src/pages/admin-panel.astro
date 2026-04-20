@@ -1,0 +1,402 @@
+---
+import '../styles/global.css';
+---
+
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel - JPASELI</title>
+  <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+  <style>
+    .admin-wrap { max-width: 1200px; margin: 0 auto; padding: 2rem; min-height: 100vh; }
+
+    /* Stats Cards */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card { background: var(--bg-secondary); border: 1px solid var(--border-color); padding: 1.5rem; text-align: center; border-radius: 8px; }
+    .stat-card .stat-num { font-size: 2.5rem; font-weight: 800; }
+    .stat-card .stat-label { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.5rem; }
+
+    /* Tabs */
+    .tabs { display: flex; gap: 0; border-bottom: 2px solid var(--border-color); margin-bottom: 2rem; }
+    .tab-btn { background: transparent; border: none; color: var(--text-muted); padding: 1rem 2rem; font-size: 1rem; font-weight: 700; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.2s; font-family: inherit; text-transform: uppercase; letter-spacing: 0.05em; }
+    .tab-btn.active { color: var(--text-main); border-bottom-color: var(--accent); }
+    .tab-btn:hover { color: var(--text-main); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* Day List Table */
+    .day-table { width: 100%; border-collapse: collapse; }
+    .day-table th, .day-table td { padding: 1rem 1.25rem; text-align: left; border-bottom: 1px solid var(--border-color); font-size: 0.95rem; }
+    .day-table th { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); background: var(--bg-secondary); position: sticky; top: 0; }
+    .day-table tr:hover td { background: var(--highlight-bg); }
+    .day-table .num { font-weight: 800; font-size: 1.2rem; }
+
+    /* Buttons */
+    .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.75rem; font-weight: 700; border: 1px solid var(--border-color); background: transparent; color: var(--text-main); cursor: pointer; border-radius: 4px; transition: all 0.2s; font-family: inherit; text-transform: uppercase; letter-spacing: 0.05em; }
+    .btn-sm:hover { background: var(--text-main); color: var(--bg-secondary); }
+    .btn-danger { border-color: #ff5252; color: #ff5252; }
+    .btn-danger:hover { background: #ff5252; color: #fff; }
+    .btn-accent { border-color: var(--accent); color: var(--accent); }
+    .btn-accent:hover { background: var(--accent); color: #000; }
+
+    /* Detail Panel */
+    .detail-panel { background: var(--bg-secondary); border: 1px solid var(--border-color); padding: 2rem; border-radius: 8px; margin-top: 1rem; }
+    .detail-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); }
+    .detail-header h2 { font-size: 2rem; margin: 0; }
+
+    /* Section cards in detail */
+    .section-title { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); font-weight: 700; margin-bottom: 1rem; margin-top: 2rem; }
+    .item-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 1rem; border: 1px solid var(--border-color); border-radius: 6px; margin-bottom: 0.5rem; gap: 1rem; }
+    .item-row:hover { background: var(--highlight-bg); }
+    .item-info { flex: 1; }
+    .item-info .main-text { font-size: 1.3rem; font-weight: 700; }
+    .item-info .sub-text { font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem; }
+    .item-id { font-size: 0.75rem; color: var(--text-muted); font-family: monospace; }
+
+    /* Toast notifications */
+    .toast { position: fixed; bottom: 2rem; right: 2rem; padding: 1rem 2rem; border-radius: 8px; font-weight: 600; z-index: 9999; transition: all 0.3s; transform: translateY(100px); opacity: 0; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success { background: #10b981; color: #000; }
+    .toast.error { background: #ff5252; color: #fff; }
+
+    /* Confirm dialog */
+    .confirm-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 9998; justify-content: center; align-items: center; }
+    .confirm-overlay.show { display: flex; }
+    .confirm-box { background: var(--bg-secondary); border: 2px solid var(--border-color); padding: 2rem; border-radius: 8px; max-width: 450px; width: 90%; text-align: center; }
+    .confirm-box h3 { font-size: 1.5rem; margin-bottom: 1rem; }
+    .confirm-box p { color: var(--text-muted); margin-bottom: 2rem; font-size: 1rem; }
+    .confirm-btns { display: flex; gap: 1rem; justify-content: center; }
+    .confirm-btns button { padding: 0.75rem 2rem; font-size: 0.9rem; font-weight: 700; border-radius: 4px; cursor: pointer; font-family: inherit; }
+
+    /* Loading */
+    .loading { text-align: center; padding: 4rem; color: var(--text-muted); font-size: 1.2rem; }
+
+    @media (max-width: 768px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .tabs { overflow-x: auto; }
+      .tab-btn { padding: 0.75rem 1rem; font-size: 0.85rem; white-space: nowrap; }
+      .detail-header { flex-direction: column; gap: 1rem; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body data-theme="dark">
+  <div class="admin-wrap">
+    <!-- Header -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--border-color);">
+      <div>
+        <h1 style="font-size: 2.5rem; margin: 0;">ADMIN PANEL</h1>
+        <p style="color: var(--text-muted); margin-top: 0.5rem;">Kelola seluruh data materi JPASELI</p>
+      </div>
+      <div style="display: flex; gap: 0.75rem;">
+        <a href="/" class="btn-sm btn-accent" style="padding: 0.6rem 1.2rem;">HOME</a>
+        <a href="/admin" class="btn-sm" style="padding: 0.6rem 1.2rem;">IMPORT JSON</a>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid" id="stats-grid">
+      <div class="stat-card"><div class="stat-num" id="stat-days">-</div><div class="stat-label">Total Day</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-bunpou">-</div><div class="stat-label">Bunpou</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-kanji">-</div><div class="stat-label">Kanji</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-kotoba">-</div><div class="stat-label">Kotoba</div></div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="days">Daftar Day</button>
+      <button class="tab-btn" data-tab="detail">Detail Materi</button>
+    </div>
+
+    <!-- Tab: Daftar Day -->
+    <div class="tab-panel active" id="tab-days">
+      <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; align-items: center;">
+        <input type="number" class="search-bar" id="filter-day" placeholder="Filter nomor Day..." style="flex: 1; padding: 0.8rem 1.5rem; font-size: 1rem;" />
+      </div>
+      <div style="max-height: 60vh; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 8px;">
+        <table class="day-table">
+          <thead>
+            <tr>
+              <th>Day</th>
+              <th>Bunpou</th>
+              <th>Kanji</th>
+              <th>Kotoba</th>
+              <th>Total</th>
+              <th style="text-align: right;">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="days-tbody">
+            <tr><td colspan="6" class="loading">Memuat data...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab: Detail Materi -->
+    <div class="tab-panel" id="tab-detail">
+      <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; align-items: center;">
+        <input type="number" class="search-bar" id="goto-day" placeholder="Masukkan nomor Day untuk dilihat..." style="flex: 1; padding: 0.8rem 1.5rem; font-size: 1rem;" />
+        <button class="btn-sm btn-accent" id="goto-btn" style="padding: 0.8rem 1.5rem;">LIHAT</button>
+      </div>
+      <div id="detail-content">
+        <p style="text-align: center; color: var(--text-muted); padding: 4rem;">Masukkan nomor Day di atas untuk melihat detailnya.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Confirm Dialog -->
+  <div class="confirm-overlay" id="confirm-overlay">
+    <div class="confirm-box">
+      <h3 id="confirm-title">Konfirmasi</h3>
+      <p id="confirm-msg">Apakah Anda yakin?</p>
+      <div class="confirm-btns">
+        <button class="btn-sm" id="confirm-cancel" style="padding: 0.75rem 2rem;">BATAL</button>
+        <button class="btn-sm btn-danger" id="confirm-ok" style="padding: 0.75rem 2rem;">HAPUS</button>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline>
+    document.body.setAttribute('data-theme', 'dark');
+
+    // Toast function
+    function showToast(msg, type = 'success') {
+      const t = document.getElementById('toast');
+      t.className = 'toast ' + type;
+      t.innerText = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // Confirm dialog
+    let confirmCallback = null;
+    function showConfirm(title, msg, cb) {
+      document.getElementById('confirm-title').innerText = title;
+      document.getElementById('confirm-msg').innerText = msg;
+      document.getElementById('confirm-overlay').classList.add('show');
+      confirmCallback = cb;
+    }
+    document.getElementById('confirm-cancel').addEventListener('click', () => {
+      document.getElementById('confirm-overlay').classList.remove('show');
+      confirmCallback = null;
+    });
+    document.getElementById('confirm-ok').addEventListener('click', () => {
+      document.getElementById('confirm-overlay').classList.remove('show');
+      if (confirmCallback) confirmCallback();
+      confirmCallback = null;
+    });
+
+    // Tab switching
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    // Load stats
+    async function loadStats() {
+      const res = await fetch('/api/manage?action=stats');
+      const data = await res.json();
+      document.getElementById('stat-days').innerText = data.totalDays;
+      document.getElementById('stat-bunpou').innerText = data.totalBunpou;
+      document.getElementById('stat-kanji').innerText = data.totalKanji;
+      document.getElementById('stat-kotoba').innerText = data.totalKotoba;
+    }
+
+    // Load days list
+    let allDays = [];
+    async function loadDays() {
+      const res = await fetch('/api/manage?action=days');
+      allDays = await res.json();
+      renderDays(allDays);
+    }
+
+    function renderDays(days) {
+      const tbody = document.getElementById('days-tbody');
+      if (days.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--text-muted); padding:2rem;">Tidak ada data.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = days.map(d => `
+        <tr>
+          <td class="num">Day ${d.hari}</td>
+          <td>${d.bunpou_count}</td>
+          <td>${d.kanji_count}</td>
+          <td>${d.kotoba_count}</td>
+          <td style="font-weight:700;">${d.bunpou_count + d.kanji_count + d.kotoba_count}</td>
+          <td style="text-align: right; display: flex; gap: 0.5rem; justify-content: flex-end;">
+            <button class="btn-sm btn-accent" onclick="viewDay(${d.hari})">DETAIL</button>
+            <button class="btn-sm btn-danger" onclick="deleteDay(${d.hari})">HAPUS</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // Filter days
+    document.getElementById('filter-day').addEventListener('input', (e) => {
+      const val = e.target.value.trim();
+      if (!val) { renderDays(allDays); return; }
+      renderDays(allDays.filter(d => String(d.hari).includes(val)));
+    });
+
+    // Delete entire day
+    window.deleteDay = function(day) {
+      showConfirm(
+        `Hapus Day ${day}?`,
+        `Semua materi (bunpou, kanji, kotoba) untuk Day ${day} akan dihapus permanen. Aksi ini tidak bisa dibatalkan!`,
+        async () => {
+          const res = await fetch('/api/manage', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'delete_day', day })
+          });
+          const data = await res.json();
+          if (data.success) {
+            showToast(data.message, 'success');
+            loadDays();
+            loadStats();
+          } else {
+            showToast('Error: ' + data.error, 'error');
+          }
+        }
+      );
+    };
+
+    // View day detail
+    window.viewDay = async function(day) {
+      // Switch to detail tab
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelector('[data-tab="detail"]').classList.add('active');
+      document.getElementById('tab-detail').classList.add('active');
+      document.getElementById('goto-day').value = day;
+
+      const container = document.getElementById('detail-content');
+      container.innerHTML = '<p class="loading">Memuat detail...</p>';
+
+      const res = await fetch(`/api/manage?action=detail&day=${day}`);
+      const data = await res.json();
+
+      let html = `
+        <div class="detail-panel">
+          <div class="detail-header">
+            <h2>Day ${data.day}</h2>
+            <button class="btn-sm btn-danger" onclick="deleteDay(${data.day})">HAPUS SEMUA DAY ${data.day}</button>
+          </div>
+      `;
+
+      // Bunpou section
+      html += `<div class="section-title">Bunpou / Tata Bahasa (${data.bunpou.length})</div>`;
+      if (data.bunpou.length === 0) {
+        html += `<p style="color:var(--text-muted); padding: 1rem;">Tidak ada data bunpou.</p>`;
+      }
+      data.bunpou.forEach(item => {
+        html += `
+          <div class="item-row">
+            <div class="item-info">
+              <div class="main-text">${item.pola}</div>
+              <div class="sub-text">${item.penjelasan || '-'}</div>
+              ${item.contoh_kalimat ? `<div class="sub-text" style="margin-top:0.5rem;">例: ${item.contoh_kalimat} → ${item.arti_contoh || ''}</div>` : ''}
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:flex-end; gap:0.5rem;">
+              <span class="item-id">ID: ${item.id} | Slide: ${item.urutan_slide}</span>
+              <button class="btn-sm btn-danger" onclick="deleteItem('bunpou', ${item.id}, ${data.day})">HAPUS</button>
+            </div>
+          </div>
+        `;
+      });
+
+      // Kanji section
+      html += `<div class="section-title">Kanji (${data.kanji.length})</div>`;
+      if (data.kanji.length === 0) {
+        html += `<p style="color:var(--text-muted); padding: 1rem;">Tidak ada data kanji.</p>`;
+      }
+      data.kanji.forEach(item => {
+        html += `
+          <div class="item-row">
+            <div class="item-info">
+              <div class="main-text" style="font-size: 2rem;">${item.karakter}</div>
+              <div class="sub-text">ON: ${item.onyomi || '-'} | KUN: ${item.kunyomi || '-'} | Arti: ${item.arti}</div>
+              ${item.contoh_kata ? `<div class="sub-text">例: ${item.contoh_kata} (${item.cara_baca_contoh}) → ${item.arti_contoh || ''}</div>` : ''}
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:flex-end; gap:0.5rem;">
+              <span class="item-id">ID: ${item.id} | Slide: ${item.urutan_slide}</span>
+              <button class="btn-sm btn-danger" onclick="deleteItem('kanji', ${item.id}, ${data.day})">HAPUS</button>
+            </div>
+          </div>
+        `;
+      });
+
+      // Kotoba section
+      html += `<div class="section-title">Kotoba / Kosakata (${data.kotoba.length})</div>`;
+      if (data.kotoba.length === 0) {
+        html += `<p style="color:var(--text-muted); padding: 1rem;">Tidak ada data kotoba.</p>`;
+      }
+      data.kotoba.forEach(item => {
+        html += `
+          <div class="item-row">
+            <div class="item-info">
+              <div class="main-text">${item.kata}</div>
+              <div class="sub-text">${item.cara_baca} — ${item.arti}</div>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:flex-end; gap:0.5rem;">
+              <span class="item-id">ID: ${item.id} | Slide: ${item.urutan_slide}</span>
+              <button class="btn-sm btn-danger" onclick="deleteItem('kotoba', ${item.id}, ${data.day})">HAPUS</button>
+            </div>
+          </div>
+        `;
+      });
+
+      html += `</div>`;
+      container.innerHTML = html;
+    };
+
+    // Delete single item
+    window.deleteItem = function(table, id, day) {
+      const label = { bunpou: 'Bunpou', kanji: 'Kanji', kotoba: 'Kotoba' }[table];
+      showConfirm(
+        `Hapus ${label}?`,
+        `Item ID ${id} dari tabel ${label} akan dihapus permanen.`,
+        async () => {
+          const res = await fetch('/api/manage', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'delete_item', table, id })
+          });
+          const data = await res.json();
+          if (data.success) {
+            showToast(data.message, 'success');
+            viewDay(day);
+            loadStats();
+            loadDays();
+          } else {
+            showToast('Error: ' + data.error, 'error');
+          }
+        }
+      );
+    };
+
+    // Goto day button
+    document.getElementById('goto-btn').addEventListener('click', () => {
+      const val = document.getElementById('goto-day').value;
+      if (val) viewDay(parseInt(val));
+    });
+    document.getElementById('goto-day').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const val = e.target.value;
+        if (val) viewDay(parseInt(val));
+      }
+    });
+
+    // Init
+    loadStats();
+    loadDays();
+  </script>
+</body>
+</html>

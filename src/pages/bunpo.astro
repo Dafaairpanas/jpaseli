@@ -1,0 +1,73 @@
+---
+import db from '../lib/db.js';
+import '../styles/global.css';
+
+const bunpouList = db.prepare("SELECT * FROM bunpou ORDER BY urutan_slide ASC, id ASC").all();
+---
+
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kumpulan Bunpou (Tata Bahasa) - JPASELI</title>
+  <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+</head>
+<body data-theme="light">
+  <div class="dashboard-container" style="max-width: 1000px;">
+    <header class="dashboard-header" style="flex-direction: column; align-items: flex-start; gap: 1rem;">
+      <div style="display: flex; gap: 2rem; align-items: center; width: 100%; justify-content: space-between;">
+        <h1 style="font-size: 3rem;">Kumpulan Pola Kalimat</h1>
+        <a href="/" class="btn-action">KEMBALI</a>
+      </div>
+      <p style="font-size: 1.2rem; color: var(--text-muted);">Total: {bunpouList.length} Tata Bahasa</p>
+    </header>
+
+    <div class="search-wrapper">
+      <input type="text" class="search-bar" id="search-input" placeholder="Cari pola tata bahasa, penjelasan, atau terjemahannya..." />
+    </div>
+    
+    <main style="display: flex; flex-direction: column; gap: 2rem;">
+      {bunpouList.map(item => (
+        <div class="bunpou-card" style="border: 1px solid var(--border-color); background-color: var(--bg-secondary); padding: 2rem; border-radius: 8px;">
+          <strong style="font-size: 2rem; display: block; margin-bottom: 1rem; color: var(--accent);">{item.pola}</strong>
+          <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">{item.penjelasan}</p>
+          
+          {item.contoh_kalimat && (
+            <div style="background-color: var(--bg-primary); padding: 1.5rem; border-left: 4px solid var(--text-main);">
+              <p style="font-size: 1.2rem; font-weight: 500; margin-bottom: 0.5rem;">{item.contoh_kalimat}</p>
+              <p style="font-size: 1rem; color: var(--text-muted);">{item.arti_contoh}</p>
+            </div>
+          )}
+        </div>
+      ))}
+    </main>
+  </div>
+  <script is:inline>
+    const savedTheme = localStorage.getItem('app-theme') || 'light';
+    document.body.setAttribute('data-theme', savedTheme);
+
+    // Search logic
+    const searchInput = document.getElementById('search-input');
+    const cards = document.querySelectorAll('.bunpou-card');
+    
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        const val = e.target.value.toLowerCase().trim();
+        cards.forEach(c => {
+          const text = c.innerText.toLowerCase();
+          c.style.display = text.includes(val) ? 'block' : 'none';
+        });
+      });
+    }
+
+    // Keyboard shortcut "/" to focus search
+    document.addEventListener('keydown', (e) => {
+      if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        const searchInput = document.getElementById('search-input');
+        if (searchInput) searchInput.focus();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+---
+import db from '../../lib/db.js';
+import '../../styles/global.css';
+
+// Ambil daftar hari yang unik secara dinamis dari kombinasi ketiga tabel
+const query = `
+  SELECT DISTINCT hari FROM (
+    SELECT hari FROM bunpou
+    UNION
+    SELECT hari FROM kanji
+    UNION
+    SELECT hari FROM kotoba
+  ) ORDER BY hari ASC;
+`;
+const daysData = db.prepare(query).all();
+const days = daysData.map(d => d.hari);
+---
+
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Materi Belajar - Bahasa Jepang</title>
+  
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+  <meta name="theme-color" content="#111111" />
+  
+  <script is:inline>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW registration failed: ', err));
+      });
+    }
+  </script>
+</head>
+<body data-theme="light">
+  <div class="dashboard-container">
+    <header class="dashboard-header">
+      <h1>MATERI BELAJAR</h1>
+      <div style="display: flex; gap: 0.75rem;">
+        <a href="/" class="btn-action" style="padding: 0.5rem 1rem;">KEMBALI</a>
+        <button id="theme-toggle" class="btn-action" style="padding: 0.5rem 1rem;">TOGGLE THEME</button>
+      </div>
+    </header>
+
+    <div class="search-wrapper">
+      <input type="number" class="search-bar" id="search-day" placeholder="Cari nomor Day (contoh: 12)..." min="1" />
+    </div>
+    
+    <main class="day-list">
+      {days.length === 0 && <p style="text-align:center; color: var(--text-muted); width: 100%;">Belum ada materi tersedia.</p>}
+      
+      {days.map(day => (
+        <a href={`/materibelajar/day/${day}`} class="day-card" data-day={day}>
+          <span>DAY</span>
+          <strong>{day}</strong>
+        </a>
+      ))}
+      
+      <!-- Contoh Day yang belum bisa diklik untuk variasi UI -->
+      <div class="day-card disabled">
+        <span>DAY</span>
+        <strong>{days.length ? days[days.length -1] + 1 : 2}</strong>
+        <span style="font-size: 0.9rem; font-weight: 500;">TERKUNCI</span>
+      </div>
+    </main>
+  </div>
+
+  <script is:inline>
+    // Load learned days
+    const dayCards = document.querySelectorAll('.day-card[data-day]');
+    dayCards.forEach(card => {
+      const dayNum = card.getAttribute('data-day');
+      if (localStorage.getItem(`learned_day_${dayNum}`) === 'true') {
+        card.classList.add('learned');
+      }
+    });
+
+    // Load theme from localStorage
+    const savedTheme = localStorage.getItem('app-theme') || 'light';
+    document.body.setAttribute('data-theme', savedTheme);
+
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+      themeToggle.addEventListener('click', () => {
+        const currentTheme = document.body.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        document.body.setAttribute('data-theme', newTheme);
+        localStorage.setItem('app-theme', newTheme);
+      });
+    }
+
+    // Search Day Logic
+    const searchInput = document.getElementById('search-day');
+    searchInput.addEventListener('input', (e) => {
+      const val = e.target.value.trim();
+      dayCards.forEach(card => {
+        const dayNum = card.getAttribute('data-day');
+        if (!val || dayNum.includes(val)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+      
+      // Sembunyikan pesan "TERKUNCI" saat mencari
+      const disabledCard = document.querySelector('.day-card.disabled');
+      if (disabledCard) {
+        disabledCard.style.display = val ? 'none' : 'flex';
+      }
+    });
+
+    // Keyboard shortcut "/" to focus search
+    document.addEventListener('keydown', (e) => {
+      if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        searchInput.focus();
+      }
+    });
+  </script>
+</body>
+</html>

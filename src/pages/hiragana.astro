@@ -1,0 +1,120 @@
+---
+import '../styles/global.css';
+
+// Base hiragana array basic 46
+const hiragana = [
+  { romaji: 'a', char: 'あ' }, { romaji: 'i', char: 'い' }, { romaji: 'u', char: 'う' }, { romaji: 'e', char: 'え' }, { romaji: 'o', char: 'お' },
+  { romaji: 'ka', char: 'か' }, { romaji: 'ki', char: 'き' }, { romaji: 'ku', char: 'く' }, { romaji: 'ke', char: 'け' }, { romaji: 'ko', char: 'こ' },
+  { romaji: 'sa', char: 'さ' }, { romaji: 'shi', char: 'し' }, { romaji: 'su', char: 'す' }, { romaji: 'se', char: 'せ' }, { romaji: 'so', char: 'そ' },
+  { romaji: 'ta', char: 'た' }, { romaji: 'chi', char: 'ち' }, { romaji: 'tsu', char: 'つ' }, { romaji: 'te', char: 'て' }, { romaji: 'to', char: 'と' },
+  { romaji: 'na', char: 'な' }, { romaji: 'ni', char: 'に' }, { romaji: 'nu', char: 'ぬ' }, { romaji: 'ne', char: 'ね' }, { romaji: 'no', char: 'の' },
+  { romaji: 'ha', char: 'は' }, { romaji: 'hi', char: 'ひ' }, { romaji: 'fu', char: 'ふ' }, { romaji: 'he', char: 'へ' }, { romaji: 'ho', char: 'ほ' },
+  { romaji: 'ma', char: 'ま' }, { romaji: 'mi', char: 'み' }, { romaji: 'mu', char: 'む' }, { romaji: 'me', char: 'め' }, { romaji: 'mo', char: 'も' },
+  { romaji: 'ya', char: 'や' }, { romaji: '', char: '' }, { romaji: 'yu', char: 'ゆ' }, { romaji: '', char: '' }, { romaji: 'yo', char: 'よ' },
+  { romaji: 'ra', char: 'ら' }, { romaji: 'ri', char: 'り' }, { romaji: 'ru', char: 'る' }, { romaji: 're', char: 'れ' }, { romaji: 'ro', char: 'ろ' },
+  { romaji: 'wa', char: 'わ' }, { romaji: '', char: '' }, { romaji: '', char: '' }, { romaji: '', char: '' }, { romaji: 'wo', char: 'を' },
+  { romaji: 'n', char: 'ん' }
+];
+---
+
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tabel Hiragana - JPASELI</title>
+  <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+</head>
+<body data-theme="light">
+  <div class="dashboard-container">
+    <header class="dashboard-header" style="flex-direction: column; align-items: flex-start; gap: 1rem;">
+      <div style="display: flex; gap: 2rem; align-items: center; width: 100%; justify-content: space-between;">
+        <h1 style="font-size: 3rem;">Tabel Hiragana</h1>
+        <a href="/" class="btn-action">KEMBALI</a>
+      </div>
+      <p style="font-size: 1.2rem; color: var(--text-muted);">Mari pelajari huruf dasar Hiragana.</p>
+    </header>
+
+    <div class="search-wrapper">
+      <input type="text" class="search-bar" id="search-input" placeholder="Cari huruf (romaji / hiragana)..." />
+    </div>
+    
+    <main class="day-list" style="grid-template-columns: repeat(5, 1fr); gap: 1rem;">
+      {hiragana.map(h => (
+        h.char ? (
+          <div class="day-card" style="padding: 2rem 1rem; cursor: pointer; position: relative;" data-text={h.char}>
+            <strong style="font-size: 3rem; font-weight: normal;">{h.char}</strong>
+            <span style="font-size: 1.2rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">{h.romaji}</span>
+            <div style="position: absolute; top: 0.5rem; right: 0.5rem; opacity: 0.5;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+            </div>
+          </div>
+        ) : (
+          <div class="empty-placeholder"></div>
+        )
+      ))}
+    </main>
+  </div>
+  <script is:inline>
+    // Theme logic
+    const savedTheme = localStorage.getItem('app-theme') || 'light';
+    document.body.setAttribute('data-theme', savedTheme);
+
+    // Search logic
+    const searchInput = document.getElementById('search-input');
+    const cards = document.querySelectorAll('.day-card');
+    const placeholders = document.querySelectorAll('.empty-placeholder');
+    
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        const val = e.target.value.toLowerCase().trim();
+        cards.forEach(c => {
+          const text = c.innerText.toLowerCase();
+          if (text.includes(val)) {
+            c.style.display = 'flex';
+          } else {
+            c.style.display = 'none';
+          }
+        });
+        
+        // Hide empty placeholders when searching
+        placeholders.forEach(p => {
+          p.style.display = val.length > 0 ? 'none' : 'block';
+        });
+      });
+    }
+
+    // TTS Logic
+    cards.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const text = btn.getAttribute('data-text');
+        if (!text || !window.speechSynthesis) return;
+        
+        window.speechSynthesis.cancel();
+        
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'ja-JP';
+        utterance.rate = 0.9; 
+        
+        window.speechSynthesis.speak(utterance);
+        
+        // Animasi kecil di popup icon
+        const icon = btn.querySelector('svg');
+        if (icon) {
+          icon.style.transform = 'scale(1.3)';
+          icon.style.transition = 'transform 0.2s';
+          setTimeout(() => icon.style.transform = 'scale(1)', 200);
+        }
+      });
+    });
+
+    // Keyboard shortcut "/" to focus search
+    document.addEventListener('keydown', (e) => {
+      if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        const searchInput = document.getElementById('search-input');
+        if (searchInput) searchInput.focus();
+      }
+    });
+  </script>
+</body>
+</html>

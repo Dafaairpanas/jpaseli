@@ -1,0 +1,205 @@
+---
+import '../styles/global.css';
+---
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - JPASELI</title>
+  <style>
+    .admin-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+      min-height: 100vh;
+    }
+    textarea {
+      width: 100%;
+      height: 400px;
+      background: var(--bg-secondary);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 1.5rem;
+      font-family: 'Consolas', monospace;
+      font-size: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      resize: vertical;
+    }
+    .status {
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+      display: none;
+    }
+    .status.success { background: rgba(0, 200, 83, 0.2); color: #00c853; display: block; border: 1px solid #00c853; }
+    .status.error { background: rgba(213, 0, 0, 0.2); color: #ff5252; display: block; border: 1px solid #ff5252; }
+  </style>
+</head>
+<body data-theme="dark">
+  <div class="admin-container">
+    <div class="dashboard-header" style="flex-direction:column; align-items:flex-start; gap:1rem; border-bottom: none; margin-bottom: 2rem;">
+      <h1 style="font-size:3rem; margin:0;">Admin Dashboard</h1>
+      <p style="color:var(--text-muted); font-size:1.2rem;">Tempel data kurikulum berformat JSON di bawah ini untuk mengunggah otomatis ke SQLite.</p>
+      
+      <div style="display: flex; gap: 1rem; margin-top: 0.5rem; flex-wrap: wrap;">
+        <button id="btn-copy-prompt" class="btn-action" style="background:transparent; border:1px solid var(--accent); color:var(--accent); font-size: 0.9rem; padding: 0.5rem 1rem;">
+           <svg style="margin-right:0.5rem; vertical-align:middle;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+           SALIN PROMPT AI (TEMPLATE JSON)
+        </button>
+        <button id="btn-copy-guru" class="btn-action" style="background:var(--bg-secondary); border:1px solid var(--border-color); color:var(--text-main); font-size: 0.9rem; padding: 0.5rem 1rem;">
+           <svg style="margin-right:0.5rem; vertical-align:middle;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+           SALIN PROMPT GURU JEPANG
+        </button>
+        <button id="btn-copy-gabungan" class="btn-action" style="background:var(--text-main); color:var(--bg-primary); border:none; font-size: 0.9rem; padding: 0.5rem 1rem;">
+           <svg style="margin-right:0.5rem; vertical-align:middle;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+           PINTASAN PROMPT GABUNGAN (1 KLIK)
+        </button>
+      </div>
+    </div>
+
+    <textarea id="json-input" placeholder='{\n  "day": 2,\n  "bunpou": [],\n  "kanji": [],\n  "kotoba": []\n}'></textarea>
+    
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:1rem;">
+        <a href="/" class="btn-action" style="background:transparent; border:1px solid var(--text-main);">KEMBALI KE BERANDA</a>
+        <button id="btn-upload" class="btn-action" style="background:var(--text-main); color:var(--bg-primary); padding: 1rem 2rem;">🚀 UPLOAD DATA</button>
+    </div>
+
+    <div id="status-box" class="status"></div>
+  </div>
+
+  <script is:inline>
+    const btn = document.getElementById('btn-upload');
+    const input = document.getElementById('json-input');
+    const statusBox = document.getElementById('status-box');
+    const btnCopy = document.getElementById('btn-copy-prompt');
+    const btnCopyGuru = document.getElementById('btn-copy-guru');
+    const btnCopyGabungan = document.getElementById('btn-copy-gabungan');
+
+    // Paksa mode gelap untuk admin panel
+    document.body.setAttribute('data-theme', 'dark');
+
+    const promptTemplate = `Tolong ubah materi pelajaran bahasa Jepang ini ke dalam format JSON murni dengan struktur yang membagi datanya ke dalam array "bunpou", "kanji", dan "kotoba" beserta \`urutan_slide\`-nya secara urut.
+
+Ini contoh format JSON yang diinginkan:
+\`\`\`json
+{
+  "day": 2,
+  "bunpou": [
+    {
+      "pola": "Nですか / N1はN2ですか",
+      "penjelasan": "Partikel か (ka) di akhir kalimat berfungsi sebagai tanda tanya.",
+      "contoh_kalimat": "あなたは学生ですか。",
+      "arti_contoh": "Apakah kamu seorang siswa?",
+      "urutan_slide": 1
+    }
+  ],
+  "kanji": [
+    {
+      "karakter": "月",
+      "onyomi": "ゲツ / ガツ",
+      "kunyomi": "つき",
+      "arti": "Bulan",
+      "contoh_kata": "今月",
+      "cara_baca_contoh": "こんげつ",
+      "arti_contoh": "Bulan ini",
+      "urutan_slide": 2
+    }
+  ],
+  "kotoba": [
+    {
+      "kata": "はい",
+      "cara_baca": "Hai",
+      "arti": "Ya",
+      "urutan_slide": 3
+    }
+  ]
+}
+\`\`\`
+
+\n\n`;
+
+    if (btnCopy) {
+      btnCopy.addEventListener('click', () => {
+        navigator.clipboard.writeText(promptTemplate).then(() => {
+          const originalText = btnCopy.innerHTML;
+          btnCopy.innerText = "✓ PROMPT TERSALIN!";
+          setTimeout(() => {
+            btnCopy.innerHTML = originalText;
+          }, 3000);
+        });
+      });
+    }
+
+    const promptGuru = `Kamu adalah guru bahasa Jepang saya. Tugas kamu adalah menjelaskan materi bahasa Jepang yang saya kirimkan (berupa teks atau gambar).
+
+Cara menjelaskan:
+- Gunakan Bahasa Indonesia yang jelas dan mudah dipahami
+- Sertakan kanji beserta hiragana/katakana-nya
+- Berikan contoh kalimat untuk setiap poin tata bahasa (bunpou/文法) yang dijelaskan
+- Jika ada kosakata penting, tampilkan dalam format: Kanji (hiragana/katakana) — *arti*
+- Pastikan mengartikan kanji dasar dahulu agar saya paham apa sih arti kanji ini, bukan hanya tau kanji gabungannya saja 
+
+Catatan penting:
+- Jika materi yang saya kirim terlalu banyak atau terlalu panjang untuk dijelaskan sekaligus, tolong beritahu saya agar saya bisa membaginya menjadi beberapa bagian.
+- Fokus pada pemahaman, bukan sekadar terjemahan.
+- Anda harus menjelaskan semua materi yang ada, jangan ditambahi ataupun dikurangi`;
+
+    if (btnCopyGuru) {
+      btnCopyGuru.addEventListener('click', () => {
+        navigator.clipboard.writeText(promptGuru).then(() => {
+          const originalText = btnCopyGuru.innerHTML;
+          btnCopyGuru.innerText = "✓ PROMPT TERSALIN!";
+          setTimeout(() => {
+            btnCopyGuru.innerHTML = originalText;
+          }, 3000);
+        });
+      });
+    }
+
+    const promptGabungan = promptGuru + '\\n\\n---\\n\\n' + promptTemplate + '\\n\\n**PENTING**: Tolong balas HANYA dengan code block format JSON murni saja, tanpa basa-basi pengantar atau penjelasan tambahan di luar JSON.\\n\\nIni materinya:\\n\\n';
+
+    if (btnCopyGabungan) {
+      btnCopyGabungan.addEventListener('click', () => {
+        navigator.clipboard.writeText(promptGabungan).then(() => {
+          const originalText = btnCopyGabungan.innerHTML;
+          btnCopyGabungan.innerText = "✓ PROMPT GABUNGAN TERSALIN!";
+          setTimeout(() => {
+            btnCopyGabungan.innerHTML = originalText;
+          }, 3000);
+        });
+      });
+    }
+
+    btn.addEventListener('click', async () => {
+      statusBox.className = 'status';
+      statusBox.innerText = 'Mengupload...';
+      statusBox.style.display = 'block';
+
+      try {
+        const payload = JSON.parse(input.value);
+        
+        const res = await fetch('/api/import', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        
+        if (res.ok) {
+          statusBox.classList.add('success');
+          statusBox.innerText = data.message;
+          input.value = '';
+        } else {
+          statusBox.classList.add('error');
+          statusBox.innerText = 'Error Database: ' + data.error;
+        }
+      } catch (e) {
+        statusBox.classList.add('error');
+        statusBox.innerText = 'Format JSON tidak valid! Pastikan tidak ada "koma" yang lebih atau kutipan yang salah. Detail: ' + e.message;
+      }
+    });
+  </script>
+</body>
+</html>

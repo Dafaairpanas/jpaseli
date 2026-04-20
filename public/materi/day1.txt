@@ -1,0 +1,61 @@
+Berikut adalah penjelasan untuk materi bahasa Jepang yang kamu kirimkan. Materi ini cukup ringkas sehingga bisa saya jelaskan semuanya sekaligus.
+
+### 1. Tata Bahasa (文法 - Bunpou)
+
+**A. Nです / N1はN2です (N desu / N1 wa N2 desu)**
+* **Penjelasan:** Ini adalah pola kalimat paling dasar. 
+    * **Nです:** Digunakan untuk menyebutkan benda atau identitas diri dengan sopan. "N" adalah Kata Benda (*Noun*).
+    * **N1はN2です:** Berarti "N1 adalah N2". Partikel "は" (ditulis *ha*, dibaca *wa*) berfungsi sebagai penanda subjek atau topik pembicaraan.
+* **Contoh dari materi:**
+    * トンです。(Ton desu.) — *Saya Ton.*
+    * 私 (わたし) はマルシアです。(Watashi wa Marushia desu.) — *Saya adalah Marcia.*
+* **Contoh tambahan:**
+    * これ は 本 (ほん) です。(Kore wa hon desu.) — *Ini adalah buku.*
+
+**B. 【場所】から来ました (【Basho】kara kimashita)**
+* **Penjelasan:** Pola ini digunakan untuk menyatakan asal tempat, daerah, atau negara. 
+    * 【場所】(Basho) berarti tempat.
+    * から (kara) adalah partikel yang berarti "dari".
+    * 来 (き) ました (kimashita) adalah bentuk lampau dari kata kerja datang. Makna utuhnya adalah "berasal dari [tempat]".
+* **Contoh dari materi:**
+    * ブラジルから来ました。(Burajiru kara kimashita.) — *(Saya) berasal dari Brasil.*
+* **Contoh tambahan:**
+    * インドネシアから来ました。(Indoneshia kara kimashita.) — *(Saya) berasal dari Indonesia.*
+
+---
+
+### 2. Kanji (漢字)
+
+**A. 年 (ネン / nen)**
+* **Arti dasar:** Tahun.
+* **Kosakata gabungan:** * 去年 (きょねん) — *Tahun lalu*. (Terdiri dari kanji 去 yang berarti pergi/lalu, dan 年 yang berarti tahun).
+
+**B. 週 (シュウ / shuu)**
+* **Arti dasar:** Minggu / Pekan.
+* **Kosakata gabungan:** * 先週 (せんしゅう) — *Minggu lalu*. (Terdiri dari kanji 先 yang berarti sebelum/lalu, dan 週 yang berarti minggu).
+
+**C. 学 (ガク / gaku)**
+* **Arti dasar:** Belajar / Ilmu.
+* **Kosakata gabungan:** * 学生 (がくせい) — *Siswa / Pelajar / Mahasiswa*. (Terdiri dari kanji 学 yang berarti belajar, dan 生 yang berarti hidup/orang).
+
+---
+
+### 3. Kosakata (語彙 - Goi)
+
+Berikut adalah daftar kosakata sesuai dengan format yang diminta:
+
+* ここ (ここ) — *di sini*
+* 名前／お名前 (なまえ／おなまえ) — *nama* ("お" ditambahkan agar terdengar lebih sopan saat menanyakan nama orang lain)
+* 部屋 (へや) — *kamar / ruangan*
+* 傘 (かさ) — *payung*
+* 友だち (ともだち) — *teman*
+* 家族 (かぞく) — *keluarga*
+* それから (それから) — *kemudian / lalu*
+* うどん (うどん) — *mi udon*
+* カレー (カレー) — *kari*
+* 牛丼 (ぎゅうどん) — *mangkuk daging sapi (beef bowl)*
+* 刺身 (さしみ) — *sashimi (potongan ikan mentah)*
+* すし (すし) — *sushi*
+* そば (そば) — *mi soba*
+* 食べ物 (たべもの) — *makanan*
+* ラーメン (ラーメン) — *mi ramen*

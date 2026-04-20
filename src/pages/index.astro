@@ -1,0 +1,65 @@
+---
+import '../styles/global.css';
+
+const menuItems = [
+  { title: 'MATERI BELAJAR', link: '/materibelajar', desc: 'Belajar per hari (Day 1 - Day 284)' },
+  { title: 'HIRAGANA', link: '/hiragana', desc: 'Tabel huruf dasar Hiragana' },
+  { title: 'KATAKANA', link: '/katakana', desc: 'Tabel huruf dasar Katakana' },
+  { title: 'KANJI', link: '/kanji', desc: 'Daftar seluruh Kanji' },
+  { title: 'KOTOBA', link: '/kotoba', desc: 'Kamus Kosakata (Flashcard)' },
+  { title: 'BUNPO', link: '/bunpo', desc: 'Kumpulan pola tata bahasa' },
+];
+---
+
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JPASELI - Aplikasi Belajar Bahasa Jepang</title>
+  
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+  <meta name="theme-color" content="#111111" />
+  
+  <script is:inline>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW registration failed: ', err));
+      });
+    }
+  </script>
+</head>
+<body data-theme="light">
+  <div class="dashboard-container">
+    <header class="dashboard-header" style="flex-direction: column; align-items: flex-start; gap: 1rem;">
+      <h1 style="font-size: 4rem;">JPASELI</h1>
+      <p style="font-size: 1.25rem; color: var(--text-muted);">Pilih menu pembelajaran</p>
+      <button id="theme-toggle" class="btn-action" style="padding: 0.5rem 1rem; position: absolute; right: 2rem; top: 4.5rem;">TOGGLE THEME</button>
+    </header>
+    
+    <main class="day-list" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
+      {menuItems.map(item => (
+        <a href={item.link} class="day-card" style="padding: 3rem 2rem; text-align: left; align-items: flex-start;">
+          <strong style="font-size: 2.5rem; line-height: 1.2; text-align: left;">{item.title}</strong>
+          <span style="font-size: 1.1rem; color: var(--text-muted); margin-top: 0.5rem; text-align: left;">{item.desc}</span>
+        </a>
+      ))}
+    </main>
+  </div>
+
+  <script is:inline>
+    const savedTheme = localStorage.getItem('app-theme') || 'light';
+    document.body.setAttribute('data-theme', savedTheme);
+
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+      themeToggle.addEventListener('click', () => {
+        const currentTheme = document.body.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        document.body.setAttribute('data-theme', newTheme);
+        localStorage.setItem('app-theme', newTheme);
+      });
+    }
+  </script>
+</body>
+</html>

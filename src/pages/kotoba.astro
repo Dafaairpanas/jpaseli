@@ -1,0 +1,155 @@
+---
+import db from '../lib/db.js';
+import '../styles/global.css';
+
+const PER_PAGE = 60;
+
+// Ambil query parameter dari URL
+const url = Astro.url;
+const q = url.searchParams.get('q') || '';
+const page = Math.max(1, parseInt(url.searchParams.get('page') || '1'));
+const offset = (page - 1) * PER_PAGE;
+
+// Query dengan filter pencarian
+const searchParam = `%${q}%`;
+const kotobaList = db.prepare(
+  `SELECT * FROM kotoba
+   WHERE kata LIKE ? OR cara_baca LIKE ? OR arti LIKE ?
+   ORDER BY urutan_slide ASC, id ASC
+   LIMIT ? OFFSET ?`
+).all(searchParam, searchParam, searchParam, PER_PAGE, offset);
+
+const totalCount = (db.prepare(
+  `SELECT COUNT(*) as total FROM kotoba
+   WHERE kata LIKE ? OR cara_baca LIKE ? OR arti LIKE ?`
+).get(searchParam, searchParam, searchParam) as { total: number }).total;
+
+const totalPages = Math.ceil(totalCount / PER_PAGE);
+
+// Helper buat link navigasi
+const buildUrl = (p: number, query: string) => {
+  const params = new URLSearchParams();
+  if (query) params.set('q', query);
+  if (p > 1) params.set('page', String(p));
+  const qs = params.toString();
+  return `/kotoba${qs ? '?' + qs : ''}`;
+};
+
+// Hitung halaman yang tampil di pagination (dengan ellipsis)
+const allPages = Array.from({ length: totalPages }, (_, i) => i + 1);
+const filteredPages = allPages.filter(p => p === 1 || p === totalPages || Math.abs(p - page) <= 2);
+const pagesToShow: (number | null)[] = [];
+for (let i = 0; i < filteredPages.length; i++) {
+  if (i > 0 && filteredPages[i] - filteredPages[i - 1] > 1) {
+    pagesToShow.push(null); // null = ellipsis
+  }
+  pagesToShow.push(filteredPages[i]);
+}
+---
+
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kamus Kosakata - JPASELI</title>
+  <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+</head>
+<body data-theme="light">
+  <div class="dashboard-container">
+    <header class="dashboard-header" style="flex-direction: column; align-items: flex-start; gap: 1rem;">
+      <div style="display: flex; gap: 2rem; align-items: center; width: 100%; justify-content: space-between;">
+        <h1 style="font-size: 3rem;">Kamus Kosakata</h1>
+        <a href="/" class="btn-action">KEMBALI</a>
+      </div>
+      <p style="font-size: 1.2rem; color: var(--text-muted);">
+        {q ? `Hasil "${q}": ${totalCount} kata` : `Total: ${totalCount} kata`}
+        {totalPages > 1 && ` — Halaman ${page} / ${totalPages}`}
+      </p>
+    </header>
+
+    <!-- Search form -->
+    <form method="GET" action="/kotoba" class="search-wrapper" style="display: flex; gap: 1rem;">
+      <input
+        type="text"
+        name="q"
+        class="search-bar"
+        placeholder="Cari kata b. Jepang, romaji, atau arti bahasa Indonesia..."
+        value={q}
+        style="flex: 1;"
+      />
+      <button type="submit" class="btn-action" style="white-space: nowrap; padding: 0 2rem;">CARI</button>
+      {q && <a href="/kotoba" class="btn-action" style="white-space: nowrap; padding: 0 1.5rem;">RESET</a>}
+    </form>
+
+    <main class="day-list" style="grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem;">
+      {kotobaList.length === 0 && (
+        <p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 4rem 0;">
+          Tidak ada kata yang cocok dengan pencarian "{q}".
+        </p>
+      )}
+      {kotobaList.map(item => (
+        <div class="day-card" style="padding: 2rem 1.5rem; text-align: center; justify-content: flex-start; position: relative;">
+          <button class="card-tts-btn" data-text={item.kata} aria-label="Dengarkan kata" style="position: absolute; top: 1rem; right: 1rem; margin: 0; padding: 0; width: 36px; height: 36px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+          </button>
+          <strong style="font-size: 2.5rem; line-height: 1.2; margin-top: 1rem;">{item.kata}</strong>
+          <span style="font-size: 1rem; color: var(--text-muted); margin-bottom: 1rem;">{item.cara_baca}</span>
+          <div style="margin-top: auto; border-top: 1px dashed var(--border-color); padding-top: 1rem; width: 100%;">
+            <p style="font-size: 1.1rem; font-weight: 600;">{item.arti}</p>
+          </div>
+        </div>
+      ))}
+    </main>
+
+    <!-- Pagination -->
+    {totalPages > 1 && (
+      <nav style="display: flex; justify-content: center; gap: 0.5rem; margin-top: 3rem; flex-wrap: wrap;">
+        {page > 1 && (
+          <a href={buildUrl(page - 1, q)} class="btn-action" style="padding: 0.6rem 1.2rem;">&#8592; Sebelumnya</a>
+        )}
+        {pagesToShow.map(p =>
+          p === null
+            ? <span style="padding: 0.6rem 0.5rem; color: var(--text-muted);">...</span>
+            : <a
+                href={buildUrl(p, q)}
+                class="btn-action"
+                style={`padding: 0.6rem 1rem; ${p === page ? 'background: var(--text-main); color: var(--bg-secondary);' : ''}`}
+              >{p}</a>
+        )}
+        {page < totalPages && (
+          <a href={buildUrl(page + 1, q)} class="btn-action" style="padding: 0.6rem 1.2rem;">Selanjutnya &#8594;</a>
+        )}
+      </nav>
+    )}
+  </div>
+
+  <script is:inline>
+    const savedTheme = localStorage.getItem('app-theme') || 'light';
+    document.body.setAttribute('data-theme', savedTheme);
+
+    // TTS Logic
+    const ttsBtns = document.querySelectorAll('.card-tts-btn');
+    ttsBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const text = btn.getAttribute('data-text');
+        if (!text || !window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'ja-JP';
+        utterance.rate = 0.9;
+        window.speechSynthesis.speak(utterance);
+      });
+    });
+
+    // Keyboard shortcut "/" to focus search
+    document.addEventListener('keydown', (e) => {
+      if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        const searchInput = document.getElementById('search-input');
+        if (searchInput) searchInput.focus();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "Belajar Bahasa Jepang (JPASELI)",
+  "short_name": "JPASELI",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#111111",
+  "description": "Aplikasi belajar bahasa Jepang lengkap dengan Kanji, Tata Bahasa, dan Kosakata.",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    }
+  ]
+}

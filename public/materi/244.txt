@@ -1,0 +1,72 @@
+244	Bunpo				
+244	Kanji				
+244	Kosakata	～程度　（2時間程度）	～ていど　（にじかんていど）	around ～　(e.g. around two hours)	
+244	Kosakata	デートする	デートする	to go out on a date	V［3］
+244	Kosakata	テーブルチャージ	テーブルチャージ	cover charge	N
+244	Kosakata	テーマ	テーマ	topic	N
+244	Kosakata	手紙	てがみ	letter	N
+244	Kosakata	できる　（店ができる）  	できる　（みせができる）	to be newly opened　(e.g. the store has been newly opened)	V［2］
+244	Kosakata	できれば	できれば	if possible	
+244	Kosakata	デザイン	デザイン	design	N
+244	Kosakata	ですから	ですから	and so / therefore	
+244	Kosakata	手作り	てづくり	hand-made	N
+244	Kosakata	手続き	てつづき	procedure	N
+244	Kosakata	手袋	てぶくろ	gloves	N
+244	Kosakata	手巻きずし	てまきずし	temaki-zushi (hand-rolled sushi)	N
+244	Kosakata	手元	てもと	me (literally in one's possession / on hand)	N
+244	Kosakata	～デモンストレーション	～デモンストレーション	～ demonstration	N
+
+
+Kamu adalah guru bahasa Jepang saya. Tugas kamu adalah menjelaskan materi bahasa Jepang yang saya kirimkan (berupa teks atau gambar).
+
+Cara menjelaskan:
+- Gunakan Bahasa Indonesia yang jelas dan mudah dipahami
+- Sertakan kanji beserta hiragana/katakana-nya
+- Berikan contoh kalimat untuk setiap poin tata bahasa (bunpou/文法) yang dijelaskan
+- Jika ada kosakata penting, tampilkan dalam format: Kanji (hiragana/katakana) — *arti*
+- Pastikan mengartikan kanji dasar dahulu agar saya paham apa sih arti kanji ini, bukan hanya tau kanji gabungannya saja 
+
+Catatan penting:
+- Jika materi yang saya kirim terlalu banyak atau terlalu panjang untuk dijelaskan sekaligus, tolong beritahu saya agar saya bisa membaginya menjadi beberapa bagian.
+- Fokus pada pemahaman, bukan sekadar terjemahan.
+- Anda harus menjelaskan semua materi yang ada, jangan ditambahi ataupun dikurangi\n\n---\n\nTolong ubah materi pelajaran bahasa Jepang ini ke dalam format JSON murni dengan struktur yang membagi datanya ke dalam array "bunpou", "kanji", dan "kotoba" beserta `urutan_slide`-nya secara urut.
+
+Ini contoh format JSON yang diinginkan:
+```json
+{
+  "day": 2,
+  "bunpou": [
+    {
+      "pola": "Nですか / N1はN2ですか",
+      "penjelasan": "Partikel か (ka) di akhir kalimat berfungsi sebagai tanda tanya.",
+      "contoh_kalimat": "あなたは学生ですか。",
+      "arti_contoh": "Apakah kamu seorang siswa?",
+      "urutan_slide": 1
+    }
+  ],
+  "kanji": [
+    {
+      "karakter": "月",
+      "onyomi": "ゲツ / ガツ",
+      "kunyomi": "つき",
+      "arti": "Bulan",
+      "contoh_kata": "今月",
+      "cara_baca_contoh": "こんげつ",
+      "arti_contoh": "Bulan ini",
+      "urutan_slide": 2
+    }
+  ],
+  "kotoba": [
+    {
+      "kata": "はい",
+      "cara_baca": "Hai",
+      "arti": "Ya",
+      "urutan_slide": 3
+    }
+  ]
+}
+```
+
+
+
+\n\n**PENTING**: Tolong balas HANYA dengan code block format JSON murni saja, tanpa basa-basi pengantar atau penjelasan tambahan di luar JSON.\n\nIni materinya:\n\n

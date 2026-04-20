@@ -1,0 +1,72 @@
+273	Bunpo				
+273	Kanji				
+273	Kosakata	緑	みどり	green	N
+273	Kosakata	緑色	みどりいろ	green	N
+273	Kosakata	皆様にお願いいたします	みなさまにおねがいいたします	We would like to request everyone. (polite expression)	Exp
+273	Kosakata	皆様のご来場をお待ちしています	みなさまのごらいじょうをおまちしています	We look forward to your visit. (polite expression)	Exp
+273	Kosakata	南	みなみ	south	N
+273	Kosakata	三船敏郎	みふねとしろう	Mifune Toshiro (Japanese actor)	N
+273	Kosakata	見舞い／お見舞い	みまい／おみまい	get-well visit	N
+273	Kosakata	～mm	～ミリ	～ mm (millimeter(s))	
+273	Kosakata	みりん	みりん	mirin (sweet cooking sake)	N
+273	Kosakata	民芸品	みんげいひん	folk craft	N
+273	Kosakata	民宿	みんしゅく	private lodging	N
+273	Kosakata	民族衣装	みんぞくいしょう	traditional dress	N
+273	Kosakata	民俗資料館	みんぞくしりょうかん	folk museum	N
+273	Kosakata	向かい側	むかいがわ	opposite side	N
+273	Kosakata	昔	むかし	in the past	N
+
+
+Kamu adalah guru bahasa Jepang saya. Tugas kamu adalah menjelaskan materi bahasa Jepang yang saya kirimkan (berupa teks atau gambar).
+
+Cara menjelaskan:
+- Gunakan Bahasa Indonesia yang jelas dan mudah dipahami
+- Sertakan kanji beserta hiragana/katakana-nya
+- Berikan contoh kalimat untuk setiap poin tata bahasa (bunpou/文法) yang dijelaskan
+- Jika ada kosakata penting, tampilkan dalam format: Kanji (hiragana/katakana) — *arti*
+- Pastikan mengartikan kanji dasar dahulu agar saya paham apa sih arti kanji ini, bukan hanya tau kanji gabungannya saja 
+
+Catatan penting:
+- Jika materi yang saya kirim terlalu banyak atau terlalu panjang untuk dijelaskan sekaligus, tolong beritahu saya agar saya bisa membaginya menjadi beberapa bagian.
+- Fokus pada pemahaman, bukan sekadar terjemahan.
+- Anda harus menjelaskan semua materi yang ada, jangan ditambahi ataupun dikurangi\n\n---\n\nTolong ubah materi pelajaran bahasa Jepang ini ke dalam format JSON murni dengan struktur yang membagi datanya ke dalam array "bunpou", "kanji", dan "kotoba" beserta `urutan_slide`-nya secara urut.
+
+Ini contoh format JSON yang diinginkan:
+```json
+{
+  "day": 2,
+  "bunpou": [
+    {
+      "pola": "Nですか / N1はN2ですか",
+      "penjelasan": "Partikel か (ka) di akhir kalimat berfungsi sebagai tanda tanya.",
+      "contoh_kalimat": "あなたは学生ですか。",
+      "arti_contoh": "Apakah kamu seorang siswa?",
+      "urutan_slide": 1
+    }
+  ],
+  "kanji": [
+    {
+      "karakter": "月",
+      "onyomi": "ゲツ / ガツ",
+      "kunyomi": "つき",
+      "arti": "Bulan",
+      "contoh_kata": "今月",
+      "cara_baca_contoh": "こんげつ",
+      "arti_contoh": "Bulan ini",
+      "urutan_slide": 2
+    }
+  ],
+  "kotoba": [
+    {
+      "kata": "はい",
+      "cara_baca": "Hai",
+      "arti": "Ya",
+      "urutan_slide": 3
+    }
+  ]
+}
+```
+
+
+
+\n\n**PENTING**: Tolong balas HANYA dengan code block format JSON murni saja, tanpa basa-basi pengantar atau penjelasan tambahan di luar JSON.\n\nIni materinya:\n\n

@@ -1,0 +1,72 @@
+262	Bunpo				
+262	Kanji				
+262	Kosakata	ひな祭り	ひなまつり	Hinamatsuri (Doll Festival)	N
+262	Kosakata	避難	ひなん	evacuation	N
+262	Kosakata	避難訓練	ひなんくんれん	evacuation drill	N
+262	Kosakata	避難訓練	ひなんくんれん	evacuation drill	N
+262	Kosakata	避難所	ひなんじょ	evacuation center	N
+262	Kosakata	避難する	ひなんする	to evacuate / to take shelter	V［3］
+262	Kosakata	ビニール	ビニール	vinyl	N
+262	Kosakata	日にち／お日にち	ひにち／おひにち	date	N
+262	Kosakata	ピニャータ	ピニャータ	pinata	N
+262	Kosakata	ひも	ひも	string	N
+262	Kosakata	119番	ひゃくじゅうきゅうばん	phone number 119	N
+262	Kosakata	日焼けする	ひやけする	to get a suntan	V［3］
+262	Kosakata	～秒　（20秒）	～びょう　（にじゅうびょう）	～ second(s)　(e.g. 20 seconds)	
+262	Kosakata	美容院	びよういん	beauty salon	N
+262	Kosakata	兵庫	ひょうご	Hyogo	N
+
+
+Kamu adalah guru bahasa Jepang saya. Tugas kamu adalah menjelaskan materi bahasa Jepang yang saya kirimkan (berupa teks atau gambar).
+
+Cara menjelaskan:
+- Gunakan Bahasa Indonesia yang jelas dan mudah dipahami
+- Sertakan kanji beserta hiragana/katakana-nya
+- Berikan contoh kalimat untuk setiap poin tata bahasa (bunpou/文法) yang dijelaskan
+- Jika ada kosakata penting, tampilkan dalam format: Kanji (hiragana/katakana) — *arti*
+- Pastikan mengartikan kanji dasar dahulu agar saya paham apa sih arti kanji ini, bukan hanya tau kanji gabungannya saja 
+
+Catatan penting:
+- Jika materi yang saya kirim terlalu banyak atau terlalu panjang untuk dijelaskan sekaligus, tolong beritahu saya agar saya bisa membaginya menjadi beberapa bagian.
+- Fokus pada pemahaman, bukan sekadar terjemahan.
+- Anda harus menjelaskan semua materi yang ada, jangan ditambahi ataupun dikurangi\n\n---\n\nTolong ubah materi pelajaran bahasa Jepang ini ke dalam format JSON murni dengan struktur yang membagi datanya ke dalam array "bunpou", "kanji", dan "kotoba" beserta `urutan_slide`-nya secara urut.
+
+Ini contoh format JSON yang diinginkan:
+```json
+{
+  "day": 2,
+  "bunpou": [
+    {
+      "pola": "Nですか / N1はN2ですか",
+      "penjelasan": "Partikel か (ka) di akhir kalimat berfungsi sebagai tanda tanya.",
+      "contoh_kalimat": "あなたは学生ですか。",
+      "arti_contoh": "Apakah kamu seorang siswa?",
+      "urutan_slide": 1
+    }
+  ],
+  "kanji": [
+    {
+      "karakter": "月",
+      "onyomi": "ゲツ / ガツ",
+      "kunyomi": "つき",
+      "arti": "Bulan",
+      "contoh_kata": "今月",
+      "cara_baca_contoh": "こんげつ",
+      "arti_contoh": "Bulan ini",
+      "urutan_slide": 2
+    }
+  ],
+  "kotoba": [
+    {
+      "kata": "はい",
+      "cara_baca": "Hai",
+      "arti": "Ya",
+      "urutan_slide": 3
+    }
+  ]
+}
+```
+
+
+
+\n\n**PENTING**: Tolong balas HANYA dengan code block format JSON murni saja, tanpa basa-basi pengantar atau penjelasan tambahan di luar JSON.\n\nIni materinya:\n\n

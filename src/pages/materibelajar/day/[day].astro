@@ -1,0 +1,369 @@
+\\
+ ---
+import db from '../../../lib/db.js';
+import '../../../styles/global.css';
+
+const { day } = Astro.params;
+const dayNum = parseInt(day || '0');
+
+// Query materi untuk hari ini
+const bunpou = db.prepare("SELECT *, 'Bunpou' as type FROM bunpou WHERE hari = ?").all(dayNum);
+const kanji = db.prepare("SELECT *, 'Kanji' as type FROM kanji WHERE hari = ?").all(dayNum);
+const kotoba = db.prepare("SELECT *, 'Kotoba' as type FROM kotoba WHERE hari = ?").all(dayNum);
+
+// Menggabungkan dan mengurutkan materi berdasarkan urutan_slide
+let slides = [...bunpou, ...kanji, ...kotoba];
+slides.sort((a, b) => a.urutan_slide - b.urutan_slide);
+---
+
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Materi Day {day} - Belajar Bahasa Jepang</title>
+  
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+  <meta name="theme-color" content="#111111" />
+  
+  <script is:inline>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW registration failed: ', err));
+      });
+    }
+  </script>
+</head>
+<body data-theme="light" data-day={day}>
+  <div class="app-layout">
+    
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-top">
+        <div class="slide-counter">
+          <span id="current-slide">01</span><span class="total">/{slides.length}</span>
+        </div>
+        <div class="level-info">
+          <h3>N5</h3>
+          <h2>DAY {day}</h2>
+        </div>
+        <div class="slide-category" id="sidebar-category">
+          {slides[0]?.type === 'Bunpou' ? 'POLA KALIMAT' : slides[0]?.type === 'Kanji' ? 'KANJI HARIAN' : 'KOSAKATA HARIAN'}
+        </div>
+      </div>
+      
+      <div class="sidebar-bottom">
+        <div class="nav-controls">
+          <button class="btn-nav" id="btn-prev" disabled>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+          </button>
+          <button class="btn-nav" id="btn-next">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
+        </div>
+        <button id="btn-mark-learned" class="btn-action" style="margin-top: 1rem; border-color: var(--accent); color: var(--accent);">TANDAI SELESAI</button>
+        <a href="/materibelajar" class="btn-action" style="margin-top: 0.5rem;">KEMBALI KE BERANDA MATERI</a>
+        <button id="fullscreen-toggle" class="btn-action">ENTER FULLSCREEN</button>
+        <button id="theme-toggle" class="btn-action">TOGGLE THEME</button>
+      </div>
+    </aside>
+
+    <!-- CONTENT AREA -->
+    <main class="content-area" id="player">
+      {slides.map((slide, index) => {
+        let speakText = "";
+        let category = "";
+        if (slide.type === 'Bunpou') { speakText = slide.contoh_kalimat || slide.pola; category = 'POLA KALIMAT'; }
+        if (slide.type === 'Kanji') { speakText = slide.contoh_kata || slide.karakter; category = 'KANJI HARIAN'; }
+        if (slide.type === 'Kotoba') { speakText = slide.kata; category = 'KOSAKATA HARIAN'; }
+
+        return (
+          <div class={`slide ${index === 0 ? 'active' : ''}`} data-index={index} data-category={category}>
+            
+            {/* --- KANJI LAYOUT --- */}
+            {slide.type === 'Kanji' && (
+              <div class="layout-kanji">
+                <div class="grid-top">
+                  <div class="char-box">
+                    <span class="section-label">KANJI CHARACTER</span>
+                    <h1 class="huge-text">{slide.karakter}</h1>
+                    <button class="tts-btn" data-text={speakText} aria-label="Dengarkan pengucapan kata contoh">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                    </button>
+                  </div>
+                  <div class="readings-box">
+                    <span class="section-label">READINGS</span>
+                    <div class="reading-row">
+                      <span class="r-label">ON</span>
+                      <div style="display:flex; align-items:center; gap: 1rem;">
+                        <span class="r-value">{slide.onyomi || '-'}</span>
+                        {slide.onyomi && slide.onyomi !== '-' && (
+                           <button class="tts-btn" data-text={slide.onyomi} aria-label="Dengarkan Onyomi">
+                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                           </button>
+                        )}
+                      </div>
+                    </div>
+                    <div class="reading-row">
+                      <span class="r-label">KUN</span>
+                      <div style="display:flex; align-items:center; gap: 1rem;">
+                        <span class="r-value">{slide.kunyomi || '-'}</span>
+                        {slide.kunyomi && slide.kunyomi !== '-' && (
+                           <button class="tts-btn" data-text={slide.kunyomi} aria-label="Dengarkan Kunyomi">
+                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                           </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="grid-bottom">
+                  <span class="section-label" style="color:var(--accent);">■ SENSEI NOTE</span>
+                  <div class="notes-content">
+                    <div class="note-meaning">
+                      <strong>Arti:</strong> {slide.arti}
+                    </div>
+                    {slide.contoh_kata && (
+                      <div class="g-example">
+                        <strong>Contoh Penggunaan:</strong>
+                        <ul>
+                          <li>
+                            <span class="li-ja">{slide.contoh_kata} （{slide.cara_baca_contoh}）</span>
+                            <span class="li-id">— {slide.arti_contoh}</span>
+                          </li>
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* --- KOTOBA LAYOUT --- */}
+            {slide.type === 'Kotoba' && (
+              <div class="layout-kotoba">
+                 <div class="grid-top">
+                    <span class="section-label">FLASHCARD</span>
+                    <div class="vocab-center">
+                       <h1 class="huge-text">{slide.kata}</h1>
+                       <p class="reading-text">{slide.cara_baca}</p>
+                    </div>
+                    <button class="tts-btn corner-btn" data-text={speakText} aria-label="Dengarkan pengucapan">
+                      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                    </button>
+                 </div>
+                 <div class="grid-bottom split">
+                    <div class="meaning-box">
+                       <span class="section-label">MEANING</span>
+                       <h2>{slide.arti}</h2>
+                    </div>
+                    <div class="context-box">
+                       <span class="section-label">CONTEXT & NOTES</span>
+                       <h3 style="font-size: 2rem; margin-bottom: 1rem;">{slide.kata} ({slide.cara_baca})</h3>
+                       <p style="font-size: 1.25rem;"><strong>Arti:</strong> {slide.arti}</p>
+                    </div>
+                 </div>
+              </div>
+            )}
+
+            {/* --- BUNPOU LAYOUT --- */}
+            {slide.type === 'Bunpou' && (
+              <div class="layout-bunpou">
+                 <div class="grid-top">
+                    <span class="section-label">GRAMMAR</span>
+                    <div class="grammar-center">
+                       <h1 class="huge-text bunpou-text">{slide.pola}</h1>
+                       <button class="tts-btn" data-text={speakText}>
+                          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                       </button>
+                    </div>
+                 </div>
+                 <div class="grid-bottom">
+                    <span class="section-label">EXPLANATION</span>
+                    <div class="grammar-exp">
+                       <p class="g-meaning"><strong>Penjelasan:</strong> {slide.penjelasan}</p>
+                       {slide.contoh_kalimat && (
+                         <div class="g-example">
+                           <strong>Contoh Kalimat:</strong>
+                           <ul>
+                             <li>
+                               <span class="li-ja">{slide.contoh_kalimat}</span>
+                               <span class="li-id">— {slide.arti_contoh}</span>
+                             </li>
+                           </ul>
+                         </div>
+                       )}
+                    </div>
+                 </div>
+              </div>
+            )}
+
+          </div>
+        )
+      })}
+    </main>
+  </div>
+
+  <script is:inline>
+    const slides = document.querySelectorAll('.slide');
+    const btnPrev = document.getElementById('btn-prev');
+    const btnNext = document.getElementById('btn-next');
+    const currentIndicator = document.getElementById('current-slide');
+    const categoryIndicator = document.getElementById('sidebar-category');
+    const themeToggle = document.getElementById('theme-toggle');
+    const fullscreenToggle = document.getElementById('fullscreen-toggle');
+    
+    let currentIndex = 0;
+    const totalSlides = slides.length;
+
+    // Load theme from localStorage
+    const savedTheme = localStorage.getItem('app-theme') || 'light';
+    document.body.setAttribute('data-theme', savedTheme);
+
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = document.body.getAttribute('data-theme');
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      document.body.setAttribute('data-theme', newTheme);
+      localStorage.setItem('app-theme', newTheme);
+    });
+
+    // Learned state logic
+    const currentDay = document.body.getAttribute('data-day');
+    const btnMarkLearned = document.getElementById('btn-mark-learned');
+    
+    function updateLearnedButton() {
+      const isLearned = localStorage.getItem('learned_day_' + currentDay) === 'true';
+      if (isLearned) {
+        btnMarkLearned.innerText = 'BATAL TANDAI SELESAI';
+        btnMarkLearned.style.backgroundColor = 'var(--accent)';
+        btnMarkLearned.style.color = 'var(--bg-primary)';
+      } else {
+        btnMarkLearned.innerText = 'TANDAI SELESAI';
+        btnMarkLearned.style.backgroundColor = 'transparent';
+        btnMarkLearned.style.color = 'var(--accent)';
+      }
+    }
+
+    if (btnMarkLearned) {
+      updateLearnedButton();
+      btnMarkLearned.addEventListener('click', () => {
+        const isLearned = localStorage.getItem('learned_day_' + currentDay) === 'true';
+        localStorage.setItem('learned_day_' + currentDay, !isLearned);
+        updateLearnedButton();
+      });
+    }
+
+    // Fullscreen API Logic
+    if (fullscreenToggle) {
+      fullscreenToggle.addEventListener('click', () => {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch((err) => {
+            console.error(`Error attempting to enable fullscreen: ${err.message}`);
+          });
+        } else {
+          document.exitFullscreen();
+        }
+      });
+    }
+
+    document.addEventListener('fullscreenchange', () => {
+      if (document.fullscreenElement) {
+        fullscreenToggle.innerText = 'EXIT FULLSCREEN';
+      } else {
+        fullscreenToggle.innerText = 'ENTER FULLSCREEN';
+      }
+    });
+
+    function updateSlides() {
+      // Hentikan suara jika pengguna berpindah slide
+      if(window.speechSynthesis) window.speechSynthesis.cancel();
+
+      slides.forEach((slide, idx) => {
+        if (idx === currentIndex) {
+          slide.classList.add('active');
+          if (categoryIndicator) {
+            categoryIndicator.innerText = slide.getAttribute('data-category');
+          }
+        } else {
+          slide.classList.remove('active');
+        }
+      });
+
+      if(currentIndicator) {
+        currentIndicator.innerText = (currentIndex + 1).toString().padStart(2, '0');
+      }
+
+      if(btnPrev) btnPrev.disabled = currentIndex === 0;
+      if(btnNext) {
+        if(currentIndex === totalSlides - 1) {
+          btnNext.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+          btnNext.onclick = () => { window.location.href = "/materibelajar" };
+        } else {
+          btnNext.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>';
+          btnNext.onclick = handleNext;
+        }
+      }
+    }
+
+    function handleNext() {
+      if (currentIndex < totalSlides - 1) {
+        currentIndex++;
+        updateSlides();
+      }
+    }
+
+    function handlePrev() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        if(btnNext && currentIndex === totalSlides - 2) {
+            updateSlides();
+        } else {
+            updateSlides();
+        }
+      }
+    }
+
+    if(btnNext) btnNext.onclick = handleNext;
+    if(btnPrev) btnPrev.addEventListener('click', handlePrev);
+    
+    // Inisialisasi awal
+    updateSlides();
+
+    // Event listener untuk tombol panah keyboard
+    document.addEventListener('keydown', (e) => {
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) return;
+      
+      if (e.key === 'ArrowRight') {
+        if (currentIndex < totalSlides - 1) handleNext();
+        else if (currentIndex === totalSlides - 1) window.location.href = "/materibelajar";
+      } else if (e.key === 'ArrowLeft') {
+        handlePrev();
+      }
+    });
+
+    // Text-To-Speech
+    const ttsBtns = document.querySelectorAll('.tts-btn');
+    ttsBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const text = btn.getAttribute('data-text');
+        if (!text || !window.speechSynthesis) return;
+        
+        window.speechSynthesis.cancel();
+        
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'ja-JP';
+        utterance.rate = 0.9; 
+        
+        const icon = btn.querySelector('svg');
+        if (icon) {
+          icon.style.transform = 'scale(1.2)';
+          setTimeout(() => icon.style.transform = 'scale(1)', 200);
+        }
+
+        window.speechSynthesis.speak(utterance);
+      });
+    });
+  </script>
+</body>
+</html>

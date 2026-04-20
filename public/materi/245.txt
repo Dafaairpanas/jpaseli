@@ -1,0 +1,72 @@
+245	Bunpo				
+245	Kanji				
+245	Kosakata	～でよかったら　（私でよかったら）	～でよかったら　（わたしでよかったら）	if ～ is okay / acceptable　(e.g. if you're okay with me)	
+245	Kosakata	出る　（水が出る）	でる　（みずがでる）	to be running　(e.g. the water is running)	V［2］
+245	Kosakata	出る　（カラオケ大会に出る）	でる　（カラオケたいかいにでる）	to participate in　(e.g. participate in a karaoke competition)	V［2］
+245	Kosakata	出る　（賞品が出る）	でる　（しょうひんがでる）	to be offered　(e.g. awards are offered)	V［2］
+245	Kosakata	出る　（外に出る）	でる　（そとにでる）	to leave / to go out　(e.g. go outside)	V［2］
+245	Kosakata	～点　（3点） 	～てん　（さんてん）	～ item(s)　(e.g. 3 items)	
+245	Kosakata	店員	てんいん	store staff	N
+245	Kosakata	電気	でんき	electricity	N
+245	Kosakata	電気製品	でんきせいひん	electric appliance	N
+245	Kosakata	電気屋	でんきや	electric appliance store	N
+245	Kosakata	電球	でんきゅう	light bulbs	N
+245	Kosakata	点検	てんけん	inspection	N
+245	Kosakata	電源	でんげん	power	N
+245	Kosakata	点呼する	てんこする	to call the roll	V［3］
+245	Kosakata	展示する	てんじする	to display	V［3］
+
+
+Kamu adalah guru bahasa Jepang saya. Tugas kamu adalah menjelaskan materi bahasa Jepang yang saya kirimkan (berupa teks atau gambar).
+
+Cara menjelaskan:
+- Gunakan Bahasa Indonesia yang jelas dan mudah dipahami
+- Sertakan kanji beserta hiragana/katakana-nya
+- Berikan contoh kalimat untuk setiap poin tata bahasa (bunpou/文法) yang dijelaskan
+- Jika ada kosakata penting, tampilkan dalam format: Kanji (hiragana/katakana) — *arti*
+- Pastikan mengartikan kanji dasar dahulu agar saya paham apa sih arti kanji ini, bukan hanya tau kanji gabungannya saja 
+
+Catatan penting:
+- Jika materi yang saya kirim terlalu banyak atau terlalu panjang untuk dijelaskan sekaligus, tolong beritahu saya agar saya bisa membaginya menjadi beberapa bagian.
+- Fokus pada pemahaman, bukan sekadar terjemahan.
+- Anda harus menjelaskan semua materi yang ada, jangan ditambahi ataupun dikurangi\n\n---\n\nTolong ubah materi pelajaran bahasa Jepang ini ke dalam format JSON murni dengan struktur yang membagi datanya ke dalam array "bunpou", "kanji", dan "kotoba" beserta `urutan_slide`-nya secara urut.
+
+Ini contoh format JSON yang diinginkan:
+```json
+{
+  "day": 2,
+  "bunpou": [
+    {
+      "pola": "Nですか / N1はN2ですか",
+      "penjelasan": "Partikel か (ka) di akhir kalimat berfungsi sebagai tanda tanya.",
+      "contoh_kalimat": "あなたは学生ですか。",
+      "arti_contoh": "Apakah kamu seorang siswa?",
+      "urutan_slide": 1
+    }
+  ],
+  "kanji": [
+    {
+      "karakter": "月",
+      "onyomi": "ゲツ / ガツ",
+      "kunyomi": "つき",
+      "arti": "Bulan",
+      "contoh_kata": "今月",
+      "cara_baca_contoh": "こんげつ",
+      "arti_contoh": "Bulan ini",
+      "urutan_slide": 2
+    }
+  ],
+  "kotoba": [
+    {
+      "kata": "はい",
+      "cara_baca": "Hai",
+      "arti": "Ya",
+      "urutan_slide": 3
+    }
+  ]
+}
+```
+
+
+
+\n\n**PENTING**: Tolong balas HANYA dengan code block format JSON murni saja, tanpa basa-basi pengantar atau penjelasan tambahan di luar JSON.\n\nIni materinya:\n\n
