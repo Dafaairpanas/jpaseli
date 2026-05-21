@@ -1,5 +1,4 @@
-\\
- ---
+---
 import db from '../../../lib/db.js';
 import '../../../styles/global.css';
 
@@ -14,6 +13,46 @@ const kotoba = db.prepare("SELECT *, 'Kotoba' as type FROM kotoba WHERE hari = ?
 // Menggabungkan dan mengurutkan materi berdasarkan urutan_slide
 let slides = [...bunpou, ...kanji, ...kotoba];
 slides.sort((a, b) => a.urutan_slide - b.urutan_slide);
+
+// Generate teks materi lengkap untuk fitur salin
+function generateCopyText() {
+  let text = `=== MATERI DAY ${dayNum} (N5) ===\n\n`;
+
+  if (bunpou.length > 0) {
+    text += `--- TATA BAHASA (文法 / Bunpou) ---\n\n`;
+    bunpou.forEach((b, i) => {
+      text += `${i + 1}. Pola: ${b.pola}\n`;
+      text += `   Penjelasan: ${b.penjelasan}\n`;
+      if (b.contoh_kalimat) text += `   Contoh: ${b.contoh_kalimat} — ${b.arti_contoh}\n`;
+      text += `\n`;
+    });
+  }
+
+  if (kanji.length > 0) {
+    text += `--- KANJI (漢字) ---\n\n`;
+    kanji.forEach((k, i) => {
+      text += `${i + 1}. ${k.karakter}\n`;
+      text += `   Onyomi: ${k.onyomi || '-'}\n`;
+      text += `   Kunyomi: ${k.kunyomi || '-'}\n`;
+      text += `   Arti: ${k.arti}\n`;
+      if (k.contoh_kata) text += `   Contoh: ${k.contoh_kata} (${k.cara_baca_contoh}) — ${k.arti_contoh}\n`;
+      text += `\n`;
+    });
+  }
+
+  if (kotoba.length > 0) {
+    text += `--- KOSAKATA (語彙 / Kotoba) ---\n\n`;
+    kotoba.forEach((k, i) => {
+      text += `${i + 1}. ${k.kata} (${k.cara_baca}) — ${k.arti}\n`;
+    });
+  }
+
+  return text;
+}
+
+const materiText = generateCopyText();
+const aiPrompt = `dari materi materi ini, aku ingin kamu membuatkan sebuah ulangan, yakni tebak tebakan arti, hiragana / katakana dan kanji untuk materi kanji ( materi kotoba menurutku jangan dibuat tebakan kanji karena itu relatif sulit, dan pertanyaan kombinasi kotoba yang banyak pokoknya difficult hard dan beri 20 soal\n\n`;
+const fullCopyText = aiPrompt + materiText;
 ---
 
 <html lang="id">
@@ -64,6 +103,7 @@ slides.sort((a, b) => a.urutan_slide - b.urutan_slide);
         <button id="btn-mark-learned" class="btn-action" style="margin-top: 1rem; border-color: var(--accent); color: var(--accent);">TANDAI SELESAI</button>
         <a href="/materibelajar" class="btn-action" style="margin-top: 0.5rem;">KEMBALI KE BERANDA MATERI</a>
         <button id="fullscreen-toggle" class="btn-action">ENTER FULLSCREEN</button>
+        <button id="btn-copy-materi" class="btn-action" style="border-color: #f59e0b; color: #f59e0b;">📋 SALIN MATERI UNTUK AI</button>
         <button id="theme-toggle" class="btn-action">TOGGLE THEME</button>
       </div>
     </aside>
@@ -203,6 +243,12 @@ slides.sort((a, b) => a.urutan_slide - b.urutan_slide);
       })}
     </main>
   </div>
+
+  <!-- Hidden textarea untuk menyimpan teks materi yang akan disalin -->
+  <textarea id="copy-source" style="position:absolute;left:-9999px;" aria-hidden="true">{fullCopyText}</textarea>
+
+  <!-- Toast notifikasi salin berhasil -->
+  <div id="copy-toast" style="position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);background:#f59e0b;color:#000;padding:0.75rem 1.5rem;border-radius:8px;font-weight:700;font-size:0.95rem;z-index:9999;opacity:0;transition:all 0.4s cubic-bezier(0.22,1,0.36,1);pointer-events:none;box-shadow:0 4px 20px rgba(245,158,11,0.4);">✅ Materi berhasil disalin ke clipboard!</div>
 
   <script is:inline>
     const slides = document.querySelectorAll('.slide');
@@ -364,6 +410,46 @@ slides.sort((a, b) => a.urutan_slide - b.urutan_slide);
         window.speechSynthesis.speak(utterance);
       });
     });
+
+    // Salin materi ke clipboard
+    const btnCopy = document.getElementById('btn-copy-materi');
+    const copySource = document.getElementById('copy-source');
+    const copyToast = document.getElementById('copy-toast');
+
+    if (btnCopy && copySource) {
+      btnCopy.addEventListener('click', async () => {
+        const text = copySource.value;
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch (e) {
+          // Fallback untuk browser yang tidak support Clipboard API
+          copySource.style.left = '0';
+          copySource.select();
+          document.execCommand('copy');
+          copySource.style.left = '-9999px';
+        }
+
+        // Tampilkan toast
+        if (copyToast) {
+          copyToast.style.opacity = '1';
+          copyToast.style.transform = 'translateX(-50%) translateY(0)';
+          setTimeout(() => {
+            copyToast.style.opacity = '0';
+            copyToast.style.transform = 'translateX(-50%) translateY(100px)';
+          }, 2500);
+        }
+
+        // Animasi tombol
+        btnCopy.textContent = '✅ TERSALIN!';
+        btnCopy.style.backgroundColor = '#f59e0b';
+        btnCopy.style.color = '#000';
+        setTimeout(() => {
+          btnCopy.textContent = '📋 SALIN MATERI UNTUK AI';
+          btnCopy.style.backgroundColor = 'transparent';
+          btnCopy.style.color = '#f59e0b';
+        }, 2000);
+      });
+    }
   </script>
 </body>
 </html>

@@ -47,6 +47,13 @@ const days = daysData.map(d => d.hari);
     <div class="search-wrapper">
       <input type="number" class="search-bar" id="search-day" placeholder="Cari nomor Day (contoh: 12)..." min="1" />
     </div>
+
+    <!-- Filter status -->
+    <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+      <button class="btn-action filter-btn active" data-filter="all" style="padding: 0.5rem 1rem; font-size: 0.8rem;">SEMUA</button>
+      <button class="btn-action filter-btn" data-filter="learned" style="padding: 0.5rem 1rem; font-size: 0.8rem; border-color: var(--accent); color: var(--accent);">✓ SUDAH SELESAI</button>
+      <button class="btn-action filter-btn" data-filter="not-learned" style="padding: 0.5rem 1rem; font-size: 0.8rem;">✗ BELUM SELESAI</button>
+    </div>
     
     <main class="day-list">
       {days.length === 0 && <p style="text-align:center; color: var(--text-muted); width: 100%;">Belum ada materi tersedia.</p>}
@@ -91,24 +98,10 @@ const days = daysData.map(d => d.hari);
       });
     }
 
-    // Search Day Logic
+    // Search Day Logic (terintegrasi dengan filter)
     const searchInput = document.getElementById('search-day');
-    searchInput.addEventListener('input', (e) => {
-      const val = e.target.value.trim();
-      dayCards.forEach(card => {
-        const dayNum = card.getAttribute('data-day');
-        if (!val || dayNum.includes(val)) {
-          card.style.display = 'flex';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-      
-      // Sembunyikan pesan "TERKUNCI" saat mencari
-      const disabledCard = document.querySelector('.day-card.disabled');
-      if (disabledCard) {
-        disabledCard.style.display = val ? 'none' : 'flex';
-      }
+    searchInput.addEventListener('input', () => {
+      applyFilter();
     });
 
     // Keyboard shortcut "/" to focus search
@@ -117,6 +110,50 @@ const days = daysData.map(d => d.hari);
         e.preventDefault();
         searchInput.focus();
       }
+    });
+
+    // Filter logic
+    let currentFilter = 'all';
+    const filterBtns = document.querySelectorAll('.filter-btn');
+
+    function applyFilter() {
+      dayCards.forEach(card => {
+        const dayNum = card.getAttribute('data-day');
+        const isLearned = localStorage.getItem('learned_day_' + dayNum) === 'true';
+        let show = true;
+
+        if (currentFilter === 'learned' && !isLearned) show = false;
+        if (currentFilter === 'not-learned' && isLearned) show = false;
+
+        // Juga terapkan search filter
+        const searchVal = searchInput.value.trim();
+        if (searchVal && !dayNum.includes(searchVal)) show = false;
+
+        card.style.display = show ? 'flex' : 'none';
+      });
+
+      const disabledCard = document.querySelector('.day-card.disabled');
+      if (disabledCard) {
+        disabledCard.style.display = currentFilter === 'all' && !searchInput.value.trim() ? 'flex' : 'none';
+      }
+    }
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentFilter = btn.getAttribute('data-filter');
+
+        filterBtns.forEach(b => {
+          b.classList.remove('active');
+          b.style.backgroundColor = 'transparent';
+          b.style.color = b.getAttribute('data-filter') === 'learned' ? 'var(--accent)' : 'var(--text-main)';
+        });
+
+        btn.classList.add('active');
+        btn.style.backgroundColor = btn.getAttribute('data-filter') === 'learned' ? 'var(--accent)' : 'var(--text-main)';
+        btn.style.color = btn.getAttribute('data-filter') === 'learned' ? 'var(--bg-primary)' : 'var(--bg-secondary)';
+
+        applyFilter();
+      });
     });
   </script>
 </body>

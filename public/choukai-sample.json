@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "romaji": "watashi wa gakusei desu",
+    "arti": "Saya adalah pelajar"
+  },
+  {
+    "id": 2,
+    "romaji": "kore wa hon desu",
+    "arti": "Ini adalah buku"
+  },
+  {
+    "id": 3,
+    "romaji": "ashita wa nichiyoubi desu",
+    "arti": "Besok adalah hari Minggu"
+  },
+  {
+    "id": 4,
+    "romaji": "sumimasen, toire wa doko desu ka",
+    "arti": "Permisi, toilet di mana?"
+  },
+  {
+    "id": 5,
+    "romaji": "mainichi nihongo wo benkyou shimasu",
+    "arti": "Setiap hari belajar bahasa Jepang"
+  }
+]

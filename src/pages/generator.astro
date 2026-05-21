@@ -1,0 +1,822 @@
+---
+import '../styles/global.css';
+---
+
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generator Flashcard - JPASELI</title>
+  <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+  <style is:inline>
+    .gen-app {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: clamp(1.25rem, 4vw, 3rem);
+      min-height: 100vh;
+    }
+    .gen-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: clamp(1.5rem, 3vh, 2.5rem);
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: clamp(1rem, 2vh, 1.5rem);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .gen-header h1 {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .gen-header-actions {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .gen-link {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.5rem 1.25rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .gen-link:hover {
+      background: var(--text-main);
+      color: var(--bg-secondary);
+      transform: translateY(-1px);
+    }
+
+    /* Steps */
+    .gen-steps {
+      display: flex;
+      gap: 0;
+      margin-bottom: 2rem;
+    }
+    .gen-step {
+      flex: 1;
+      text-align: center;
+      padding: 0.85rem 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      border-bottom: 3px solid var(--border-color);
+      transition: all 0.2s;
+    }
+    .gen-step.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    .gen-step.done {
+      color: var(--text-main);
+      border-bottom-color: var(--text-main);
+    }
+    .gen-step-num {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
+      border-radius: 50%;
+      background: var(--border-color);
+      color: var(--text-main);
+      font-size: 0.75rem;
+      margin-right: 0.4rem;
+      vertical-align: middle;
+    }
+    .gen-step.active .gen-step-num {
+      background: var(--accent);
+      color: #000;
+    }
+    .gen-step.done .gen-step-num {
+      background: var(--text-main);
+      color: var(--bg-primary);
+    }
+
+    /* Section panels */
+    .gen-panel { display: none; }
+    .gen-panel.active { display: block; }
+
+    /* Input Panel */
+    .gen-textarea {
+      width: 100%;
+      min-height: clamp(250px, 40vh, 450px);
+      padding: clamp(1rem, 2vw, 1.5rem);
+      font-family: 'Courier New', monospace;
+      font-size: clamp(0.8rem, 1.3vw, 0.95rem);
+      line-height: 1.6;
+      border: 1px solid var(--border-color);
+      background: var(--bg-secondary);
+      color: var(--text-main);
+      border-radius: 12px;
+      resize: vertical;
+      outline: none;
+      transition: all 0.2s ease;
+      tab-size: 4;
+    }
+    .gen-textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+    }
+    .gen-hint {
+      font-size: clamp(0.8rem, 1.3vw, 0.9rem);
+      color: var(--text-muted);
+      line-height: 1.6;
+      padding: clamp(0.85rem, 1.5vw, 1.25rem);
+      background: var(--highlight-bg);
+      border-radius: 10px;
+      border-left: 4px solid var(--accent);
+      margin-bottom: 1rem;
+    }
+    .gen-hint code {
+      background: var(--bg-secondary);
+      padding: 0.15rem 0.4rem;
+      border-radius: 6px;
+      font-size: 0.85em;
+    }
+
+    /* Buttons */
+    .gen-btn {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.7rem 1.5rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+      font-family: inherit;
+      letter-spacing: 0.02em;
+    }
+    .gen-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      border-color: var(--text-main);
+    }
+    .gen-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .gen-btn-primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #000;
+      font-weight: 700;
+    }
+    .gen-btn-primary:hover:not(:disabled) {
+      opacity: 0.9;
+      border-color: var(--accent);
+    }
+    .gen-btn-danger {
+      border-color: #ef4444;
+      color: #ef4444;
+    }
+    .gen-btn-danger:hover:not(:disabled) {
+      background: #ef4444;
+      color: #fff;
+    }
+    .gen-actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-top: 1.25rem;
+    }
+    .gen-error {
+      color: #ef4444;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 0.75rem 1rem;
+      background: rgba(239, 68, 68, 0.05);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      border-radius: 8px;
+      display: none;
+      margin-top: 0.75rem;
+    }
+
+    /* Preview Panel */
+    .gen-summary {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+    .gen-summary-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1rem 1.5rem;
+      text-align: center;
+      flex: 1;
+      min-width: 120px;
+    }
+    .gen-summary-num {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent);
+    }
+    .gen-summary-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      margin-top: 0.25rem;
+    }
+
+    /* BAB Cards */
+    .bab-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .bab-card:hover {
+      border-color: var(--accent);
+    }
+    .bab-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.25rem;
+      cursor: pointer;
+      user-select: none;
+      gap: 1rem;
+    }
+    .bab-header:hover {
+      background: var(--highlight-bg);
+    }
+    .bab-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .bab-badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--accent);
+      background: rgba(16, 185, 129, 0.1);
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+    }
+    .bab-toggle {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      transition: transform 0.2s;
+    }
+    .bab-card.open .bab-toggle {
+      transform: rotate(180deg);
+    }
+    .bab-body {
+      display: none;
+      border-top: 1px solid var(--border-color);
+    }
+    .bab-card.open .bab-body {
+      display: block;
+    }
+    .bab-name-input {
+      width: 100%;
+      padding: 0.6rem 1rem;
+      font-size: 0.9rem;
+      border: 1px solid var(--border-color);
+      background: var(--bg-primary);
+      color: var(--text-main);
+      border-radius: 6px;
+      outline: none;
+      font-family: inherit;
+      margin: 0.75rem 1.25rem;
+      width: calc(100% - 2.5rem);
+    }
+    .bab-name-input:focus {
+      border-color: var(--accent);
+    }
+
+    /* Data Table */
+    .bab-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    .bab-table th {
+      text-align: left;
+      padding: 0.6rem 1rem;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      background: var(--highlight-bg);
+      font-weight: 700;
+      position: sticky;
+      top: 0;
+    }
+    .bab-table td {
+      padding: 0.5rem 1rem;
+      border-bottom: 1px solid var(--border-color);
+      vertical-align: middle;
+    }
+    .bab-table tr:last-child td {
+      border-bottom: none;
+    }
+    .bab-table tr:hover td {
+      background: var(--highlight-bg);
+    }
+    .bab-table .col-no {
+      width: 40px;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      text-align: center;
+    }
+    .bab-table .col-reading {
+      font-size: 1.05rem;
+      font-weight: 500;
+    }
+    .bab-table .col-kanji {
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+    .bab-table .col-meaning {
+      color: var(--text-muted);
+    }
+    .bab-table-wrap {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    .col-empty {
+      color: var(--border-color);
+      font-style: italic;
+      font-size: 0.8rem;
+    }
+
+    /* Result Panel */
+    .gen-result {
+      text-align: center;
+      padding: 3rem 2rem;
+      background: var(--bg-secondary);
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+    }
+    .gen-result h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+    .gen-result p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+
+    /* Toast */
+    .gen-toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      z-index: 9999;
+      transition: all 0.3s;
+      transform: translateY(100px);
+      opacity: 0;
+    }
+    .gen-toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .gen-toast.success { background: var(--accent); color: #000; }
+    .gen-toast.error { background: #ef4444; color: #fff; }
+
+    /* Progress bar for saving */
+    .save-progress {
+      width: 100%;
+      height: 8px;
+      background: var(--border-color);
+      border-radius: 99px;
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+    .save-progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 99px;
+      transition: width 0.3s;
+      width: 0%;
+    }
+    .save-status {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      .gen-steps { flex-wrap: wrap; }
+      .gen-step { font-size: 0.7rem; padding: 0.6rem 0.25rem; }
+      .bab-header { padding: 0.85rem 1rem; }
+      .bab-table th, .bab-table td { padding: 0.4rem 0.6rem; }
+    }
+  </style>
+</head>
+<body data-theme="light">
+  <div class="gen-app">
+    <header class="gen-header">
+      <h1>Generator Flashcard</h1>
+      <div class="gen-header-actions">
+        <a href="/admin-panel" class="gen-link">Admin Panel</a>
+        <a href="/flashcard" class="gen-link">Flashcard</a>
+        <a href="/" class="gen-link">Home</a>
+      </div>
+    </header>
+
+    <!-- Steps Indicator -->
+    <div class="gen-steps">
+      <div class="gen-step active" data-step="1">
+        <span class="gen-step-num">1</span> Paste Data
+      </div>
+      <div class="gen-step" data-step="2">
+        <span class="gen-step-num">2</span> Preview & Edit
+      </div>
+      <div class="gen-step" data-step="3">
+        <span class="gen-step-num">3</span> Simpan
+      </div>
+    </div>
+
+    <!-- Step 1: Input -->
+    <div class="gen-panel active" id="panel-input">
+      <div class="gen-hint">
+        <strong>Cara Pakai:</strong> Paste dump data kosakata Anda di bawah. Sistem akan otomatis mendeteksi setiap <code>BAB</code> dan memparse kolom <code>Hiragana/Katakana</code>, <code>Kanji</code> (jika ada), dan <code>Arti</code>.<br/>
+        <strong>Format:</strong> Setiap BAB diawali baris <code>BAB 1</code>, <code>BAB 2</code>, dst. Baris header dan baris kosong akan di-skip otomatis.
+      </div>
+      <textarea class="gen-textarea" id="gen-input" placeholder="Paste data kosakata di sini...
+
+Contoh:
+BAB 1
+番号 日本語 漢字 インドネシア語
+1 わたし 私 Saya
+2 あなた Kamu
+3 あのひと あの人 Orang itu (biasa)
+
+BAB 2
+1 たべます 食べます Makan
+2 のみます 飲みます Minum
+..."></textarea>
+      <div class="gen-error" id="gen-error"></div>
+      <div class="gen-actions">
+        <button class="gen-btn gen-btn-primary" id="btn-parse" style="flex: 1; min-width: 200px;">🔍 Parse & Preview</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Preview -->
+    <div class="gen-panel" id="panel-preview">
+      <div class="gen-summary" id="gen-summary"></div>
+      <div id="bab-list"></div>
+      <div class="gen-actions" style="justify-content: space-between;">
+        <button class="gen-btn" id="btn-back-input">← Kembali Edit</button>
+        <button class="gen-btn gen-btn-primary" id="btn-save-all">💾 Simpan Semua sebagai Template</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Result -->
+    <div class="gen-panel" id="panel-result">
+      <div class="save-progress" id="save-progress" style="display:none;">
+        <div class="save-progress-fill" id="save-progress-fill"></div>
+      </div>
+      <div class="save-status" id="save-status"></div>
+      <div class="gen-result" id="gen-result" style="display:none;">
+        <h2>✅ Berhasil!</h2>
+        <p id="result-msg"></p>
+        <div class="gen-actions" style="justify-content: center;">
+          <a href="/flashcard" class="gen-btn gen-btn-primary" style="text-decoration:none;">Buka Flashcard</a>
+          <a href="/admin-panel" class="gen-btn" style="text-decoration:none;">Admin Panel</a>
+          <button class="gen-btn" id="btn-new-import">Import Lagi</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="gen-toast" id="gen-toast"></div>
+
+  <script is:inline>
+    const savedTheme = localStorage.getItem('app-theme') || 'light';
+    document.body.setAttribute('data-theme', savedTheme);
+
+    /* === State === */
+    let parsedBabs = [];
+
+    /* === DOM === */
+    const panelInput = document.getElementById('panel-input');
+    const panelPreview = document.getElementById('panel-preview');
+    const panelResult = document.getElementById('panel-result');
+    const genInput = document.getElementById('gen-input');
+    const genError = document.getElementById('gen-error');
+    const babListEl = document.getElementById('bab-list');
+    const genSummary = document.getElementById('gen-summary');
+
+    /* === Navigation === */
+    function showPanel(panel, stepNum) {
+      [panelInput, panelPreview, panelResult].forEach(p => p.classList.remove('active'));
+      panel.classList.add('active');
+      document.querySelectorAll('.gen-step').forEach(s => {
+        const n = parseInt(s.dataset.step);
+        s.classList.remove('active', 'done');
+        if (n === stepNum) s.classList.add('active');
+        if (n < stepNum) s.classList.add('done');
+      });
+    }
+
+    function showToast(msg, type = 'success') {
+      const t = document.getElementById('gen-toast');
+      t.className = 'gen-toast ' + type;
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    /* === Parser Logic === */
+    function containsKanji(str) {
+      return /[\u4E00-\u9FFF\u3400-\u4DBF]/.test(str);
+    }
+
+    function isJapaneseChar(ch) {
+      const code = ch.charCodeAt(0);
+      return (code >= 0x3040 && code <= 0x309F) ||
+             (code >= 0x30A0 && code <= 0x30FF) ||
+             (code >= 0x4E00 && code <= 0x9FFF) ||
+             (code >= 0x3400 && code <= 0x4DBF) ||
+             (code >= 0xFF00 && code <= 0xFFEF) ||
+             ch === '～' || ch === '〜';
+    }
+
+    function isJapaneseToken(str) {
+      if (!str) return false;
+      for (const ch of str) {
+        if (isJapaneseChar(ch)) return true;
+      }
+      return false;
+    }
+
+    function parseDataLine(line) {
+      const trimmed = line.trim();
+      if (!trimmed) return null;
+
+      let parts;
+      if (trimmed.includes('\t')) {
+        parts = trimmed.split('\t').map(s => s.trim()).filter(Boolean);
+      } else {
+        parts = trimmed.split(/\s+/);
+      }
+
+      /* skip leading number */
+      let idx = 0;
+      if (/^\d+$/.test(parts[0])) idx = 1;
+      if (idx >= parts.length) return null;
+
+      const reading = parts[idx];
+      idx++;
+
+      if (idx >= parts.length) return null;
+
+      let kanji = '';
+      if (isJapaneseToken(parts[idx]) && containsKanji(parts[idx])) {
+        kanji = parts[idx];
+        idx++;
+      }
+
+      const meaning = parts.slice(idx).join(' ').trim();
+      if (!meaning) return null;
+
+      return { reading, kanji, meaning };
+    }
+
+    function parseBulkData(text) {
+      const lines = text.split('\n');
+      const babs = [];
+      let currentBab = null;
+
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed) continue;
+
+        /* detect BAB header */
+        const babMatch = trimmed.match(/^BAB\s*(\d+)(.*)/i);
+        if (babMatch) {
+          if (currentBab && currentBab.items.length > 0) babs.push(currentBab);
+          const num = parseInt(babMatch[1]);
+          const extra = babMatch[2].trim().replace(/^[-–:]\s*/, '');
+          currentBab = {
+            number: num,
+            name: extra ? `Bab ${num} - ${extra}` : `Bab ${num}`,
+            deskripsi: '',
+            items: []
+          };
+          continue;
+        }
+
+        /* skip header lines */
+        if (/^(番号|No\.?|Nomor)\b/i.test(trimmed)) continue;
+        if (/日本語|インドネシア語|漢字|Hiragana|Katakana/i.test(trimmed)) continue;
+
+        /* if no bab yet, create default */
+        if (!currentBab) {
+          currentBab = { number: 1, name: 'Bab 1', deskripsi: '', items: [] };
+        }
+
+        const item = parseDataLine(trimmed);
+        if (item) currentBab.items.push(item);
+      }
+
+      if (currentBab && currentBab.items.length > 0) babs.push(currentBab);
+      return babs;
+    }
+
+    function babToFlashcardJson(items) {
+      return items.map(item => {
+        const card = {
+          front: item.kanji || item.reading,
+          back: item.meaning
+        };
+        if (item.kanji) {
+          card.hint = item.reading;
+        }
+        return card;
+      });
+    }
+
+    /* === Parse Button === */
+    document.getElementById('btn-parse').addEventListener('click', () => {
+      const text = genInput.value.trim();
+      if (!text) {
+        genError.textContent = '⚠ Data tidak boleh kosong.';
+        genError.style.display = 'block';
+        return;
+      }
+
+      parsedBabs = parseBulkData(text);
+
+      if (parsedBabs.length === 0) {
+        genError.textContent = '⚠ Tidak ada data yang bisa di-parse. Pastikan format data sudah benar.';
+        genError.style.display = 'block';
+        return;
+      }
+
+      genError.style.display = 'none';
+      renderPreview();
+      showPanel(panelPreview, 2);
+    });
+
+    /* === Render Preview === */
+    function renderPreview() {
+      const totalItems = parsedBabs.reduce((s, b) => s + b.items.length, 0);
+      const totalWithKanji = parsedBabs.reduce((s, b) => s + b.items.filter(i => i.kanji).length, 0);
+
+      genSummary.innerHTML = `
+        <div class="gen-summary-card">
+          <div class="gen-summary-num">${parsedBabs.length}</div>
+          <div class="gen-summary-label">Total BAB</div>
+        </div>
+        <div class="gen-summary-card">
+          <div class="gen-summary-num">${totalItems}</div>
+          <div class="gen-summary-label">Total Kosakata</div>
+        </div>
+        <div class="gen-summary-card">
+          <div class="gen-summary-num">${totalWithKanji}</div>
+          <div class="gen-summary-label">Dengan Kanji</div>
+        </div>
+        <div class="gen-summary-card">
+          <div class="gen-summary-num">${totalItems - totalWithKanji}</div>
+          <div class="gen-summary-label">Tanpa Kanji</div>
+        </div>
+      `;
+
+      babListEl.innerHTML = parsedBabs.map((bab, idx) => `
+        <div class="bab-card" id="bab-${idx}">
+          <div class="bab-header" onclick="toggleBab(${idx})">
+            <div class="bab-title">
+              ${escapeHtml(bab.name)}
+              <span class="bab-badge">${bab.items.length} kata</span>
+            </div>
+            <span class="bab-toggle">▼</span>
+          </div>
+          <div class="bab-body">
+            <input class="bab-name-input" id="bab-name-${idx}" value="${escapeHtml(bab.name)}" placeholder="Nama template..." />
+            <div class="bab-table-wrap">
+              <table class="bab-table">
+                <thead>
+                  <tr>
+                    <th style="width:40px">No</th>
+                    <th>Hiragana / Katakana</th>
+                    <th>Kanji</th>
+                    <th>Arti (Indonesia)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${bab.items.map((item, i) => `
+                    <tr>
+                      <td class="col-no">${i + 1}</td>
+                      <td class="col-reading">${escapeHtml(item.reading)}</td>
+                      <td class="col-kanji">${item.kanji ? escapeHtml(item.kanji) : '<span class="col-empty">—</span>'}</td>
+                      <td class="col-meaning">${escapeHtml(item.meaning)}</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str || '';
+      return div.innerHTML;
+    }
+
+    window.toggleBab = function(idx) {
+      document.getElementById('bab-' + idx).classList.toggle('open');
+    };
+
+    /* === Back Button === */
+    document.getElementById('btn-back-input').addEventListener('click', () => {
+      showPanel(panelInput, 1);
+    });
+
+    /* === Save All === */
+    document.getElementById('btn-save-all').addEventListener('click', async () => {
+      /* read edited names */
+      parsedBabs.forEach((bab, idx) => {
+        const nameInput = document.getElementById('bab-name-' + idx);
+        if (nameInput) bab.name = nameInput.value.trim() || bab.name;
+      });
+
+      showPanel(panelResult, 3);
+
+      const progressBar = document.getElementById('save-progress');
+      const progressFill = document.getElementById('save-progress-fill');
+      const statusEl = document.getElementById('save-status');
+      const resultEl = document.getElementById('gen-result');
+
+      progressBar.style.display = 'block';
+      resultEl.style.display = 'none';
+
+      let saved = 0;
+      let failed = 0;
+
+      for (let i = 0; i < parsedBabs.length; i++) {
+        const bab = parsedBabs[i];
+        const jsonData = babToFlashcardJson(bab.items);
+        const pct = Math.round(((i + 1) / parsedBabs.length) * 100);
+        progressFill.style.width = pct + '%';
+        statusEl.textContent = `Menyimpan ${bab.name} (${i + 1}/${parsedBabs.length})...`;
+
+        try {
+          const res = await fetch('/api/flashcard-template', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              nama: bab.name,
+              deskripsi: `${bab.items.length} kosakata`,
+              data_json: JSON.stringify(jsonData),
+              urutan: bab.number
+            })
+          });
+          const result = await res.json();
+          if (result.success) {
+            saved++;
+          } else {
+            failed++;
+          }
+        } catch (e) {
+          failed++;
+        }
+      }
+
+      progressBar.style.display = 'none';
+      statusEl.textContent = '';
+      resultEl.style.display = '';
+      document.getElementById('result-msg').textContent =
+        `${saved} template berhasil disimpan dari ${parsedBabs.length} BAB.` +
+        (failed > 0 ? ` (${failed} gagal)` : '');
+    });
+
+    /* === New Import === */
+    document.getElementById('btn-new-import').addEventListener('click', () => {
+      genInput.value = '';
+      parsedBabs = [];
+      showPanel(panelInput, 1);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1091 @@
+---
+import '../styles/global.css';
+---
+
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flashcard - JPASELI</title>
+  <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+  <style is:inline>
+    .fc-app {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: clamp(1.25rem, 4vw, 3rem);
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+    .fc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: clamp(1.5rem, 3vh, 3rem);
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: clamp(1rem, 2vh, 1.5rem);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .fc-header h1 { 
+      font-size: clamp(1.6rem, 4vw, 2.4rem); 
+      font-weight: 800; 
+      letter-spacing: -0.02em;
+    }
+    .fc-header-actions {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .btn-action {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.5rem 1.25rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    }
+    .btn-action:hover {
+      background: var(--text-main);
+      color: var(--bg-secondary);
+      transform: translateY(-1px);
+    }
+    .fc-input-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(1rem, 2vh, 1.5rem);
+    }
+    .fc-input-section h2 {
+      font-size: clamp(1.2rem, 3vw, 1.6rem);
+      font-weight: 700;
+    }
+    .fc-textarea {
+      width: 100%;
+      min-height: clamp(150px, 30vh, 300px);
+      padding: clamp(1rem, 2vw, 1.5rem);
+      font-family: 'Courier New', monospace;
+      font-size: clamp(0.85rem, 1.5vw, 1rem);
+      line-height: 1.6;
+      border: 1px solid var(--border-color);
+      background: var(--bg-secondary);
+      color: var(--text-main);
+      border-radius: 12px;
+      resize: vertical;
+      outline: none;
+      transition: all 0.2s ease;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+    }
+    .fc-textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+    }
+    .fc-error {
+      color: #ef4444;
+      font-size: clamp(0.8rem, 1.5vw, 0.95rem);
+      font-weight: 500;
+      padding: 0.75rem 1rem;
+      background: rgba(239, 68, 68, 0.05);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      border-radius: 8px;
+      display: none;
+    }
+    .fc-format-hint {
+      font-size: clamp(0.8rem, 1.5vw, 0.95rem);
+      color: var(--text-muted);
+      line-height: 1.6;
+      padding: clamp(0.85rem, 1.5vw, 1.25rem);
+      background: var(--highlight-bg);
+      border-radius: 10px;
+      border-left: 4px solid var(--accent);
+    }
+    .fc-format-hint code {
+      background: var(--bg-secondary);
+      padding: 0.15rem 0.4rem;
+      border-radius: 6px;
+      font-size: 0.85em;
+    }
+    .fc-study-section {
+      flex: 1;
+      display: none;
+      flex-direction: column;
+      gap: clamp(1rem, 2vh, 2rem);
+    }
+    .fc-progress-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .fc-progress-bar {
+      flex: 1;
+      height: 8px;
+      background: var(--border-color);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .fc-progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 99px;
+      transition: width 0.3s ease;
+      width: 0%;
+    }
+    .fc-progress-text {
+      font-size: clamp(0.85rem, 1.5vw, 1rem);
+      font-weight: 600;
+      color: var(--text-muted);
+      min-width: 60px;
+      text-align: right;
+    }
+    .fc-card-container {
+      perspective: 1200px;
+      width: 100%;
+      min-height: clamp(250px, 45vh, 450px);
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .fc-card {
+      width: 100%;
+      min-height: clamp(250px, 45vh, 450px);
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .fc-card.flipped {
+      transform: rotateY(180deg);
+    }
+    .fc-card-face {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      min-height: clamp(250px, 45vh, 450px);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: clamp(2rem, 4vh, 4rem) clamp(1.5rem, 4vw, 3rem);
+      text-align: center;
+      gap: clamp(0.75rem, 1.5vh, 1.5rem);
+      overflow-y: auto;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+      background: var(--bg-secondary);
+    }
+    .fc-card-front {
+      background: var(--bg-secondary);
+    }
+    .fc-card-back {
+      background: var(--highlight-bg);
+      transform: rotateY(180deg);
+    }
+    .fc-card-label {
+      font-size: clamp(0.75rem, 1.2vw, 0.85rem);
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      position: absolute;
+      top: clamp(1.25rem, 2vh, 1.5rem);
+      left: clamp(1.25rem, 2vw, 1.5rem);
+    }
+    .fc-card-main {
+      font-size: clamp(2.2rem, 6vw, 5rem);
+      font-weight: 800;
+      line-height: 1.2;
+      word-break: break-word;
+      max-width: 100%;
+      color: var(--text-main);
+    }
+    .fc-card-sub {
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      color: var(--text-muted);
+      line-height: 1.5;
+      max-width: 100%;
+    }
+    .fc-card-extra {
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      color: var(--text-muted);
+      font-style: italic;
+      line-height: 1.6;
+      max-width: 100%;
+      border-top: 1px dashed var(--border-color);
+      padding-top: 1rem;
+      margin-top: 0.5rem;
+    }
+    .fc-flip-hint {
+      position: absolute;
+      bottom: clamp(1rem, 2vh, 1.5rem);
+      font-size: clamp(0.75rem, 1.2vw, 0.85rem);
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+      opacity: 0.8;
+    }
+    .fc-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: clamp(0.75rem, 2vw, 1.5rem);
+      flex-wrap: wrap;
+    }
+    .fc-btn {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: clamp(0.6rem, 1.5vh, 0.85rem) clamp(1rem, 2vw, 1.75rem);
+      font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+      font-family: inherit;
+      letter-spacing: 0.02em;
+    }
+    .fc-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      border-color: var(--text-main);
+    }
+    .fc-btn:active:not(:disabled) {
+      transform: translateY(0);
+    }
+    .fc-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    .fc-btn-primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #000;
+    }
+    .fc-btn-primary:hover:not(:disabled) {
+      opacity: 0.9;
+      border-color: var(--accent);
+    }
+    .fc-btn-icon {
+      padding: clamp(0.6rem, 1.5vh, 0.85rem);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .fc-btn-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+    .fc-result {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(1.5rem, 3vh, 2rem);
+      padding: clamp(2.5rem, 4vh, 5rem) clamp(1.5rem, 3vw, 3rem);
+      text-align: center;
+      background: var(--bg-secondary);
+      border-radius: 20px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    }
+    .fc-result h2 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+    }
+    .fc-result-stats {
+      display: flex;
+      gap: clamp(1.5rem, 4vw, 3rem);
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+    }
+    .fc-stat { 
+      text-align: center; 
+      padding: 1.5rem;
+      border-radius: 16px;
+      background: var(--highlight-bg);
+      flex: 1;
+      min-width: 130px;
+      max-width: 200px;
+      border: 1px solid var(--border-color);
+    }
+    .fc-stat-value {
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+    .fc-stat-label {
+      font-size: clamp(0.75rem, 1.5vw, 0.9rem);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+    }
+    .fc-stat-good .fc-stat-value { color: var(--accent); }
+    .fc-stat-bad .fc-stat-value { color: #ef4444; }
+    .fc-shortcuts {
+      display: flex;
+      gap: clamp(1rem, 2vw, 2rem);
+      justify-content: center;
+      flex-wrap: wrap;
+      font-size: clamp(0.75rem, 1.2vw, 0.85rem);
+      color: var(--text-muted);
+      margin-top: 1rem;
+    }
+    .fc-shortcuts kbd {
+      background: var(--highlight-bg);
+      border: 1px solid var(--border-color);
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: clamp(0.7rem, 1.1vw, 0.8rem);
+    }
+    .fc-tts-btn {
+      position: absolute;
+      top: clamp(1rem, 1.5vh, 1.5rem);
+      right: clamp(1rem, 1.5vw, 1.5rem);
+      background: var(--highlight-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      border-radius: 50%;
+      width: clamp(38px, 4vw, 46px);
+      height: clamp(38px, 4vw, 46px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .fc-tts-btn:hover {
+      background: var(--text-main);
+      color: var(--bg-secondary);
+      transform: scale(1.05);
+    }
+    .fc-tts-btn svg {
+      width: clamp(18px, 2vw, 22px);
+      height: clamp(18px, 2vw, 22px);
+    }
+
+    /* Template Selector */
+    .fc-template-section {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+    .fc-template-label {
+      font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .fc-template-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 0.6rem;
+    }
+    .fc-template-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .fc-template-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    }
+    .fc-template-card.selected {
+      border-color: var(--accent);
+      background: rgba(16, 185, 129, 0.06);
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+    }
+    .fc-template-name {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .fc-template-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+    .fc-template-badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-top: 0.15rem;
+    }
+    .fc-template-empty {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-style: italic;
+      padding: 1rem;
+      text-align: center;
+      background: var(--highlight-bg);
+      border-radius: 10px;
+    }
+    .fc-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+    .fc-divider::before,
+    .fc-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-color);
+    }
+
+    /* Modal Pop-up */
+    .fc-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 9999;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+      backdrop-filter: blur(4px);
+    }
+    .fc-modal-overlay.show { display: flex; }
+    .fc-modal {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      overflow: hidden;
+      animation: modalIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @keyframes modalIn {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .fc-modal-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-secondary);
+    }
+    .fc-modal-header h3 { margin: 0; font-size: 1.2rem; font-weight: 800; }
+    .fc-modal-close {
+      background: transparent; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-muted);
+      display: flex; align-items: center; justify-content: center; padding: 0.25rem; border-radius: 50%;
+    }
+    .fc-modal-close:hover { background: var(--highlight-bg); color: var(--text-main); }
+    .fc-modal-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem; }
+    .fc-modal-section { display: flex; flex-direction: column; gap: 0.75rem; }
+    .fc-modal-label { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em; }
+    .fc-opt-group { display: flex; flex-direction: column; gap: 0.5rem; }
+    .fc-opt-card {
+      display: flex; align-items: flex-start; gap: 0.75rem;
+      padding: 1rem; border: 1px solid var(--border-color); border-radius: 10px;
+      cursor: pointer; transition: all 0.2s; background: var(--bg-secondary);
+    }
+    .fc-opt-card:hover { border-color: var(--accent); }
+    .fc-opt-card.active { border-color: var(--accent); background: rgba(16,185,129,0.08); box-shadow: 0 0 0 1px var(--accent); }
+    .fc-opt-card input[type="radio"] { margin-top: 0.25rem; accent-color: var(--accent); }
+    .fc-opt-info { display: flex; flex-direction: column; gap: 0.2rem; }
+    .fc-opt-title { font-weight: 700; font-size: 1rem; }
+    .fc-opt-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; }
+    
+    .fc-chk-label {
+      display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem;
+      background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px;
+      cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: all 0.2s;
+    }
+    .fc-chk-label:hover { background: var(--highlight-bg); border-color: var(--text-main); }
+    .fc-chk-label input { width: 18px; height: 18px; accent-color: var(--accent); }
+
+    .fc-modal-footer { padding: 1.25rem 1.5rem; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 1rem; background: var(--bg-secondary); }
+
+    /* Floating Action Bar */
+    .fc-fab {
+      position: fixed;
+      bottom: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg-secondary);
+      border: 1px solid var(--accent);
+      padding: 1rem 1.5rem;
+      border-radius: 99px;
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 0 0 1px var(--accent);
+      z-index: 999;
+      transition: bottom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .fc-fab.show { bottom: 2rem; }
+    .fc-fab-text { font-weight: 700; color: var(--text-main); font-size: 0.95rem; }
+    .fc-fab-btn {
+      background: var(--accent); color: #fff; border: none; padding: 0.75rem 1.5rem;
+      border-radius: 99px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 12px rgba(16,185,129,0.3);
+      transition: transform 0.2s;
+    }
+    .fc-fab-btn:hover { transform: scale(1.05); }
+
+    /* Small phones */
+    @media (max-width: 480px) {
+      .fc-header { margin-bottom: 1.5rem; padding-bottom: 1rem; }
+      .fc-shortcuts { display: none; }
+      .fc-card-container, .fc-card, .fc-card-face { min-height: 300px; }
+      .fc-stat { min-width: 100px; padding: 1rem; }
+      .fc-template-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+    }
+
+    /* Landscape mobile */
+    @media (max-height: 500px) {
+      .fc-app { padding: 0.75rem 1.5rem; }
+      .fc-header { margin-bottom: 0.75rem; padding-bottom: 0.75rem; }
+      .fc-card-container, .fc-card, .fc-card-face { min-height: 200px; }
+      .fc-card-face { padding: 1.5rem 1rem; }
+      .fc-study-section { gap: 0.75rem; }
+      .fc-shortcuts { display: none; }
+      .fc-result { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body data-theme="light">
+  <!-- Modal Opsi Template -->
+  <div class="fc-modal-overlay" id="tpl-modal">
+    <div class="fc-modal">
+      <div class="fc-modal-header">
+        <h3 id="tpl-modal-title">Opsi Belajar</h3>
+        <button class="fc-modal-close" id="btn-modal-close">&times;</button>
+      </div>
+      <div class="fc-modal-body">
+        
+        <div class="fc-modal-section">
+          <div class="fc-modal-label">Pengaturan Dasar</div>
+          <label class="fc-chk-label">
+            <input type="checkbox" id="modal-chk-random"> Acak Kartu (Randomize)
+          </label>
+          <label class="fc-chk-label">
+            <input type="checkbox" id="modal-chk-reverse"> Mode Reverse (Indonesia -> Jepang)
+          </label>
+        </div>
+
+        <div class="fc-modal-section">
+          <div class="fc-modal-label">Mode Belajar Spesial</div>
+          <div class="fc-opt-group">
+            
+            <label class="fc-opt-card active" id="card-mode-normal">
+              <input type="radio" name="modal-mode" value="normal" checked>
+              <div class="fc-opt-info">
+                <div class="fc-opt-title">Normal</div>
+                <div class="fc-opt-desc">Flashcard standar. Tampil Jepang, balik jadi Indonesia.</div>
+              </div>
+            </label>
+
+            <label class="fc-opt-card" id="card-mode-choukai">
+              <input type="radio" name="modal-mode" value="choukai">
+              <div class="fc-opt-info">
+                <div class="fc-opt-title">Choukai (Listening)</div>
+                <div class="fc-opt-desc">Kartu depan kosong, audio diputar otomatis. Tebak sebelum dibalik.</div>
+                <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem; align-items: center;" id="choukai-speed-box">
+                  <span style="font-size: 0.75rem; font-weight: 600;">Kecepatan:</span>
+                  <select id="modal-sel-speed" style="padding: 0.2rem; border-radius: 4px; background: var(--bg-primary); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.8rem;">
+                    <option value="0.85">0.85x (Lambat)</option>
+                    <option value="1.0" selected>1.0x (Normal)</option>
+                    <option value="1.2">1.2x (Cepat)</option>
+                  </select>
+                </div>
+              </div>
+            </label>
+
+            <label class="fc-opt-card" id="card-mode-kanji">
+              <input type="radio" name="modal-mode" value="kanji">
+              <div class="fc-opt-info">
+                <div class="fc-opt-title">Hafalin Kanji</div>
+                <div class="fc-opt-desc">Hanya menampilkan kartu yang ada Kanjinya. Hiragana disembunyikan di depan.</div>
+              </div>
+            </label>
+
+          </div>
+        </div>
+      </div>
+      <div class="fc-modal-footer">
+        <button class="fc-btn" id="btn-modal-cancel">Batal</button>
+        <button class="fc-btn fc-btn-primary" id="btn-modal-start">MULAI BELAJAR</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Action Bar -->
+  <div class="fc-fab" id="fab-bar">
+    <span class="fc-fab-text" id="fab-text">0 Bab Terpilih</span>
+    <button class="fc-fab-btn" id="btn-fab-start">GABUNG & MULAI</button>
+  </div>
+
+  <div class="fc-app">
+    <header class="fc-header">
+      <h1>Flashcard</h1>
+      <div class="fc-header-actions">
+        <a href="/" class="btn-action">Kembali</a>
+      </div>
+    </header>
+
+    <div class="fc-input-section" id="input-section">
+      <h2>Pilih Template atau Masukkan Data</h2>
+
+      <!-- Template Selector -->
+      <div class="fc-template-section">
+        <span class="fc-template-label">📚 Template Tersedia</span>
+        <div class="fc-template-grid" id="template-grid">
+          <div class="fc-template-empty">Memuat template...</div>
+        </div>
+      </div>
+
+      <div class="fc-divider">atau paste JSON manual</div>
+
+      <div class="fc-format-hint">
+        <strong>Format JSON:</strong> Array of objects dengan field <code>front</code> dan <code>back</code>.<br/>
+        Field opsional: <code>hint</code>, <code>extra</code>.<br/>
+        Contoh: <code>[&#123;"front": "犬", "back": "Anjing", "hint": "いぬ"&#125;]</code>
+      </div>
+      <textarea class="fc-textarea" id="json-input" placeholder="Paste data JSON flashcard di sini..."></textarea>
+      <div class="fc-error" id="json-error"></div>
+      <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer; font-weight: 500; font-size: 0.95rem; color: var(--text-main);">
+        <input type="checkbox" id="chk-reverse" style="width: 20px; height: 20px; accent-color: var(--accent); cursor: pointer;" />
+        Mode Reverse (tampil jawaban dulu)
+      </label>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <button class="fc-btn fc-btn-primary" id="btn-start" style="flex: 1; min-width: 200px;">Mulai Belajar</button>
+        <button class="fc-btn" id="btn-shuffle-start" style="flex: 1; min-width: 200px;">Mulai (Acak)</button>
+      </div>
+    </div>
+
+    <div class="fc-study-section" id="study-section">
+      <div class="fc-progress-wrapper">
+        <div class="fc-progress-bar">
+          <div class="fc-progress-fill" id="progress-fill"></div>
+        </div>
+        <span class="fc-progress-text" id="progress-text">0 / 0</span>
+      </div>
+
+      <div class="fc-card-container" id="card-container">
+        <div class="fc-card" id="flashcard">
+          <div class="fc-card-face fc-card-front">
+            <span class="fc-card-label">Pertanyaan</span>
+            <button class="fc-tts-btn" id="tts-front" title="Dengarkan">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+            </button>
+            <div class="fc-card-main" id="card-front-text"></div>
+            <div class="fc-card-sub" id="card-front-hint" style="display:none;"></div>
+            <span class="fc-flip-hint">Klik atau tekan Space untuk membalik</span>
+          </div>
+          <div class="fc-card-face fc-card-back">
+            <span class="fc-card-label">Jawaban</span>
+            <button class="fc-tts-btn" id="tts-back" title="Dengarkan">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+            </button>
+            <div class="fc-card-main" id="card-back-text"></div>
+            <div class="fc-card-sub" id="card-back-extra" style="display:none;"></div>
+            <span class="fc-flip-hint">Klik untuk kembali ke depan</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="fc-controls">
+        <button class="fc-btn fc-btn-icon" id="btn-prev" title="Sebelumnya">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <button class="fc-btn" id="btn-unknown" style="border-color: #ef4444; color: #ef4444;">Belum Hafal</button>
+        <button class="fc-btn" id="btn-known" style="border-color: var(--accent); color: var(--accent);">Sudah Hafal</button>
+        <button class="fc-btn fc-btn-icon" id="btn-next" title="Berikutnya">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+      </div>
+
+      <div class="fc-shortcuts">
+        <span><kbd>Space</kbd> Balik kartu</span>
+        <span><kbd>←</kbd> Sebelumnya</span>
+        <span><kbd>→</kbd> Berikutnya</span>
+        <span><kbd>1</kbd> Belum hafal</span>
+        <span><kbd>2</kbd> Sudah hafal</span>
+      </div>
+
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
+        <button class="fc-btn" id="btn-reset-study">Ulang Semua</button>
+        <button class="fc-btn" id="btn-back-input">Ubah Data</button>
+      </div>
+    </div>
+
+    <div class="fc-result" id="result-section">
+      <h2>Selesai!</h2>
+      <div class="fc-result-stats">
+        <div class="fc-stat fc-stat-good">
+          <div class="fc-stat-value" id="stat-known">0</div>
+          <div class="fc-stat-label">Sudah Hafal</div>
+        </div>
+        <div class="fc-stat fc-stat-bad">
+          <div class="fc-stat-value" id="stat-unknown">0</div>
+          <div class="fc-stat-label">Belum Hafal</div>
+        </div>
+        <div class="fc-stat">
+          <div class="fc-stat-value" id="stat-total">0</div>
+          <div class="fc-stat-label">Total Kartu</div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-top: 1.5rem;">
+        <button class="fc-btn fc-btn-primary" id="btn-retry-unknown">Ulang yang Belum Hafal</button>
+        <button class="fc-btn" id="btn-retry-all">Ulang Semua</button>
+        <button class="fc-btn" id="btn-new-data">Data Baru</button>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline>
+    const savedTheme = localStorage.getItem('app-theme') || 'light';
+    document.body.setAttribute('data-theme', savedTheme);
+
+    let cards = [];
+    let currentIndex = 0;
+    let knownSet = new Set();
+    let unknownSet = new Set();
+    let studyDeck = [];
+    let isReverse = false;
+    let studyMode = 'normal'; // 'normal', 'choukai', 'kanji'
+    let audioSpeed = 1.0;
+
+    const inputSection = document.getElementById('input-section');
+    const studySection = document.getElementById('study-section');
+    const resultSection = document.getElementById('result-section');
+    const jsonInput = document.getElementById('json-input');
+    const jsonError = document.getElementById('json-error');
+    const flashcard = document.getElementById('flashcard');
+    const cardContainer = document.getElementById('card-container');
+    const progressFill = document.getElementById('progress-fill');
+    const progressText = document.getElementById('progress-text');
+
+    function parseFlashcardJSON(text) {
+      const data = JSON.parse(text);
+      if (!Array.isArray(data) || data.length === 0) throw new Error('Data harus array JSON.');
+      return data;
+    }
+
+    function showSection(section) {
+      inputSection.style.display = 'none';
+      studySection.style.display = 'none';
+      resultSection.style.display = 'none';
+      section.style.display = 'flex';
+
+      const fab = document.getElementById('fab-bar');
+      if (fab) {
+        if (section === inputSection && typeof selectedTemplates !== 'undefined' && selectedTemplates.size > 0) {
+          fab.classList.add('show');
+        } else {
+          fab.classList.remove('show');
+        }
+      }
+    }
+
+    function shuffleArray(arr) {
+      const shuffled = [...arr];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled;
+    }
+
+    // Event listener Modal
+    const modal = document.getElementById('tpl-modal');
+    document.getElementById('btn-modal-close').addEventListener('click', () => modal.classList.remove('show'));
+    document.getElementById('btn-modal-cancel').addEventListener('click', () => modal.classList.remove('show'));
+    
+    document.querySelectorAll('.fc-opt-card').forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('.fc-opt-card').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        card.querySelector('input').checked = true;
+      });
+    });
+
+    document.getElementById('btn-modal-start').addEventListener('click', () => {
+      modal.classList.remove('show');
+      const shuffle = document.getElementById('modal-chk-random').checked;
+      isReverse = document.getElementById('modal-chk-reverse').checked;
+      studyMode = document.querySelector('input[name="modal-mode"]:checked').value;
+      audioSpeed = parseFloat(document.getElementById('modal-sel-speed').value);
+      startStudy(shuffle, true);
+    });
+
+    function startStudy(shuffle = false, fromModal = false) {
+      try {
+        const text = jsonInput.value.trim();
+        if (!text) return;
+        cards = parseFlashcardJSON(text);
+
+        if (!fromModal) {
+          isReverse = document.getElementById('chk-reverse').checked;
+          studyMode = 'normal';
+          audioSpeed = 1.0;
+        }
+
+        if (studyMode === 'kanji') {
+          // Hanya gunakan kartu yang punya kanji (berarti 'hint' tidak kosong / beda dengan front)
+          cards = cards.filter(c => c.hint && c.hint.trim() !== c.front.trim());
+          if (cards.length === 0) {
+            alert('Tidak ada kosakata dengan Kanji pada bab ini!');
+            return;
+          }
+        }
+
+        studyDeck = shuffle ? shuffleArray(cards.map((_, i) => i)) : cards.map((_, i) => i);
+        currentIndex = 0;
+        knownSet.clear();
+        unknownSet.clear();
+        showSection(studySection);
+        renderCard();
+        localStorage.setItem('fc-last-data', text);
+      } catch (e) {
+        jsonError.textContent = '⚠ ' + e.message;
+        jsonError.style.display = 'block';
+      }
+    }
+
+    function renderCard() {
+      if (currentIndex >= studyDeck.length) {
+        showResults();
+        return;
+      }
+      const idx = studyDeck[currentIndex];
+      const card = cards[idx];
+      flashcard.style.transition = 'none';
+      flashcard.classList.remove('flipped');
+      flashcard.offsetHeight;
+      flashcard.style.transition = '';
+
+      let frontText = '';
+      let backText = '';
+      let hintText = '';
+      let extraText = '';
+
+      if (studyMode === 'choukai') {
+        frontText = '🎧 Dengarkan...';
+        hintText = '';
+        backText = card.hint ? `${card.front} (${card.hint})` : card.front;
+        extraText = card.back;
+        
+        // Auto play audio
+        setTimeout(() => {
+          speakText(card.hint || card.front);
+        }, 400);
+      } else if (studyMode === 'kanji') {
+        frontText = card.front;
+        hintText = '';
+        backText = card.hint || card.front;
+        extraText = card.back;
+      } else {
+        // Normal
+        frontText = isReverse ? card.back : card.front;
+        backText = isReverse ? card.front : card.back;
+        hintText = isReverse ? card.extra : card.hint;
+        extraText = isReverse ? card.hint : card.extra;
+      }
+      
+      document.getElementById('card-front-text').textContent = frontText;
+      const hintEl = document.getElementById('card-front-hint');
+      if (hintText) { hintEl.textContent = hintText; hintEl.style.display = 'block'; } else { hintEl.style.display = 'none'; }
+      
+      document.getElementById('card-back-text').textContent = backText;
+      const extraEl = document.getElementById('card-back-extra');
+      if (extraText) { extraEl.textContent = extraText; extraEl.style.display = 'block'; } else { extraEl.style.display = 'none'; }
+      
+      progressFill.style.width = ((currentIndex) / studyDeck.length * 100) + '%';
+      progressText.textContent = `${currentIndex + 1} / ${studyDeck.length}`;
+      document.getElementById('btn-prev').disabled = currentIndex === 0;
+    }
+
+    function markCard(known) {
+      const idx = studyDeck[currentIndex];
+      if (known) { knownSet.add(idx); unknownSet.delete(idx); } else { unknownSet.add(idx); knownSet.delete(idx); }
+      currentIndex++;
+      renderCard();
+    }
+
+    function showResults() {
+      showSection(resultSection);
+      document.getElementById('stat-known').textContent = knownSet.size;
+      document.getElementById('stat-unknown').textContent = unknownSet.size;
+      document.getElementById('stat-total').textContent = studyDeck.length;
+    }
+
+    document.getElementById('btn-start').addEventListener('click', () => startStudy(false));
+    document.getElementById('btn-shuffle-start').addEventListener('click', () => startStudy(true));
+    cardContainer.addEventListener('click', (e) => { if (!e.target.closest('.fc-tts-btn')) flashcard.classList.toggle('flipped'); });
+    document.getElementById('btn-prev').addEventListener('click', () => { if (currentIndex > 0) { currentIndex--; renderCard(); } });
+    document.getElementById('btn-next').addEventListener('click', () => { if (currentIndex < studyDeck.length - 1) { currentIndex++; renderCard(); } });
+    document.getElementById('btn-known').addEventListener('click', () => markCard(true));
+    document.getElementById('btn-unknown').addEventListener('click', () => markCard(false));
+    document.getElementById('btn-reset-study').addEventListener('click', () => { currentIndex = 0; knownSet.clear(); unknownSet.clear(); renderCard(); });
+    document.getElementById('btn-back-input').addEventListener('click', () => showSection(inputSection));
+
+    document.getElementById('btn-retry-unknown').addEventListener('click', () => {
+      studyDeck = [...unknownSet]; currentIndex = 0; knownSet.clear(); unknownSet.clear(); showSection(studySection); renderCard();
+    });
+    document.getElementById('btn-retry-all').addEventListener('click', () => {
+      studyDeck = cards.map((_, i) => i); currentIndex = 0; knownSet.clear(); unknownSet.clear(); showSection(studySection); renderCard();
+    });
+    document.getElementById('btn-new-data').addEventListener('click', () => showSection(inputSection));
+
+    function speakText(text) {
+      if (!text || !window.speechSynthesis) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'ja-JP';
+      utterance.rate = audioSpeed || 1.0;
+      window.speechSynthesis.speak(utterance);
+    }
+    document.getElementById('tts-front').addEventListener('click', (e) => { 
+      e.stopPropagation(); 
+      const c = cards[studyDeck[currentIndex]];
+      let textToSpeak = '';
+      if (studyMode === 'choukai') textToSpeak = (c.hint || c.front);
+      else if (studyMode === 'kanji') textToSpeak = c.front;
+      else textToSpeak = isReverse ? c.back : (c.hint || c.front);
+      speakText(textToSpeak); 
+    });
+    document.getElementById('tts-back').addEventListener('click', (e) => { 
+      e.stopPropagation(); 
+      const c = cards[studyDeck[currentIndex]];
+      let textToSpeak = '';
+      if (studyMode === 'choukai') textToSpeak = (c.hint || c.front);
+      else if (studyMode === 'kanji') textToSpeak = (c.hint || c.front);
+      else textToSpeak = isReverse ? (c.hint || c.front) : c.back;
+      speakText(textToSpeak); 
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (document.activeElement.tagName === 'TEXTAREA' || studySection.style.display === 'none') return;
+      
+      const key = e.key.toLowerCase();
+      if (e.key === ' ') { e.preventDefault(); flashcard.classList.toggle('flipped'); }
+      if (e.key === 'ArrowLeft' && currentIndex > 0) { currentIndex--; renderCard(); }
+      if (e.key === 'ArrowRight' && currentIndex < studyDeck.length - 1) { currentIndex++; renderCard(); }
+      if (e.key === '1') markCard(false);
+      if (e.key === '2') markCard(true);
+      if (key === 'p') {
+        const c = cards[studyDeck[currentIndex]];
+        speakText(c.hint || c.front);
+      }
+    });
+
+    const savedData = localStorage.getItem('fc-last-data');
+    if (savedData) jsonInput.value = savedData;
+
+    /* === Template Loader === */
+    const templateGrid = document.getElementById('template-grid');
+    let selectedTemplates = new Set();
+    const fabBar = document.getElementById('fab-bar');
+    const fabText = document.getElementById('fab-text');
+    const btnFabStart = document.getElementById('btn-fab-start');
+
+    async function loadTemplates() {
+      try {
+        const res = await fetch('/api/flashcard-template?action=list');
+        const templates = await res.json();
+
+        if (!Array.isArray(templates) || templates.length === 0) {
+          templateGrid.innerHTML = '<div class="fc-template-empty">Belum ada template. Tambahkan via Admin Panel atau API.</div>';
+          return;
+        }
+
+        templateGrid.innerHTML = templates.map(t => `
+          <div class="fc-template-card" data-id="${t.id}" tabindex="0">
+            <span class="fc-template-name">${escapeHtml(t.nama)}</span>
+            ${t.deskripsi ? `<span class="fc-template-desc">${escapeHtml(t.deskripsi)}</span>` : ''}
+            <span class="fc-template-badge">${t.jumlah_kartu} kartu</span>
+          </div>
+        `).join('');
+
+        templateGrid.querySelectorAll('.fc-template-card').forEach(card => {
+          card.addEventListener('click', () => toggleTemplateSelection(card));
+        });
+      } catch (e) {
+        templateGrid.innerHTML = '<div class="fc-template-empty">Gagal memuat template.</div>';
+      }
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function toggleTemplateSelection(card) {
+      const id = card.dataset.id;
+      if (selectedTemplates.has(id)) {
+        selectedTemplates.delete(id);
+        card.classList.remove('selected');
+      } else {
+        selectedTemplates.add(id);
+        card.classList.add('selected');
+      }
+
+      if (selectedTemplates.size > 0) {
+        fabText.textContent = `${selectedTemplates.size} Bab Terpilih`;
+        fabBar.classList.add('show');
+      } else {
+        fabBar.classList.remove('show');
+      }
+    }
+
+    btnFabStart.addEventListener('click', async () => {
+      if (selectedTemplates.size === 0) return;
+      btnFabStart.textContent = 'MEMUAT...';
+      try {
+        let combinedData = [];
+        for (const id of selectedTemplates) {
+          const res = await fetch(`/api/flashcard-template?action=detail&id=${id}`);
+          const template = await res.json();
+          if (template.data_json) {
+            let data = typeof template.data_json === 'string' ? JSON.parse(template.data_json) : template.data_json;
+            combinedData = combinedData.concat(data);
+          }
+        }
+        
+        if (combinedData.length > 0) {
+          jsonInput.value = JSON.stringify(combinedData, null, 2);
+          jsonError.style.display = 'none';
+          modal.classList.add('show');
+        } else {
+          jsonError.textContent = '⚠ Data bab kosong.';
+          jsonError.style.display = 'block';
+        }
+      } catch (e) {
+        jsonError.textContent = '⚠ Gagal memuat beberapa bab.';
+        jsonError.style.display = 'block';
+      } finally {
+        btnFabStart.textContent = 'GABUNG & MULAI';
+      }
+    });
+
+    loadTemplates();
+  </script>
+</body>
+</html>

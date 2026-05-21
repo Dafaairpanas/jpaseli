@@ -7,15 +7,25 @@ const PER_PAGE = 60;
 // Ambil query parameter dari URL
 const url = Astro.url;
 const q = url.searchParams.get('q') || '';
+const sort = url.searchParams.get('sort') || '';
 const page = Math.max(1, parseInt(url.searchParams.get('page') || '1'));
 const offset = (page - 1) * PER_PAGE;
+
+// Tentukan ORDER BY berdasarkan sort parameter
+const orderMap: Record<string, string> = {
+  'day-asc': 'hari ASC, urutan_slide ASC',
+  'day-desc': 'hari DESC, urutan_slide ASC',
+  'az': 'arti ASC, id ASC',
+  'za': 'arti DESC, id ASC',
+};
+const orderBy = orderMap[sort] || 'urutan_slide ASC, id ASC';
 
 // Query dengan filter pencarian
 const searchParam = `%${q}%`;
 const kotobaList = db.prepare(
   `SELECT * FROM kotoba
    WHERE kata LIKE ? OR cara_baca LIKE ? OR arti LIKE ?
-   ORDER BY urutan_slide ASC, id ASC
+   ORDER BY ${orderBy}
    LIMIT ? OFFSET ?`
 ).all(searchParam, searchParam, searchParam, PER_PAGE, offset);
 
@@ -26,11 +36,13 @@ const totalCount = (db.prepare(
 
 const totalPages = Math.ceil(totalCount / PER_PAGE);
 
-// Helper buat link navigasi
-const buildUrl = (p: number, query: string) => {
+// Helper buat link navigasi (preserve sort param)
+const buildUrl = (p: number, query: string, s?: string) => {
   const params = new URLSearchParams();
   if (query) params.set('q', query);
   if (p > 1) params.set('page', String(p));
+  const sortVal = s !== undefined ? s : sort;
+  if (sortVal) params.set('sort', sortVal);
   const qs = params.toString();
   return `/kotoba${qs ? '?' + qs : ''}`;
 };
@@ -69,6 +81,7 @@ for (let i = 0; i < filteredPages.length; i++) {
 
     <!-- Search form -->
     <form method="GET" action="/kotoba" class="search-wrapper" style="display: flex; gap: 1rem;">
+      {sort && <input type="hidden" name="sort" value={sort} />}
       <input
         type="text"
         name="q"
@@ -78,17 +91,30 @@ for (let i = 0; i < filteredPages.length; i++) {
         style="flex: 1;"
       />
       <button type="submit" class="btn-action" style="white-space: nowrap; padding: 0 2rem;">CARI</button>
-      {q && <a href="/kotoba" class="btn-action" style="white-space: nowrap; padding: 0 1.5rem;">RESET</a>}
+      {q && <a href={sort ? `/kotoba?sort=${sort}` : '/kotoba'} class="btn-action" style="white-space: nowrap; padding: 0 1.5rem;">RESET</a>}
     </form>
 
-    <main class="day-list" style="grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem;">
+    <!-- Filter & Sort Toolbar -->
+    <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: center;">
+      <span style="font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; color: var(--text-muted); margin-right: 0.25rem;">FILTER:</span>
+      <button class="btn-action filter-btn active" data-filter="all" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">SEMUA</button>
+      <button class="btn-action filter-btn" data-filter="learned" style="padding: 0.4rem 0.8rem; font-size: 0.75rem; border-color: var(--accent); color: var(--accent);">✓ SELESAI</button>
+      <button class="btn-action filter-btn" data-filter="not-learned" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">✗ BELUM</button>
+      <span style="font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; color: var(--text-muted); margin-left: 1rem; margin-right: 0.25rem;">URUT:</span>
+      <a href={buildUrl(1, q, 'day-asc')} class={`btn-action sort-link ${sort === 'day-asc' ? 'active-sort' : ''}`} style="padding: 0.4rem 0.8rem; font-size: 0.75rem; text-decoration: none;">DAY ↑</a>
+      <a href={buildUrl(1, q, 'day-desc')} class={`btn-action sort-link ${sort === 'day-desc' ? 'active-sort' : ''}`} style="padding: 0.4rem 0.8rem; font-size: 0.75rem; text-decoration: none;">DAY ↓</a>
+      <a href={buildUrl(1, q, 'az')} class={`btn-action sort-link ${sort === 'az' ? 'active-sort' : ''}`} style="padding: 0.4rem 0.8rem; font-size: 0.75rem; text-decoration: none;">A → Z</a>
+      <a href={buildUrl(1, q, 'za')} class={`btn-action sort-link ${sort === 'za' ? 'active-sort' : ''}`} style="padding: 0.4rem 0.8rem; font-size: 0.75rem; text-decoration: none;">Z → A</a>
+    </div>
+
+    <main class="day-list" id="card-container" style="grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem;">
       {kotobaList.length === 0 && (
         <p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 4rem 0;">
           Tidak ada kata yang cocok dengan pencarian "{q}".
         </p>
       )}
       {kotobaList.map(item => (
-        <div class="day-card" style="padding: 2rem 1.5rem; text-align: center; justify-content: flex-start; position: relative;">
+        <div class="day-card" style="padding: 2rem 1.5rem; text-align: center; justify-content: flex-start; position: relative;" data-hari={item.hari} data-arti={item.arti}>
           <button class="card-tts-btn" data-text={item.kata} aria-label="Dengarkan kata" style="position: absolute; top: 1rem; right: 1rem; margin: 0; padding: 0; width: 36px; height: 36px;">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
           </button>
@@ -127,6 +153,56 @@ for (let i = 0; i < filteredPages.length; i++) {
     const savedTheme = localStorage.getItem('app-theme') || 'light';
     document.body.setAttribute('data-theme', savedTheme);
 
+    const cards = Array.from(document.querySelectorAll('.day-card[data-hari]'));
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    let currentFilter = 'all';
+
+    // Tandai card yang hari-nya sudah learned
+    cards.forEach(card => {
+      const hari = card.getAttribute('data-hari');
+      if (localStorage.getItem('learned_day_' + hari) === 'true') {
+        card.classList.add('learned');
+      }
+    });
+
+    // Filter client-side (learned status ada di localStorage)
+    function applyFilter() {
+      cards.forEach(card => {
+        const isLearned = card.classList.contains('learned');
+        let show = true;
+        if (currentFilter === 'learned' && !isLearned) show = false;
+        if (currentFilter === 'not-learned' && isLearned) show = false;
+        card.style.display = show ? 'flex' : 'none';
+      });
+    }
+
+    // Highlight tombol filter aktif
+    function setActiveBtn(group, activeBtn) {
+      group.forEach(b => {
+        b.classList.remove('active');
+        b.style.backgroundColor = 'transparent';
+        b.style.color = b.dataset.filter === 'learned' ? 'var(--accent)' : 'var(--text-main)';
+      });
+      activeBtn.classList.add('active');
+      activeBtn.style.backgroundColor = activeBtn.dataset.filter === 'learned' ? 'var(--accent)' : 'var(--text-main)';
+      activeBtn.style.color = activeBtn.dataset.filter === 'learned' ? 'var(--bg-primary)' : 'var(--bg-secondary)';
+    }
+
+    // Event: filter
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentFilter = btn.dataset.filter;
+        setActiveBtn(filterBtns, btn);
+        applyFilter();
+      });
+    });
+
+    // Styling untuk sort link aktif
+    document.querySelectorAll('.sort-link.active-sort').forEach(el => {
+      el.style.backgroundColor = 'var(--text-main)';
+      el.style.color = 'var(--bg-secondary)';
+    });
+
     // TTS Logic
     const ttsBtns = document.querySelectorAll('.card-tts-btn');
     ttsBtns.forEach(btn => {
@@ -142,11 +218,11 @@ for (let i = 0; i < filteredPages.length; i++) {
       });
     });
 
-    // Keyboard shortcut "/" to focus search
+    // Keyboard shortcut
     document.addEventListener('keydown', (e) => {
       if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
         e.preventDefault();
-        const searchInput = document.getElementById('search-input');
+        const searchInput = document.querySelector('.search-bar');
         if (searchInput) searchInput.focus();
       }
     });

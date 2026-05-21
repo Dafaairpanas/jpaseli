@@ -1,0 +1,936 @@
+---
+import '../styles/global.css';
+---
+
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Choukai (Dictation) - JPASELI</title>
+  <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+  <style is:inline>
+    .ck-app {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: clamp(1.25rem, 4vw, 3rem);
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ck-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: clamp(1.5rem, 3vh, 3rem);
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: clamp(1rem, 2vh, 1.5rem);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .ck-header h1 {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .ck-header-actions {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .ck-btn-link {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.5rem 1.25rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    }
+    .ck-btn-link:hover {
+      background: var(--text-main);
+      color: var(--bg-secondary);
+      transform: translateY(-1px);
+    }
+
+    /* Input Section */
+    .ck-input-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(1rem, 2vh, 1.5rem);
+    }
+    .ck-input-section h2 {
+      font-size: clamp(1.2rem, 3vw, 1.6rem);
+      font-weight: 700;
+    }
+    .ck-format-hint {
+      font-size: clamp(0.8rem, 1.5vw, 0.95rem);
+      color: var(--text-muted);
+      line-height: 1.6;
+      padding: clamp(0.85rem, 1.5vw, 1.25rem);
+      background: var(--highlight-bg);
+      border-radius: 10px;
+      border-left: 4px solid var(--accent);
+    }
+    .ck-format-hint code {
+      background: var(--bg-secondary);
+      padding: 0.15rem 0.4rem;
+      border-radius: 6px;
+      font-size: 0.85em;
+    }
+    .ck-textarea {
+      width: 100%;
+      min-height: clamp(120px, 25vh, 250px);
+      padding: clamp(1rem, 2vw, 1.5rem);
+      font-family: 'Courier New', monospace;
+      font-size: clamp(0.85rem, 1.5vw, 1rem);
+      line-height: 1.6;
+      border: 1px solid var(--border-color);
+      background: var(--bg-secondary);
+      color: var(--text-main);
+      border-radius: 12px;
+      resize: vertical;
+      outline: none;
+      transition: all 0.2s ease;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+    }
+    .ck-textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+    }
+    .ck-error {
+      color: #ef4444;
+      font-size: clamp(0.8rem, 1.5vw, 0.95rem);
+      font-weight: 500;
+      padding: 0.75rem 1rem;
+      background: rgba(239, 68, 68, 0.05);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      border-radius: 8px;
+      display: none;
+    }
+    .ck-btn {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: clamp(0.6rem, 1.5vh, 0.85rem) clamp(1rem, 2vw, 1.75rem);
+      font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+      font-family: inherit;
+      letter-spacing: 0.02em;
+    }
+    .ck-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      border-color: var(--text-main);
+    }
+    .ck-btn:active:not(:disabled) {
+      transform: translateY(0);
+    }
+    .ck-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .ck-btn-primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #000;
+    }
+    .ck-btn-primary:hover:not(:disabled) {
+      opacity: 0.9;
+      border-color: var(--accent);
+    }
+
+    /* Dictation Section */
+    .ck-dictation-section {
+      flex: 1;
+      display: none;
+      flex-direction: column;
+      gap: clamp(1rem, 2vh, 1.5rem);
+    }
+
+    /* Progress */
+    .ck-progress-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .ck-progress-bar {
+      flex: 1;
+      height: 8px;
+      background: var(--border-color);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .ck-progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 99px;
+      transition: width 0.3s ease;
+      width: 0%;
+    }
+    .ck-progress-text {
+      font-size: clamp(0.85rem, 1.5vw, 1rem);
+      font-weight: 600;
+      color: var(--text-muted);
+      min-width: 60px;
+      text-align: right;
+    }
+
+    /* Soal Card */
+    .ck-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: clamp(2rem, 4vh, 3rem);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(1.25rem, 2vh, 2rem);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+      position: relative;
+    }
+    .ck-soal-label {
+      font-size: clamp(0.75rem, 1.2vw, 0.85rem);
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      position: absolute;
+      top: clamp(1.25rem, 2vh, 1.5rem);
+      left: clamp(1.25rem, 2vw, 1.5rem);
+    }
+
+    /* Play Button */
+    .ck-play-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    .ck-play-btn {
+      width: clamp(80px, 12vw, 110px);
+      height: clamp(80px, 12vw, 110px);
+      border-radius: 50%;
+      border: 2px solid var(--border-color);
+      background: var(--highlight-bg);
+      color: var(--text-main);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+    }
+    .ck-play-btn svg {
+      width: clamp(28px, 4vw, 40px);
+      height: clamp(28px, 4vw, 40px);
+      transition: transform 0.2s ease;
+    }
+    .ck-play-btn:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #000;
+      transform: scale(1.08);
+      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.25);
+    }
+    .ck-play-btn:active {
+      transform: scale(0.95);
+    }
+    .ck-play-btn.playing {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #000;
+      animation: ck-pulse 1.2s ease-in-out infinite;
+    }
+    @keyframes ck-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.3); }
+      50% { box-shadow: 0 0 0 16px rgba(16, 185, 129, 0); }
+    }
+
+    .ck-speed-controls {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .ck-speed-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 0.3rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .ck-speed-btn:hover,
+    .ck-speed-btn.active {
+      background: var(--text-main);
+      color: var(--bg-secondary);
+      border-color: var(--text-main);
+    }
+    .ck-play-count {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Arti hint */
+    .ck-arti {
+      font-size: clamp(0.9rem, 1.5vw, 1rem);
+      color: var(--text-muted);
+      font-style: italic;
+      text-align: center;
+      line-height: 1.5;
+      padding: 0.5rem 1rem;
+      background: var(--highlight-bg);
+      border-radius: 8px;
+      display: none;
+    }
+
+    /* Input Area */
+    .ck-input-wrapper {
+      width: 100%;
+      position: relative;
+    }
+    .ck-dictation-input {
+      width: 100%;
+      padding: clamp(1rem, 2vw, 1.25rem) clamp(1rem, 2vw, 1.5rem);
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      font-family: 'Inter', 'Noto Sans JP', sans-serif;
+      font-weight: 500;
+      border: 2px solid var(--border-color);
+      background: var(--bg-primary);
+      color: var(--text-main);
+      border-radius: 12px;
+      outline: none;
+      transition: all 0.2s ease;
+      letter-spacing: 0.02em;
+    }
+    .ck-dictation-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+    }
+    .ck-dictation-input.correct {
+      border-color: var(--accent);
+      background: rgba(16, 185, 129, 0.05);
+    }
+    .ck-dictation-input.incorrect {
+      border-color: #ef4444;
+      background: rgba(239, 68, 68, 0.03);
+    }
+
+    /* Correction Display */
+    .ck-correction {
+      width: 100%;
+      display: none;
+      flex-direction: column;
+      gap: 0.75rem;
+      padding: clamp(1rem, 2vw, 1.5rem);
+      background: var(--highlight-bg);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+    .ck-correction-row {
+      display: flex;
+      gap: 0.75rem;
+      align-items: baseline;
+      flex-wrap: wrap;
+    }
+    .ck-correction-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      min-width: 80px;
+    }
+    .ck-correction-text {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      font-weight: 500;
+      line-height: 1.6;
+      word-break: break-all;
+    }
+    .ck-char-correct {
+      color: var(--accent);
+    }
+    .ck-char-wrong {
+      color: #ef4444;
+      text-decoration: underline;
+      text-decoration-style: wavy;
+      text-underline-offset: 4px;
+    }
+    .ck-char-missing {
+      color: var(--text-muted);
+      opacity: 0.5;
+    }
+
+    /* Actions */
+    .ck-actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: clamp(0.75rem, 2vw, 1rem);
+      flex-wrap: wrap;
+    }
+    .ck-btn-submit {
+      background: var(--text-main);
+      color: var(--bg-secondary);
+      border: 2px solid var(--text-main);
+      padding: 0.75rem 2rem;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      border-radius: 10px;
+      font-family: inherit;
+      letter-spacing: 0.03em;
+      transition: all 0.2s ease;
+    }
+    .ck-btn-submit:hover {
+      opacity: 0.85;
+      transform: translateY(-1px);
+    }
+    .ck-btn-submit:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Result Section */
+    .ck-result-section {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(1.5rem, 3vh, 2rem);
+      padding: clamp(2.5rem, 4vh, 5rem) clamp(1.5rem, 3vw, 3rem);
+      text-align: center;
+      background: var(--bg-secondary);
+      border-radius: 20px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    }
+    .ck-result-section h2 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+    }
+    .ck-result-stats {
+      display: flex;
+      gap: clamp(1rem, 3vw, 2rem);
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+    }
+    .ck-stat {
+      text-align: center;
+      padding: 1.5rem;
+      border-radius: 16px;
+      background: var(--highlight-bg);
+      flex: 1;
+      min-width: 120px;
+      max-width: 200px;
+      border: 1px solid var(--border-color);
+    }
+    .ck-stat-value {
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+    .ck-stat-label {
+      font-size: clamp(0.75rem, 1.5vw, 0.9rem);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+    }
+    .ck-stat-good .ck-stat-value { color: var(--accent); }
+    .ck-stat-bad .ck-stat-value { color: #ef4444; }
+    .ck-stat-neutral .ck-stat-value { color: var(--text-main); }
+
+    /* Shortcuts */
+    .ck-shortcuts {
+      display: flex;
+      gap: clamp(1rem, 2vw, 2rem);
+      justify-content: center;
+      flex-wrap: wrap;
+      font-size: clamp(0.75rem, 1.2vw, 0.85rem);
+      color: var(--text-muted);
+    }
+    .ck-shortcuts kbd {
+      background: var(--highlight-bg);
+      border: 1px solid var(--border-color);
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: clamp(0.7rem, 1.1vw, 0.8rem);
+    }
+
+    /* Settings toggle */
+    .ck-setting-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: var(--text-main);
+    }
+    .ck-setting-row input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    @media (max-width: 480px) {
+      .ck-shortcuts { display: none; }
+      .ck-play-btn { width: 70px; height: 70px; }
+      .ck-play-btn svg { width: 24px; height: 24px; }
+    }
+    @media (max-height: 500px) {
+      .ck-app { padding: 0.75rem 1.5rem; }
+      .ck-header { margin-bottom: 0.75rem; padding-bottom: 0.75rem; }
+      .ck-shortcuts { display: none; }
+    }
+  </style>
+</head>
+<body data-theme="light">
+  <div class="ck-app">
+    <header class="ck-header">
+      <h1>聴解 Choukai</h1>
+      <div class="ck-header-actions">
+        <a href="/" class="ck-btn-link">Kembali</a>
+      </div>
+    </header>
+
+    <!-- Input Section -->
+    <div class="ck-input-section" id="ck-input-section">
+      <h2>Masukkan Data Dictation (JSON)</h2>
+      <div class="ck-format-hint">
+        <strong>Format JSON:</strong> Array of objects dengan field <code>romaji</code> dan <code>arti</code>.<br/>
+        Field <code>romaji</code> digunakan sebagai teks yang dibacakan (TTS) dan acuan koreksi.<br/>
+        Contoh: <code>[&#123;"romaji": "watashi wa gakusei desu", "arti": "Saya adalah pelajar"&#125;]</code>
+      </div>
+      <textarea class="ck-textarea" id="ck-json-input" placeholder='Paste data JSON dictation di sini...
+
+Contoh:
+[
+  {"romaji": "watashi wa gakusei desu", "arti": "Saya adalah pelajar"},
+  {"romaji": "kore wa hon desu", "arti": "Ini adalah buku"}
+]'></textarea>
+      <div class="ck-error" id="ck-json-error"></div>
+
+      <label class="ck-setting-row">
+        <input type="checkbox" id="ck-show-arti" checked />
+        Tampilkan arti (sebagai petunjuk)
+      </label>
+      <label class="ck-setting-row">
+        <input type="checkbox" id="ck-shuffle" />
+        Acak urutan soal
+      </label>
+
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <button class="ck-btn ck-btn-primary" id="ck-btn-start" style="flex: 1; min-width: 200px;">Mulai Dictation</button>
+      </div>
+    </div>
+
+    <!-- Dictation Section -->
+    <div class="ck-dictation-section" id="ck-dictation-section">
+      <div class="ck-progress-wrapper">
+        <div class="ck-progress-bar">
+          <div class="ck-progress-fill" id="ck-progress-fill"></div>
+        </div>
+        <span class="ck-progress-text" id="ck-progress-text">0 / 0</span>
+      </div>
+
+      <div class="ck-card" id="ck-card">
+        <span class="ck-soal-label" id="ck-soal-label">Soal 1</span>
+
+        <!-- Play Area -->
+        <div class="ck-play-area">
+          <button class="ck-play-btn" id="ck-play-btn" title="Putar Audio">
+            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+              <polygon points="6,3 20,12 6,21" />
+            </svg>
+          </button>
+          <div class="ck-speed-controls">
+            <button class="ck-speed-btn" data-speed="0.6">0.6x</button>
+            <button class="ck-speed-btn active" data-speed="0.85">0.85x</button>
+            <button class="ck-speed-btn" data-speed="1">1x</button>
+            <button class="ck-speed-btn" data-speed="1.2">1.2x</button>
+            <button class="ck-speed-btn" data-speed="1.5">1.5x</button>
+          </div>
+          <span class="ck-play-count" id="ck-play-count">Diputar: 0 kali</span>
+        </div>
+
+        <!-- Arti Hint -->
+        <div class="ck-arti" id="ck-arti"></div>
+
+        <!-- Input -->
+        <div class="ck-input-wrapper">
+          <input
+            type="text"
+            class="ck-dictation-input"
+            id="ck-answer-input"
+            placeholder="Ketik apa yang kamu dengar..."
+            autocomplete="off"
+            spellcheck="false"
+          />
+        </div>
+
+        <!-- Correction -->
+        <div class="ck-correction" id="ck-correction">
+          <div class="ck-correction-row">
+            <span class="ck-correction-label">Jawaban</span>
+            <span class="ck-correction-text" id="ck-correction-answer"></span>
+          </div>
+          <div class="ck-correction-row">
+            <span class="ck-correction-label">Benar</span>
+            <span class="ck-correction-text" id="ck-correction-correct"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="ck-actions">
+        <button class="ck-btn" id="ck-btn-replay" title="Putar ulang">🔊 Putar Ulang</button>
+        <button class="ck-btn-submit" id="ck-btn-check">Periksa</button>
+        <button class="ck-btn ck-btn-primary" id="ck-btn-next" style="display: none;">Soal Berikutnya →</button>
+      </div>
+
+      <div class="ck-shortcuts">
+        <span><kbd>Enter</kbd> Periksa / Lanjut</span>
+        <span><kbd>Ctrl+P</kbd> Putar audio</span>
+        <span><kbd>Esc</kbd> Kembali ke menu</span>
+      </div>
+
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 0.5rem;">
+        <button class="ck-btn" id="ck-btn-back-input">Ubah Data</button>
+      </div>
+    </div>
+
+    <!-- Result Section -->
+    <div class="ck-result-section" id="ck-result-section">
+      <h2>Dictation Selesai!</h2>
+      <div class="ck-result-stats">
+        <div class="ck-stat ck-stat-good">
+          <div class="ck-stat-value" id="ck-stat-perfect">0</div>
+          <div class="ck-stat-label">Sempurna</div>
+        </div>
+        <div class="ck-stat ck-stat-bad">
+          <div class="ck-stat-value" id="ck-stat-wrong">0</div>
+          <div class="ck-stat-label">Ada Salah</div>
+        </div>
+        <div class="ck-stat ck-stat-neutral">
+          <div class="ck-stat-value" id="ck-stat-accuracy">0%</div>
+          <div class="ck-stat-label">Akurasi</div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-top: 1.5rem;">
+        <button class="ck-btn ck-btn-primary" id="ck-btn-retry-wrong">Ulang yang Salah</button>
+        <button class="ck-btn" id="ck-btn-retry-all">Ulang Semua</button>
+        <button class="ck-btn" id="ck-btn-new-data">Data Baru</button>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline>
+    const savedTheme = localStorage.getItem('app-theme') || 'light';
+    document.body.setAttribute('data-theme', savedTheme);
+
+    /* === State === */
+    let allData = [];
+    let deck = [];
+    let currentIdx = 0;
+    let playCount = 0;
+    let speechRate = 0.85;
+    let showArti = true;
+    let isChecked = false;
+    let results = [];
+
+    /* === DOM === */
+    const inputSection = document.getElementById('ck-input-section');
+    const dictSection = document.getElementById('ck-dictation-section');
+    const resultSection = document.getElementById('ck-result-section');
+    const jsonInput = document.getElementById('ck-json-input');
+    const jsonError = document.getElementById('ck-json-error');
+    const progressFill = document.getElementById('ck-progress-fill');
+    const progressText = document.getElementById('ck-progress-text');
+    const soalLabel = document.getElementById('ck-soal-label');
+    const playBtn = document.getElementById('ck-play-btn');
+    const playCountEl = document.getElementById('ck-play-count');
+    const artiEl = document.getElementById('ck-arti');
+    const answerInput = document.getElementById('ck-answer-input');
+    const correctionEl = document.getElementById('ck-correction');
+    const correctionAnswer = document.getElementById('ck-correction-answer');
+    const correctionCorrect = document.getElementById('ck-correction-correct');
+    const btnCheck = document.getElementById('ck-btn-check');
+    const btnNext = document.getElementById('ck-btn-next');
+
+    /* === Utility === */
+    function showSection(section) {
+      inputSection.style.display = 'none';
+      dictSection.style.display = 'none';
+      resultSection.style.display = 'none';
+      section.style.display = 'flex';
+    }
+
+    function shuffleArray(arr) {
+      const shuffled = [...arr];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled;
+    }
+
+    /* === TTS === */
+    function speakText(text, rate) {
+      if (!text || !window.speechSynthesis) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'ja-JP';
+      utterance.rate = rate || speechRate;
+
+      playBtn.classList.add('playing');
+      utterance.onend = () => playBtn.classList.remove('playing');
+      utterance.onerror = () => playBtn.classList.remove('playing');
+
+      window.speechSynthesis.speak(utterance);
+      playCount++;
+      playCountEl.textContent = `Diputar: ${playCount} kali`;
+    }
+
+    /* === Start Dictation === */
+    function startDictation() {
+      try {
+        const text = jsonInput.value.trim();
+        if (!text) {
+          jsonError.textContent = '⚠ Data tidak boleh kosong.';
+          jsonError.style.display = 'block';
+          return;
+        }
+        const parsed = JSON.parse(text);
+        if (!Array.isArray(parsed) || parsed.length === 0) throw new Error('Data harus berupa array JSON yang tidak kosong.');
+        for (const item of parsed) {
+          if (!item.romaji) throw new Error('Setiap item harus memiliki field "romaji".');
+        }
+
+        allData = parsed;
+        showArti = document.getElementById('ck-show-arti').checked;
+        const doShuffle = document.getElementById('ck-shuffle').checked;
+        deck = doShuffle ? shuffleArray(allData.map((_, i) => i)) : allData.map((_, i) => i);
+        currentIdx = 0;
+        results = [];
+        jsonError.style.display = 'none';
+        showSection(dictSection);
+        renderSoal();
+        localStorage.setItem('ck-last-data', text);
+      } catch (e) {
+        jsonError.textContent = '⚠ ' + e.message;
+        jsonError.style.display = 'block';
+      }
+    }
+
+    /* === Render Soal === */
+    function renderSoal() {
+      if (currentIdx >= deck.length) {
+        showResults();
+        return;
+      }
+      const item = allData[deck[currentIdx]];
+      playCount = 0;
+      isChecked = false;
+      playCountEl.textContent = 'Diputar: 0 kali';
+      soalLabel.textContent = `Soal ${currentIdx + 1}`;
+      progressFill.style.width = ((currentIdx) / deck.length * 100) + '%';
+      progressText.textContent = `${currentIdx + 1} / ${deck.length}`;
+
+      if (showArti && item.arti) {
+        artiEl.textContent = `💡 "${item.arti}"`;
+        artiEl.style.display = 'block';
+      } else {
+        artiEl.style.display = 'none';
+      }
+
+      answerInput.value = '';
+      answerInput.className = 'ck-dictation-input';
+      answerInput.disabled = false;
+      answerInput.focus();
+      correctionEl.style.display = 'none';
+      btnCheck.style.display = '';
+      btnNext.style.display = 'none';
+    }
+
+    /* === Check Answer === */
+    function checkAnswer() {
+      if (isChecked) return;
+      isChecked = true;
+      const item = allData[deck[currentIdx]];
+      const userAnswer = answerInput.value.trim().toLowerCase();
+      const correctAnswer = item.romaji.trim().toLowerCase();
+      const isPerfect = userAnswer === correctAnswer;
+
+      results.push({ index: deck[currentIdx], userAnswer, correctAnswer, isPerfect });
+
+      answerInput.disabled = true;
+      answerInput.className = 'ck-dictation-input ' + (isPerfect ? 'correct' : 'incorrect');
+
+      if (isPerfect) {
+        correctionAnswer.innerHTML = `<span class="ck-char-correct">${escapeHtml(userAnswer)}</span>`;
+        correctionCorrect.innerHTML = `<span class="ck-char-correct">✓ Sempurna!</span>`;
+      } else {
+        correctionAnswer.innerHTML = buildDiffHtml(userAnswer, correctAnswer);
+        correctionCorrect.innerHTML = `<span style="color: var(--accent); font-weight: 600;">${escapeHtml(correctAnswer)}</span>`;
+      }
+
+      correctionEl.style.display = 'flex';
+      btnCheck.style.display = 'none';
+      btnNext.style.display = '';
+      btnNext.focus();
+    }
+
+    /* === Diff per character === */
+    function buildDiffHtml(user, correct) {
+      let html = '';
+      const maxLen = Math.max(user.length, correct.length);
+      for (let i = 0; i < maxLen; i++) {
+        const uc = user[i];
+        const cc = correct[i];
+        if (uc === undefined) {
+          html += `<span class="ck-char-missing">_</span>`;
+        } else if (uc === cc) {
+          html += `<span class="ck-char-correct">${escapeHtml(uc)}</span>`;
+        } else {
+          html += `<span class="ck-char-wrong">${escapeHtml(uc)}</span>`;
+        }
+      }
+      return html;
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    /* === Next Soal === */
+    function nextSoal() {
+      currentIdx++;
+      renderSoal();
+    }
+
+    /* === Show Results === */
+    function showResults() {
+      showSection(resultSection);
+      const perfect = results.filter(r => r.isPerfect).length;
+      const wrong = results.filter(r => !r.isPerfect).length;
+      const accuracy = results.length > 0 ? Math.round((perfect / results.length) * 100) : 0;
+      document.getElementById('ck-stat-perfect').textContent = perfect;
+      document.getElementById('ck-stat-wrong').textContent = wrong;
+      document.getElementById('ck-stat-accuracy').textContent = accuracy + '%';
+
+      const retryWrongBtn = document.getElementById('ck-btn-retry-wrong');
+      retryWrongBtn.disabled = wrong === 0;
+    }
+
+    /* === Event Listeners === */
+    document.getElementById('ck-btn-start').addEventListener('click', startDictation);
+
+    playBtn.addEventListener('click', () => {
+      const item = allData[deck[currentIdx]];
+      if (item) speakText(item.romaji, speechRate);
+    });
+
+    document.getElementById('ck-btn-replay').addEventListener('click', () => {
+      const item = allData[deck[currentIdx]];
+      if (item) speakText(item.romaji, speechRate);
+    });
+
+    document.querySelectorAll('.ck-speed-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.ck-speed-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        speechRate = parseFloat(btn.dataset.speed);
+      });
+    });
+
+    btnCheck.addEventListener('click', checkAnswer);
+    btnNext.addEventListener('click', nextSoal);
+
+    document.getElementById('ck-btn-back-input').addEventListener('click', () => {
+      window.speechSynthesis.cancel();
+      showSection(inputSection);
+    });
+
+    document.getElementById('ck-btn-retry-wrong').addEventListener('click', () => {
+      const wrongIndices = results.filter(r => !r.isPerfect).map(r => r.index);
+      deck = wrongIndices;
+      currentIdx = 0;
+      results = [];
+      showSection(dictSection);
+      renderSoal();
+    });
+
+    document.getElementById('ck-btn-retry-all').addEventListener('click', () => {
+      const doShuffle = document.getElementById('ck-shuffle').checked;
+      deck = doShuffle ? shuffleArray(allData.map((_, i) => i)) : allData.map((_, i) => i);
+      currentIdx = 0;
+      results = [];
+      showSection(dictSection);
+      renderSoal();
+    });
+
+    document.getElementById('ck-btn-new-data').addEventListener('click', () => {
+      showSection(inputSection);
+    });
+
+    /* Keyboard shortcuts */
+    document.addEventListener('keydown', (e) => {
+      if (dictSection.style.display === 'none') return;
+
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        if (!isChecked) {
+          checkAnswer();
+        } else {
+          nextSoal();
+        }
+      }
+
+      if (e.ctrlKey && (e.key === 'p' || e.key === 'P')) {
+        e.preventDefault();
+        const item = allData[deck[currentIdx]];
+        if (item) speakText(item.romaji, speechRate);
+      }
+
+      if (e.key === 'Escape') {
+        window.speechSynthesis.cancel();
+        showSection(inputSection);
+      }
+    });
+
+    /* Enter on input section textarea */
+    jsonInput.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.key === 'Enter') {
+        e.preventDefault();
+        startDictation();
+      }
+    });
+
+    /* Load saved data */
+    const savedData = localStorage.getItem('ck-last-data');
+    if (savedData) jsonInput.value = savedData;
+  </script>
+</body>
+</html>

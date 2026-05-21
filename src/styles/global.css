@@ -193,6 +193,26 @@ body {
   color: #121212;
 }
 
+/* Learned state untuk bunpou-card */
+.bunpou-card.learned {
+  border-color: var(--accent);
+  border-left: 5px solid var(--accent);
+  position: relative;
+}
+.bunpou-card.learned::after {
+  content: '✓ SELESAI';
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
 .day-card:hover {
   transform: translateY(-8px);
   background-color: var(--highlight-bg);

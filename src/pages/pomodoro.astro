@@ -1,0 +1,624 @@
+---
+import '../styles/global.css';
+---
+
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pomodoro - JPASELI</title>
+  <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+  <style is:inline>
+    :root {
+      --pomo-color: #ef4444; /* Default Red for Pomodoro */
+      --pomo-bg: rgba(239, 68, 68, 0.1);
+    }
+    body.theme-short {
+      --pomo-color: #10b981; /* Teal/Green for Short Break */
+      --pomo-bg: rgba(16, 185, 129, 0.1);
+    }
+    body.theme-long {
+      --pomo-color: #3b82f6; /* Blue for Long Break */
+      --pomo-bg: rgba(59, 130, 246, 0.1);
+    }
+
+    .pomo-app {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: clamp(1.25rem, 4vw, 3rem) 1rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: background-color 0.5s ease;
+    }
+    
+    .pomo-header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 1rem;
+    }
+    .pomo-header h1 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--pomo-color);
+      transition: color 0.3s;
+    }
+    .btn-home {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.4rem 1rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .btn-home:hover {
+      background: var(--text-main);
+      color: var(--bg-secondary);
+    }
+
+    /* Main Timer Box */
+    .pomo-box {
+      width: 100%;
+      background: var(--pomo-bg);
+      border: 2px solid var(--pomo-color);
+      border-radius: 20px;
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 10px 40px var(--pomo-bg);
+      transition: all 0.3s;
+    }
+
+    /* Tabs */
+    .pomo-tabs {
+      display: flex;
+      gap: 0.5rem;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 0.4rem;
+      border-radius: 99px;
+      margin-bottom: 2rem;
+    }
+    .pomo-tab {
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      padding: 0.5rem 1rem;
+      border-radius: 99px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      opacity: 0.7;
+    }
+    .pomo-tab.active {
+      background: var(--pomo-color);
+      color: #fff;
+      opacity: 1;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    /* Timer */
+    .pomo-time {
+      font-size: clamp(5rem, 15vw, 7.5rem);
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 2rem;
+      font-variant-numeric: tabular-nums;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    /* Start/Stop Button */
+    .btn-toggle {
+      background: #fff;
+      color: var(--pomo-color);
+      border: none;
+      font-size: 1.5rem;
+      font-weight: 800;
+      padding: 1rem 3rem;
+      border-radius: 12px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: all 0.1s;
+      box-shadow: 0 6px 0 #ccc;
+    }
+    .btn-toggle:active {
+      transform: translateY(6px);
+      box-shadow: 0 0 0 #ccc;
+    }
+    .btn-toggle.running {
+      box-shadow: inset 0 -6px 0 rgba(0,0,0,0.1);
+      transform: translateY(6px);
+    }
+
+    /* Task Section */
+    .task-section {
+      width: 100%;
+      margin-top: 3rem;
+    }
+    .task-header {
+      font-size: 1.2rem;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Task Item */
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .task-item {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 1rem;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s;
+      border-left: 4px solid transparent;
+    }
+    .task-item:hover {
+      border-color: var(--text-muted);
+    }
+    .task-item.active {
+      border-left-color: var(--pomo-color);
+    }
+    .task-item.done {
+      opacity: 0.5;
+      text-decoration: line-through;
+    }
+    .task-item-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex: 1;
+      cursor: pointer;
+    }
+    .task-check {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: transparent;
+      transition: all 0.2s;
+    }
+    .task-item.done .task-check {
+      background: var(--pomo-color);
+      border-color: var(--pomo-color);
+      color: #fff;
+    }
+    .task-title {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+    .btn-task-del {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 1.2rem;
+      padding: 0.5rem;
+    }
+    .btn-task-del:hover {
+      color: #ef4444;
+    }
+
+    /* Add Task Button */
+    .btn-add-task {
+      width: 100%;
+      background: rgba(0,0,0,0.2);
+      border: 2px dashed var(--border-color);
+      color: var(--text-muted);
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-add-task:hover {
+      border-color: var(--text-main);
+      color: var(--text-main);
+      background: var(--bg-secondary);
+    }
+
+    /* Add Task Form */
+    .task-form {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1rem;
+      display: none;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .task-form.show { display: flex; }
+    .task-input {
+      width: 100%;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-family: inherit;
+      outline: none;
+    }
+    .task-input:focus { border-color: var(--pomo-color); }
+    .task-form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+    }
+    .btn-sm {
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border: 1px solid var(--border-color);
+      background: transparent;
+      color: var(--text-main);
+    }
+    .btn-sm.primary {
+      background: var(--text-main);
+      color: var(--bg-secondary);
+      border-color: var(--text-main);
+    }
+
+    /* Alarm Overlay */
+    .alarm-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      z-index: 9999;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      backdrop-filter: blur(5px);
+    }
+    .alarm-overlay.show { display: flex; }
+    .alarm-title { font-size: 3rem; font-weight: 800; color: var(--pomo-color); text-transform: uppercase; animation: pulse 1s infinite alternate; }
+    @keyframes pulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.1); }
+    }
+    .btn-stop-alarm {
+      background: var(--pomo-color);
+      color: #fff;
+      border: none;
+      padding: 1rem 3rem;
+      font-size: 1.5rem;
+      font-weight: 800;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 20px var(--pomo-bg);
+    }
+  </style>
+</head>
+<body data-theme="dark">
+  <div class="pomo-app">
+    <header class="pomo-header">
+      <h1>🍅 Pomodoro</h1>
+      <a href="/" class="btn-home">Home</a>
+    </header>
+
+    <div class="pomo-box">
+      <div class="pomo-tabs">
+        <button class="pomo-tab active" data-mode="pomodoro">Pomodoro</button>
+        <button class="pomo-tab" data-mode="short">Short Break</button>
+        <button class="pomo-tab" data-mode="long">Long Break</button>
+      </div>
+      
+      <div class="pomo-time" id="time-display">25:00</div>
+      
+      <button class="btn-toggle" id="btn-toggle">START</button>
+    </div>
+
+    <div class="task-section">
+      <div class="task-header">
+        <span>Tasks</span>
+      </div>
+
+      <div class="task-list" id="task-list"></div>
+
+      <div class="task-form" id="task-form">
+        <input type="text" class="task-input" id="task-input" placeholder="Tugas apa yang mau dikerjakan?" />
+        <div class="task-form-actions">
+          <button class="btn-sm" id="btn-cancel-task">Batal</button>
+          <button class="btn-sm primary" id="btn-save-task">Simpan</button>
+        </div>
+      </div>
+
+      <button class="btn-add-task" id="btn-add-task">+ Add Task</button>
+    </div>
+  </div>
+
+  <div class="alarm-overlay" id="alarm-overlay">
+    <div class="alarm-title" id="alarm-title">WAKTU HABIS!</div>
+    <button class="btn-stop-alarm" id="btn-stop-alarm">STOP ALARM</button>
+  </div>
+
+  <script is:inline>
+    /* === Konfigurasi Waktu === */
+    const TIMES = {
+      pomodoro: 25 * 60,
+      short: 5 * 60,
+      long: 15 * 60
+    };
+
+    /* === State === */
+    let currentMode = 'pomodoro';
+    let timeLeft = TIMES[currentMode];
+    let isRunning = false;
+    let timerId = null;
+    let tasks = JSON.parse(localStorage.getItem('pomo_tasks') || '[]');
+    let activeTaskId = null;
+
+    /* === DOM Elements === */
+    const timeDisplay = document.getElementById('time-display');
+    const btnToggle = document.getElementById('btn-toggle');
+    const tabs = document.querySelectorAll('.pomo-tab');
+    
+    // Audio Context
+    let audioCtx = null;
+    let beepInterval = null;
+
+    /* === Initialize === */
+    function updateDisplay() {
+      const minutes = Math.floor(timeLeft / 60);
+      const seconds = timeLeft % 60;
+      const timeStr = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      timeDisplay.textContent = timeStr;
+      
+      const modeNames = { pomodoro: 'Time to Focus!', short: 'Short Break!', long: 'Long Break!' };
+      document.title = isRunning ? `${timeStr} - ${modeNames[currentMode]}` : `Pomodoro - JPASELI`;
+    }
+
+    function switchMode(mode) {
+      if (isRunning) {
+        if (!confirm('Timer sedang berjalan! Yakin ingin ganti mode?')) return;
+        pauseTimer();
+      }
+      
+      currentMode = mode;
+      timeLeft = TIMES[mode];
+      
+      // Update Tabs
+      tabs.forEach(t => t.classList.remove('active'));
+      document.querySelector(`[data-mode="${mode}"]`).classList.add('active');
+
+      // Update Theme
+      document.body.className = '';
+      if (mode === 'short') document.body.classList.add('theme-short');
+      if (mode === 'long') document.body.classList.add('theme-long');
+
+      updateDisplay();
+    }
+
+    /* === Timer Logic === */
+    function toggleTimer() {
+      if (isRunning) {
+        pauseTimer();
+      } else {
+        startTimer();
+        requestNotificationPermission();
+      }
+    }
+
+    function startTimer() {
+      isRunning = true;
+      btnToggle.textContent = 'PAUSE';
+      btnToggle.classList.add('running');
+      
+      // Play a tiny silent sound to unlock AudioContext on mobile
+      if (!audioCtx) initAudio();
+      
+      timerId = setInterval(() => {
+        timeLeft--;
+        if (timeLeft <= 0) {
+          timerFinished();
+        } else {
+          updateDisplay();
+        }
+      }, 1000);
+      updateDisplay();
+    }
+
+    function pauseTimer() {
+      isRunning = false;
+      btnToggle.textContent = 'START';
+      btnToggle.classList.remove('running');
+      clearInterval(timerId);
+      updateDisplay();
+    }
+
+    function timerFinished() {
+      pauseTimer();
+      timeLeft = 0;
+      updateDisplay();
+      triggerAlarm();
+    }
+
+    /* === Audio & Notification === */
+    function initAudio() {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      audioCtx = new AudioContext();
+    }
+
+    function playBeep() {
+      if (!audioCtx) initAudio();
+      const osc = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+      
+      // Suara nyaring (Square wave / frekuensi tinggi)
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(880, audioCtx.currentTime); // A5 note
+      osc.frequency.setValueAtTime(1200, audioCtx.currentTime + 0.1); 
+      
+      gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+      gainNode.gain.linearRampToValueAtTime(0.1, audioCtx.currentTime + 0.05);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+      
+      osc.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.5);
+    }
+
+    function requestNotificationPermission() {
+      if ('Notification' in window && Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+        Notification.requestPermission();
+      }
+    }
+
+    function triggerAlarm() {
+      // 1. Notification
+      if ('Notification' in window && Notification.permission === 'granted') {
+        const modeNames = { pomodoro: 'Fokus Selesai!', short: 'Istirahat Selesai!', long: 'Istirahat Panjang Selesai!' };
+        new Notification(modeNames[currentMode], {
+          body: 'Waktunya berpindah aktivitas!',
+          icon: '/icon.svg',
+          requireInteraction: true
+        });
+      }
+
+      // 2. Tampilkan Overlay
+      const overlay = document.getElementById('alarm-overlay');
+      const title = document.getElementById('alarm-title');
+      title.textContent = currentMode === 'pomodoro' ? 'FOKUS SELESAI!' : 'ISTIRAHAT SELESAI!';
+      overlay.classList.add('show');
+
+      // 3. Audio Alarm berulang
+      if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+      playBeep();
+      beepInterval = setInterval(playBeep, 800);
+    }
+
+    document.getElementById('btn-stop-alarm').addEventListener('click', () => {
+      clearInterval(beepInterval);
+      document.getElementById('alarm-overlay').classList.remove('show');
+      
+      // Auto-switch mode (Flow PomoFocus)
+      if (currentMode === 'pomodoro') {
+        switchMode('short');
+      } else {
+        switchMode('pomodoro');
+      }
+    });
+
+    /* === Event Listeners === */
+    btnToggle.addEventListener('click', toggleTimer);
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => switchMode(tab.dataset.mode));
+    });
+
+    /* === Tasks Logic === */
+    const taskListEl = document.getElementById('task-list');
+    const taskForm = document.getElementById('task-form');
+    const taskInput = document.getElementById('task-input');
+
+    function saveTasks() {
+      localStorage.setItem('pomo_tasks', JSON.stringify(tasks));
+      renderTasks();
+    }
+
+    function renderTasks() {
+      if (tasks.length === 0) {
+        taskListEl.innerHTML = '';
+        return;
+      }
+      taskListEl.innerHTML = tasks.map((t, idx) => `
+        <div class="task-item ${t.done ? 'done' : ''} ${activeTaskId === t.id ? 'active' : ''}">
+          <div class="task-item-left" onclick="toggleTask(${t.id})">
+            <div class="task-check">${t.done ? '✓' : ''}</div>
+            <div class="task-title">${escapeHtml(t.title)}</div>
+          </div>
+          <button class="btn-task-del" onclick="deleteTask(${t.id})">🗑️</button>
+        </div>
+      `).join('');
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    window.toggleTask = function(id) {
+      const t = tasks.find(x => x.id === id);
+      if (t) {
+        t.done = !t.done;
+        if (t.done && activeTaskId === id) activeTaskId = null;
+        else if (!t.done && activeTaskId !== id) activeTaskId = id;
+        saveTasks();
+      }
+    };
+
+    window.deleteTask = function(id) {
+      tasks = tasks.filter(x => x.id !== id);
+      if (activeTaskId === id) activeTaskId = null;
+      saveTasks();
+    };
+
+    document.getElementById('btn-add-task').addEventListener('click', () => {
+      document.getElementById('btn-add-task').style.display = 'none';
+      taskForm.classList.add('show');
+      taskInput.focus();
+    });
+
+    document.getElementById('btn-cancel-task').addEventListener('click', () => {
+      taskForm.classList.remove('show');
+      document.getElementById('btn-add-task').style.display = 'block';
+      taskInput.value = '';
+    });
+
+    document.getElementById('btn-save-task').addEventListener('click', () => {
+      const title = taskInput.value.trim();
+      if (title) {
+        tasks.push({ id: Date.now(), title, done: false });
+        saveTasks();
+      }
+      taskForm.classList.remove('show');
+      document.getElementById('btn-add-task').style.display = 'block';
+      taskInput.value = '';
+    });
+
+    taskInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') document.getElementById('btn-save-task').click();
+      if (e.key === 'Escape') document.getElementById('btn-cancel-task').click();
+    });
+
+    // Run once
+    updateDisplay();
+    renderTasks();
+  </script>
+</body>
+</html>

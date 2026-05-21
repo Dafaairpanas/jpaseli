@@ -72,11 +72,29 @@ import '../styles/global.css';
     /* Loading */
     .loading { text-align: center; padding: 4rem; color: var(--text-muted); font-size: 1.2rem; }
 
+    /* Template Form */
+    .tpl-form { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+    .tpl-form h3 { font-size: 1.2rem; margin: 0; }
+    .tpl-input { width: 100%; padding: 0.75rem 1rem; font-size: 0.95rem; border: 1px solid var(--border-color); background: var(--bg-primary); color: var(--text-main); border-radius: 6px; outline: none; font-family: inherit; transition: border-color 0.2s; }
+    .tpl-input:focus { border-color: var(--accent); }
+    .tpl-input-sm { padding: 0.6rem 1rem; font-size: 0.9rem; }
+    .tpl-textarea { min-height: 150px; resize: vertical; font-family: 'Courier New', monospace; font-size: 0.85rem; line-height: 1.5; }
+    .tpl-row { display: flex; gap: 1rem; }
+    .tpl-row > * { flex: 1; }
+    .tpl-card { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem; display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; transition: background 0.2s; }
+    .tpl-card:hover { background: var(--highlight-bg); }
+    .tpl-card-info { flex: 1; }
+    .tpl-card-name { font-size: 1.1rem; font-weight: 700; }
+    .tpl-card-desc { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem; }
+    .tpl-card-meta { font-size: 0.75rem; color: var(--accent); font-weight: 600; margin-top: 0.35rem; }
+    .tpl-list { display: flex; flex-direction: column; gap: 0.6rem; }
+
     @media (max-width: 768px) {
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
       .tabs { overflow-x: auto; }
       .tab-btn { padding: 0.75rem 1rem; font-size: 0.85rem; white-space: nowrap; }
       .detail-header { flex-direction: column; gap: 1rem; align-items: flex-start; }
+      .tpl-row { flex-direction: column; }
     }
   </style>
 </head>
@@ -106,6 +124,7 @@ import '../styles/global.css';
     <div class="tabs">
       <button class="tab-btn active" data-tab="days">Daftar Day</button>
       <button class="tab-btn" data-tab="detail">Detail Materi</button>
+      <button class="tab-btn" data-tab="template">Template FC</button>
     </div>
 
     <!-- Tab: Daftar Day -->
@@ -140,6 +159,36 @@ import '../styles/global.css';
       </div>
       <div id="detail-content">
         <p style="text-align: center; color: var(--text-muted); padding: 4rem;">Masukkan nomor Day di atas untuk melihat detailnya.</p>
+      </div>
+    </div>
+
+    <!-- Tab: Template Flashcard -->
+    <div class="tab-panel" id="tab-template">
+      <!-- Form Tambah -->
+      <div class="tpl-form" id="tpl-form">
+        <h3 id="tpl-form-title">➕ Tambah Template Baru</h3>
+        <div class="tpl-row">
+          <input type="text" class="tpl-input tpl-input-sm" id="tpl-nama" placeholder="Nama template (cth: Bab 1 - Kotoba)" />
+          <input type="number" class="tpl-input tpl-input-sm" id="tpl-urutan" placeholder="Urutan (0, 1, 2...)" style="max-width: 140px;" />
+        </div>
+        <input type="text" class="tpl-input tpl-input-sm" id="tpl-deskripsi" placeholder="Deskripsi singkat (opsional)" />
+        <textarea class="tpl-input tpl-textarea" id="tpl-json" placeholder='Paste data JSON flashcard...
+
+Contoh:
+[
+  {"front": "犬", "back": "Anjing", "hint": "いぬ"},
+  {"front": "猫", "back": "Kucing", "hint": "ねこ"}
+]'></textarea>
+        <div class="fc-error" id="tpl-error" style="display:none; color:#ff5252; font-size:0.9rem; padding:0.5rem 0.75rem; background:rgba(255,82,82,0.08); border:1px solid rgba(255,82,82,0.2); border-radius:6px;"></div>
+        <div style="display: flex; gap: 0.75rem;">
+          <button class="btn-sm btn-accent" id="tpl-btn-save" style="padding: 0.7rem 1.5rem;">SIMPAN</button>
+          <button class="btn-sm" id="tpl-btn-cancel" style="padding: 0.7rem 1.5rem; display: none;">BATAL</button>
+        </div>
+      </div>
+
+      <!-- Daftar Template -->
+      <div class="tpl-list" id="tpl-list">
+        <p class="loading">Memuat template...</p>
       </div>
     </div>
   </div>
@@ -394,9 +443,157 @@ import '../styles/global.css';
       }
     });
 
+    /* ========== Template Flashcard CRUD ========== */
+    const tplNama = document.getElementById('tpl-nama');
+    const tplDeskripsi = document.getElementById('tpl-deskripsi');
+    const tplJson = document.getElementById('tpl-json');
+    const tplUrutan = document.getElementById('tpl-urutan');
+    const tplError = document.getElementById('tpl-error');
+    const tplList = document.getElementById('tpl-list');
+    const tplBtnSave = document.getElementById('tpl-btn-save');
+    const tplBtnCancel = document.getElementById('tpl-btn-cancel');
+    const tplFormTitle = document.getElementById('tpl-form-title');
+    let editingTemplateId = null;
+
+    async function loadTemplates() {
+      try {
+        const res = await fetch('/api/flashcard-template?action=list');
+        const templates = await res.json();
+        if (!Array.isArray(templates) || templates.length === 0) {
+          tplList.innerHTML = '<p style="text-align:center; color:var(--text-muted); padding:2rem;">Belum ada template. Buat template pertama di form atas.</p>';
+          return;
+        }
+        tplList.innerHTML = templates.map(t => `
+          <div class="tpl-card" data-id="${t.id}">
+            <div class="tpl-card-info">
+              <div class="tpl-card-name">${escapeHtmlAdmin(t.nama)}</div>
+              ${t.deskripsi ? `<div class="tpl-card-desc">${escapeHtmlAdmin(t.deskripsi)}</div>` : ''}
+              <div class="tpl-card-meta">${t.jumlah_kartu} kartu · Urutan: ${t.urutan}</div>
+            </div>
+            <div style="display: flex; gap: 0.5rem; flex-shrink: 0;">
+              <button class="btn-sm btn-accent" onclick="editTemplate(${t.id})">EDIT</button>
+              <button class="btn-sm btn-danger" onclick="deleteTemplate(${t.id}, '${escapeHtmlAdmin(t.nama)}')">HAPUS</button>
+            </div>
+          </div>
+        `).join('');
+      } catch (e) {
+        tplList.innerHTML = '<p style="text-align:center; color:#ff5252; padding:2rem;">Gagal memuat template.</p>';
+      }
+    }
+
+    function escapeHtmlAdmin(str) {
+      const div = document.createElement('div');
+      div.textContent = str || '';
+      return div.innerHTML;
+    }
+
+    function resetTemplateForm() {
+      tplNama.value = '';
+      tplDeskripsi.value = '';
+      tplJson.value = '';
+      tplUrutan.value = '';
+      tplError.style.display = 'none';
+      editingTemplateId = null;
+      tplFormTitle.textContent = '➕ Tambah Template Baru';
+      tplBtnSave.textContent = 'SIMPAN';
+      tplBtnCancel.style.display = 'none';
+    }
+
+    tplBtnSave.addEventListener('click', async () => {
+      const nama = tplNama.value.trim();
+      const deskripsi = tplDeskripsi.value.trim();
+      const jsonStr = tplJson.value.trim();
+      const urutan = parseInt(tplUrutan.value) || 0;
+
+      if (!nama) { tplError.textContent = '⚠ Nama template wajib diisi.'; tplError.style.display = 'block'; return; }
+      if (!jsonStr) { tplError.textContent = '⚠ Data JSON wajib diisi.'; tplError.style.display = 'block'; return; }
+
+      try {
+        const parsed = JSON.parse(jsonStr);
+        if (!Array.isArray(parsed) || parsed.length === 0) throw new Error('Data harus array JSON yang tidak kosong.');
+      } catch (e) {
+        tplError.textContent = '⚠ JSON tidak valid: ' + e.message;
+        tplError.style.display = 'block';
+        return;
+      }
+
+      try {
+        if (editingTemplateId) {
+          await fetch('/api/flashcard-template', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: editingTemplateId })
+          });
+        }
+
+        const res = await fetch('/api/flashcard-template', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nama, deskripsi, data_json: jsonStr, urutan })
+        });
+        const result = await res.json();
+
+        if (result.success) {
+          showToast(editingTemplateId ? `Template "${nama}" berhasil diperbarui` : result.message, 'success');
+          resetTemplateForm();
+          loadTemplates();
+        } else {
+          showToast('Error: ' + result.error, 'error');
+        }
+      } catch (e) {
+        showToast('Gagal menyimpan: ' + e.message, 'error');
+      }
+    });
+
+    tplBtnCancel.addEventListener('click', resetTemplateForm);
+
+    window.editTemplate = async function(id) {
+      try {
+        const res = await fetch(`/api/flashcard-template?action=detail&id=${id}`);
+        const tpl = await res.json();
+        if (tpl.error) { showToast(tpl.error, 'error'); return; }
+
+        editingTemplateId = id;
+        tplNama.value = tpl.nama;
+        tplDeskripsi.value = tpl.deskripsi || '';
+        tplUrutan.value = tpl.urutan || 0;
+        tplJson.value = typeof tpl.data_json === 'string' ? tpl.data_json : JSON.stringify(tpl.data_json, null, 2);
+        tplFormTitle.textContent = '✏️ Edit Template';
+        tplBtnSave.textContent = 'PERBARUI';
+        tplBtnCancel.style.display = '';
+        tplError.style.display = 'none';
+        tplNama.focus();
+        document.getElementById('tpl-form').scrollIntoView({ behavior: 'smooth' });
+      } catch (e) {
+        showToast('Gagal memuat template: ' + e.message, 'error');
+      }
+    };
+
+    window.deleteTemplate = function(id, nama) {
+      showConfirm(
+        `Hapus Template?`,
+        `Template "${nama}" akan dihapus permanen.`,
+        async () => {
+          const res = await fetch('/api/flashcard-template', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id })
+          });
+          const data = await res.json();
+          if (data.success) {
+            showToast(data.message, 'success');
+            loadTemplates();
+          } else {
+            showToast('Error: ' + data.error, 'error');
+          }
+        }
+      );
+    };
+
     // Init
     loadStats();
     loadDays();
+    loadTemplates();
   </script>
 </body>
 </html>

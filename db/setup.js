@@ -43,6 +43,15 @@ db.exec(`
       arti TEXT,
       urutan_slide INTEGER
   );
+
+  CREATE TABLE IF NOT EXISTS flashcard_template (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      nama TEXT NOT NULL,
+      deskripsi TEXT,
+      data_json TEXT NOT NULL,
+      urutan INTEGER DEFAULT 0,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  );
 `);
 
 // Hapus data lama agar saat di-rerun tidak dobel
