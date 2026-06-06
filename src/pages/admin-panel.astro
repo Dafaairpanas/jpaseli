@@ -518,19 +518,20 @@ Contoh:
       }
 
       try {
+        let res;
         if (editingTemplateId) {
-          await fetch('/api/flashcard-template', {
-            method: 'DELETE',
+          res = await fetch('/api/flashcard-template', {
+            method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: editingTemplateId })
+            body: JSON.stringify({ id: editingTemplateId, nama, deskripsi, data_json: jsonStr, urutan })
+          });
+        } else {
+          res = await fetch('/api/flashcard-template', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nama, deskripsi, data_json: jsonStr, urutan })
           });
         }
-
-        const res = await fetch('/api/flashcard-template', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ nama, deskripsi, data_json: jsonStr, urutan })
-        });
         const result = await res.json();
 
         if (result.success) {

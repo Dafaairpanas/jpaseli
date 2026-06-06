@@ -97,3 +97,38 @@ export const DELETE = async ({ request }) => {
     return new Response(JSON.stringify({ error: error.message }), { status: 500 });
   }
 };
+
+// PUT: Perbarui template
+export const PUT = async ({ request }) => {
+  try {
+    const data = await request.json();
+    const { id, nama, deskripsi, data_json, urutan } = data;
+
+    if (!id || !nama || !data_json) {
+      return new Response(JSON.stringify({ error: 'Field id, nama, dan data_json wajib diisi' }), { status: 400 });
+    }
+
+    // Validasi JSON
+    const parsed = JSON.parse(typeof data_json === 'string' ? data_json : JSON.stringify(data_json));
+    if (!Array.isArray(parsed) || parsed.length === 0) {
+      return new Response(JSON.stringify({ error: 'data_json harus berupa array JSON yang tidak kosong' }), { status: 400 });
+    }
+
+    const jsonStr = typeof data_json === 'string' ? data_json : JSON.stringify(data_json);
+    const result = db.prepare(
+      'UPDATE flashcard_template SET nama = ?, deskripsi = ?, data_json = ?, urutan = ? WHERE id = ?'
+    ).run(nama, deskripsi || '', jsonStr, urutan || 0, id);
+
+    if (result.changes === 0) {
+      return new Response(JSON.stringify({ error: 'Template tidak ditemukan' }), { status: 404 });
+    }
+
+    return new Response(JSON.stringify({
+      success: true,
+      message: `Template "${nama}" berhasil diperbarui`
+    }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+  } catch (error) {
+    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+  }
+};
+

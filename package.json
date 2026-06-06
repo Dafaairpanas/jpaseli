@@ -16,5 +16,8 @@
     "@astrojs/vercel": "^10.0.4",
     "astro": "^6.1.7",
     "better-sqlite3": "^12.9.0"
+  },
+  "devDependencies": {
+    "prettier": "3.8.3"
   }
 }

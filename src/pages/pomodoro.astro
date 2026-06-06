@@ -290,6 +290,224 @@ import '../styles/global.css';
       border-color: var(--text-main);
     }
 
+    /* History Section */
+    .history-section {
+      width: 100%;
+      margin-top: 3rem;
+    }
+    .history-header {
+      font-size: 1.2rem;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Stats Card */
+    .stats-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .stats-row {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    .stat-item .stat-icon { font-size: 1.1rem; }
+    .stat-item .stat-value {
+      color: var(--pomo-color);
+      font-weight: 800;
+      font-size: 1.15rem;
+      transition: color 0.3s;
+    }
+
+    /* Progress Bar */
+    .progress-wrap {
+      margin-top: 0.25rem;
+    }
+    .progress-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      display: flex;
+      justify-content: space-between;
+    }
+    .progress-bar-bg {
+      width: 100%;
+      height: 10px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 99px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--pomo-color);
+      border-radius: 99px;
+      transition: width 0.5s ease, background 0.3s;
+      min-width: 0;
+    }
+
+    /* Chart Tabs */
+    .chart-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .chart-tab {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 0.4rem 1rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .chart-tab:hover { border-color: var(--text-main); color: var(--text-main); }
+    .chart-tab.active {
+      background: var(--pomo-color);
+      border-color: var(--pomo-color);
+      color: #fff;
+    }
+
+    /* Chart Container */
+    .chart-container {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .chart-container canvas {
+      width: 100%;
+      height: 200px;
+      display: block;
+    }
+    .chart-empty {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* Session List */
+    .session-list-header {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: var(--text-muted);
+    }
+    .session-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .session-item {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-left: 3px solid var(--pomo-color);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+      transition: border-left-color 0.3s;
+    }
+    .session-time {
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      min-width: 48px;
+    }
+    .session-duration {
+      color: var(--pomo-color);
+      font-weight: 700;
+      transition: color 0.3s;
+    }
+    .session-task {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-left: auto;
+      text-align: right;
+      max-width: 40%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Clear Button */
+    .btn-clear-history {
+      width: 100%;
+      background: transparent;
+      border: 1px dashed var(--border-color);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.75rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-clear-history:hover {
+      border-color: #ef4444;
+      color: #ef4444;
+      background: rgba(239, 68, 68, 0.08);
+    }
+
+    /* Target Setting */
+    .target-setting {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px dashed var(--border-color);
+    }
+    .target-setting label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .target-input {
+      width: 60px;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.3rem 0.5rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-family: inherit;
+      font-weight: 700;
+      text-align: center;
+      outline: none;
+    }
+    .target-input:focus { border-color: var(--pomo-color); }
+    .target-unit {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
     /* Alarm Overlay */
     .alarm-overlay {
       position: fixed;
@@ -357,6 +575,57 @@ import '../styles/global.css';
       </div>
 
       <button class="btn-add-task" id="btn-add-task">+ Add Task</button>
+    </div>
+
+    <!-- History Section -->
+    <div class="history-section">
+      <div class="history-header">📊 Riwayat Belajar</div>
+
+      <!-- Stats Hari Ini -->
+      <div class="stats-card" id="stats-card">
+        <div class="stats-row">
+          <div class="stat-item">
+            <span class="stat-icon">🍅</span>
+            <span id="stat-sessions">0</span> <span>Sesi</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-icon">⏱</span>
+            <span class="stat-value" id="stat-hours">0</span> <span>jam</span>
+          </div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-label">
+            <span>Progress Hari Ini</span>
+            <span id="progress-text">0 / 4 jam</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progress-fill" style="width: 0%"></div>
+          </div>
+        </div>
+        <div class="target-setting">
+          <label for="target-input">🎯 Target harian:</label>
+          <input type="number" class="target-input" id="target-input" min="0.5" max="24" step="0.5" value="4" />
+          <span class="target-unit">jam</span>
+        </div>
+      </div>
+
+      <!-- Chart Tabs -->
+      <div class="chart-tabs">
+        <button class="chart-tab active" data-chart="daily">Harian</button>
+        <button class="chart-tab" data-chart="monthly">Bulanan</button>
+      </div>
+
+      <!-- Chart Container -->
+      <div class="chart-container">
+        <canvas id="chart-daily" width="600" height="200"></canvas>
+        <canvas id="chart-monthly" width="600" height="200" style="display:none"></canvas>
+      </div>
+
+      <!-- Session List -->
+      <div class="session-list-header">Sesi Hari Ini:</div>
+      <div class="session-list" id="session-list"></div>
+
+      <button class="btn-clear-history" id="btn-clear-history">🗑 Hapus Semua Riwayat</button>
     </div>
   </div>
 
@@ -463,6 +732,12 @@ import '../styles/global.css';
       pauseTimer();
       timeLeft = 0;
       updateDisplay();
+
+      /* Simpan sesi jika mode pomodoro (fokus) */
+      if (currentMode === 'pomodoro') {
+        saveSession();
+      }
+
       triggerAlarm();
     }
 
@@ -619,6 +894,288 @@ import '../styles/global.css';
     // Run once
     updateDisplay();
     renderTasks();
+
+    /* ========================================
+       HISTORY / RIWAYAT POMODORO
+       ======================================== */
+
+    let pomodoroHistory = JSON.parse(localStorage.getItem('pomo_history') || '[]');
+    let dailyTarget = parseFloat(localStorage.getItem('pomo_target') || '4');
+
+    const targetInput = document.getElementById('target-input');
+    targetInput.value = dailyTarget;
+
+    targetInput.addEventListener('change', () => {
+      let val = parseFloat(targetInput.value);
+      if (isNaN(val) || val < 0.5) val = 0.5;
+      if (val > 24) val = 24;
+      dailyTarget = val;
+      targetInput.value = val;
+      localStorage.setItem('pomo_target', val.toString());
+      renderHistory();
+    });
+
+    /* === Simpan Sesi === */
+    function saveSession() {
+      const now = new Date();
+      const session = {
+        id: Date.now(),
+        date: now.toISOString().slice(0, 10),
+        duration: TIMES.pomodoro / 60,
+        completedAt: now.toTimeString().slice(0, 8),
+        task: activeTaskId ? (tasks.find(t => t.id === activeTaskId)?.title || null) : null
+      };
+      pomodoroHistory.push(session);
+      localStorage.setItem('pomo_history', JSON.stringify(pomodoroHistory));
+      renderHistory();
+    }
+
+    /* === Helper: Ambil data per hari === */
+    function getTodayStr() {
+      return new Date().toISOString().slice(0, 10);
+    }
+
+    function getTodaySessions() {
+      const today = getTodayStr();
+      return pomodoroHistory.filter(s => s.date === today);
+    }
+
+    function getHoursForDate(dateStr) {
+      return pomodoroHistory
+        .filter(s => s.date === dateStr)
+        .reduce((sum, s) => sum + s.duration, 0) / 60;
+    }
+
+    /* === Render Stats Hari Ini === */
+    function renderTodayStats() {
+      const sessions = getTodaySessions();
+      const totalMinutes = sessions.reduce((sum, s) => sum + s.duration, 0);
+      const totalHours = totalMinutes / 60;
+
+      document.getElementById('stat-sessions').textContent = sessions.length;
+      document.getElementById('stat-hours').textContent = totalHours.toFixed(2);
+
+      const pct = Math.min((totalHours / dailyTarget) * 100, 100);
+      document.getElementById('progress-fill').style.width = pct + '%';
+      document.getElementById('progress-text').textContent =
+        `${totalHours.toFixed(1)} / ${dailyTarget} jam`;
+    }
+
+    /* === Render Session List === */
+    function renderSessionList() {
+      const sessions = getTodaySessions();
+      const listEl = document.getElementById('session-list');
+
+      if (sessions.length === 0) {
+        listEl.innerHTML = '<div class="chart-empty">Belum ada sesi hari ini. Mulai fokus! 🍅</div>';
+        return;
+      }
+
+      listEl.innerHTML = sessions.map(s => `
+        <div class="session-item">
+          <span class="session-time">${s.completedAt.slice(0, 5)}</span>
+          <span class="session-duration">${s.duration} menit</span>
+          ${s.task ? `<span class="session-task">${escapeHtml(s.task)}</span>` : ''}
+        </div>
+      `).join('');
+    }
+
+    /* === Draw Chart (Canvas) === */
+    function getComputedColor(varName) {
+      return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+    }
+
+    function drawBarChart(canvasId, labels, values, maxVal, unit) {
+      const canvas = document.getElementById(canvasId);
+      const ctx = canvas.getContext('2d');
+
+      /* Responsive: sesuaikan pixel ratio */
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+
+      const w = rect.width;
+      const h = rect.height;
+
+      ctx.clearRect(0, 0, w, h);
+
+      if (maxVal === 0) maxVal = 1;
+
+      const padding = { top: 20, right: 15, bottom: 35, left: 40 };
+      const chartW = w - padding.left - padding.right;
+      const chartH = h - padding.top - padding.bottom;
+      const barCount = labels.length;
+      const barGap = Math.max(chartW * 0.15 / barCount, 4);
+      const barWidth = (chartW - barGap * (barCount + 1)) / barCount;
+
+      /* Warna */
+      const pomoColor = getComputedColor('--pomo-color') || '#ef4444';
+      const textMuted = getComputedColor('--text-muted') || '#a0a0a0';
+      const borderColor = getComputedColor('--border-color') || '#333333';
+
+      /* Grid lines */
+      const gridLines = 4;
+      ctx.strokeStyle = borderColor;
+      ctx.lineWidth = 0.5;
+      ctx.setLineDash([4, 4]);
+      for (let i = 0; i <= gridLines; i++) {
+        const y = padding.top + (chartH / gridLines) * i;
+        ctx.beginPath();
+        ctx.moveTo(padding.left, y);
+        ctx.lineTo(w - padding.right, y);
+        ctx.stroke();
+
+        /* Y-axis label */
+        const val = (maxVal - (maxVal / gridLines) * i).toFixed(1);
+        ctx.setLineDash([]);
+        ctx.fillStyle = textMuted;
+        ctx.font = '11px Inter, sans-serif';
+        ctx.textAlign = 'right';
+        ctx.fillText(val, padding.left - 6, y + 4);
+        ctx.setLineDash([4, 4]);
+      }
+      ctx.setLineDash([]);
+
+      /* Bars */
+      values.forEach((val, i) => {
+        const x = padding.left + barGap + (barWidth + barGap) * i;
+        const barH = (val / maxVal) * chartH;
+        const y = padding.top + chartH - barH;
+
+        /* Gradient bar */
+        const grad = ctx.createLinearGradient(x, y, x, padding.top + chartH);
+        grad.addColorStop(0, pomoColor);
+        grad.addColorStop(1, pomoColor + '44');
+        ctx.fillStyle = grad;
+
+        /* Rounded top */
+        const r = Math.min(barWidth / 3, 6);
+        if (barH > r) {
+          ctx.beginPath();
+          ctx.moveTo(x, y + r);
+          ctx.arcTo(x, y, x + r, y, r);
+          ctx.arcTo(x + barWidth, y, x + barWidth, y + r, r);
+          ctx.lineTo(x + barWidth, padding.top + chartH);
+          ctx.lineTo(x, padding.top + chartH);
+          ctx.closePath();
+          ctx.fill();
+        } else if (barH > 0) {
+          ctx.fillRect(x, y, barWidth, barH);
+        }
+
+        /* Value on top */
+        if (val > 0) {
+          ctx.fillStyle = pomoColor;
+          ctx.font = 'bold 11px Inter, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(val.toFixed(1), x + barWidth / 2, y - 5);
+        }
+
+        /* X-axis label */
+        ctx.fillStyle = textMuted;
+        ctx.font = '11px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(labels[i], x + barWidth / 2, h - padding.bottom + 18);
+      });
+    }
+
+    /* === Grafik Harian (7 hari terakhir) === */
+    function drawDailyChart() {
+      const dayNames = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+      const labels = [];
+      const values = [];
+
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        const dateStr = d.toISOString().slice(0, 10);
+        labels.push(dayNames[d.getDay()]);
+        values.push(getHoursForDate(dateStr));
+      }
+
+      const maxVal = Math.max(...values, dailyTarget, 1);
+      drawBarChart('chart-daily', labels, values, maxVal, 'jam');
+    }
+
+    /* === Grafik Bulanan (6 bulan terakhir) === */
+    function drawMonthlyChart() {
+      const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+      const labels = [];
+      const values = [];
+
+      for (let i = 5; i >= 0; i--) {
+        const d = new Date();
+        d.setMonth(d.getMonth() - i);
+        const year = d.getFullYear();
+        const month = (d.getMonth() + 1).toString().padStart(2, '0');
+        const prefix = `${year}-${month}`;
+
+        labels.push(monthNames[d.getMonth()]);
+
+        const totalMinutes = pomodoroHistory
+          .filter(s => s.date.startsWith(prefix))
+          .reduce((sum, s) => sum + s.duration, 0);
+        values.push(totalMinutes / 60);
+      }
+
+      const maxVal = Math.max(...values, 1);
+      drawBarChart('chart-monthly', labels, values, maxVal, 'jam');
+    }
+
+    /* === Chart Tabs === */
+    let activeChart = 'daily';
+    const chartTabs = document.querySelectorAll('.chart-tab');
+    const chartDaily = document.getElementById('chart-daily');
+    const chartMonthly = document.getElementById('chart-monthly');
+
+    chartTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        activeChart = tab.dataset.chart;
+        chartTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        if (activeChart === 'daily') {
+          chartDaily.style.display = 'block';
+          chartMonthly.style.display = 'none';
+          drawDailyChart();
+        } else {
+          chartDaily.style.display = 'none';
+          chartMonthly.style.display = 'block';
+          drawMonthlyChart();
+        }
+      });
+    });
+
+    /* === Clear History === */
+    document.getElementById('btn-clear-history').addEventListener('click', () => {
+      if (confirm('Yakin ingin menghapus SEMUA riwayat Pomodoro? Data tidak bisa dikembalikan.')) {
+        pomodoroHistory = [];
+        localStorage.setItem('pomo_history', '[]');
+        renderHistory();
+      }
+    });
+
+    /* === Master Render === */
+    function renderHistory() {
+      renderTodayStats();
+      renderSessionList();
+      if (activeChart === 'daily') {
+        drawDailyChart();
+      } else {
+        drawMonthlyChart();
+      }
+    }
+
+    /* Redraw chart saat resize */
+    window.addEventListener('resize', () => {
+      if (activeChart === 'daily') drawDailyChart();
+      else drawMonthlyChart();
+    });
+
+    /* Init */
+    renderHistory();
   </script>
 </body>
 </html>
