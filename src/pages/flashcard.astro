@@ -147,13 +147,16 @@ import '../styles/global.css';
     .fc-card-container {
       perspective: 1500px;
       width: 100%;
-      min-height: clamp(250px, 45vh, 450px);
+      min-height: clamp(300px, 55vh, 500px);
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
     }
     .fc-card {
       width: 100%;
-      min-height: clamp(250px, 45vh, 450px);
+      flex: 1;
       position: relative;
       transform-style: preserve-3d;
       transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -165,7 +168,6 @@ import '../styles/global.css';
       position: absolute;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      min-height: clamp(250px, 45vh, 450px);
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
       border: 1px solid var(--border-color);
@@ -211,7 +213,8 @@ import '../styles/global.css';
       color: var(--text-main);
     }
     .fc-card-sub {
-      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      font-size: clamp(1.25rem, 3.5vw, 1.75rem);
+      font-weight: 500;
       color: var(--text-muted);
       line-height: 1.5;
       max-width: 100%;
@@ -234,12 +237,48 @@ import '../styles/global.css';
       letter-spacing: 0.02em;
       opacity: 0.8;
     }
-    .fc-controls {
+    .fc-study-actions {
       display: flex;
-      justify-content: center;
-      align-items: center;
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .fc-main-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: clamp(0.75rem, 2vw, 1.5rem);
-      flex-wrap: wrap;
+    }
+    .fc-main-actions .fc-btn {
+      padding: clamp(0.85rem, 2vh, 1.25rem);
+      font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .fc-secondary-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .fc-secondary-actions .fc-btn {
+      font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+      padding: 0.6rem 1rem;
+      border-radius: 12px;
+      flex: 1;
+    }
+    .fc-secondary-actions .fc-btn-icon {
+      flex: 0 0 auto;
+      padding: 0.6rem;
+      border-radius: 12px;
+    }
+    .fc-secondary-actions .fc-btn-icon svg {
+      width: 22px;
+      height: 22px;
     }
     .fc-btn {
       background: var(--bg-secondary);
@@ -637,7 +676,7 @@ import '../styles/global.css';
     @media (max-width: 480px) {
       .fc-header { margin-bottom: 1.5rem; padding-bottom: 1rem; }
       .fc-shortcuts { display: none; }
-      .fc-card-container, .fc-card, .fc-card-face { min-height: 300px; }
+      .fc-card-container { min-height: 350px; }
       .fc-stat { min-width: 100px; padding: 1rem; }
       .fc-template-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
     }
@@ -646,7 +685,7 @@ import '../styles/global.css';
     @media (max-height: 500px) {
       .fc-app { padding: 0.75rem 1.5rem; }
       .fc-header { margin-bottom: 0.75rem; padding-bottom: 0.75rem; }
-      .fc-card-container, .fc-card, .fc-card-face { min-height: 200px; }
+      .fc-card-container { min-height: 250px; }
       .fc-card-face { padding: 1.5rem 1rem; }
       .fc-study-section { gap: 0.75rem; }
       .fc-shortcuts { display: none; }
@@ -795,15 +834,30 @@ import '../styles/global.css';
         </div>
       </div>
 
-      <div class="fc-controls">
-        <button class="fc-btn fc-btn-icon" id="btn-prev" title="Sebelumnya">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-        </button>
-        <button class="fc-btn fc-btn-danger" id="btn-unknown">Belum Hafal</button>
-        <button class="fc-btn fc-btn-success" id="btn-known">Sudah Hafal</button>
-        <button class="fc-btn fc-btn-icon" id="btn-next" title="Berikutnya">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-        </button>
+      <div class="fc-study-actions">
+        <!-- Main Actions -->
+        <div class="fc-main-actions">
+          <button class="fc-btn fc-btn-danger" id="btn-unknown">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            Belum Hafal
+          </button>
+          <button class="fc-btn fc-btn-success" id="btn-known">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Sudah Hafal
+          </button>
+        </div>
+        
+        <!-- Secondary Actions -->
+        <div class="fc-secondary-actions">
+          <button class="fc-btn fc-btn-icon" id="btn-prev" title="Sebelumnya">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          </button>
+          <button class="fc-btn" id="btn-reset-study">Ulang</button>
+          <button class="fc-btn" id="btn-back-input">Ubah Data</button>
+          <button class="fc-btn fc-btn-icon" id="btn-next" title="Berikutnya">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+        </div>
       </div>
 
       <div class="fc-shortcuts">
@@ -812,11 +866,6 @@ import '../styles/global.css';
         <span><kbd>→</kbd> Berikutnya</span>
         <span><kbd>1</kbd> Belum hafal</span>
         <span><kbd>2</kbd> Sudah hafal</span>
-      </div>
-
-      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
-        <button class="fc-btn" id="btn-reset-study">Ulang Semua</button>
-        <button class="fc-btn" id="btn-back-input">Ubah Data</button>
       </div>
     </div>
 
