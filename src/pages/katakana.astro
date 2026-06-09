@@ -15,6 +15,61 @@ const katakana = [
   { romaji: 'wa', char: 'ワ' }, { romaji: '', char: '' }, { romaji: '', char: '' }, { romaji: '', char: '' }, { romaji: 'wo', char: 'ヲ' },
   { romaji: 'n', char: 'ン' }
 ];
+
+// Katakana Modern / Gabungan untuk kata-kata asing
+const katakanaModern = [
+  { group: 'ヴ行 (V)', items: [
+    { romaji: 'va', char: 'ヴァ' }, { romaji: 'vi', char: 'ヴィ' }, { romaji: 'vu', char: 'ヴ' }, { romaji: 've', char: 'ヴェ' }, { romaji: 'vo', char: 'ヴォ' },
+  ]},
+  { group: 'ヴャ行 (Vy)', items: [
+    { romaji: 'vya', char: 'ヴャ' }, { romaji: 'vyu', char: 'ヴュ' }, { romaji: 'vyo', char: 'ヴョ' },
+  ]},
+  { group: 'シェ・ジェ・チェ', items: [
+    { romaji: 'she', char: 'シェ' }, { romaji: 'je', char: 'ジェ' }, { romaji: 'che', char: 'チェ' },
+  ]},
+  { group: 'ティ・トゥ', items: [
+    { romaji: 'ti', char: 'ティ' }, { romaji: 'tu', char: 'トゥ' },
+  ]},
+  { group: 'テャ行 (Ty)', items: [
+    { romaji: 'tya', char: 'テャ' }, { romaji: 'tyu', char: 'テュ' }, { romaji: 'tyo', char: 'テョ' },
+  ]},
+  { group: 'ディ・ドゥ', items: [
+    { romaji: 'di', char: 'ディ' }, { romaji: 'du', char: 'ドゥ' },
+  ]},
+  { group: 'デャ行 (Dy)', items: [
+    { romaji: 'dya', char: 'デャ' }, { romaji: 'dyu', char: 'デュ' }, { romaji: 'dyo', char: 'デョ' },
+  ]},
+  { group: 'スィ・セャ行 (Sy)', items: [
+    { romaji: 'si', char: 'スィ' }, { romaji: 'sya', char: 'セャ' }, { romaji: 'syu', char: 'セュ' }, { romaji: 'syo', char: 'セョ' },
+  ]},
+  { group: 'ズィ・ゼャ行 (Zy)', items: [
+    { romaji: 'zi', char: 'ズィ' }, { romaji: 'zya', char: 'ゼャ' }, { romaji: 'zyu', char: 'ゼュ' }, { romaji: 'zyo', char: 'ゼョ' },
+  ]},
+  { group: 'ツァ行 (Ts)', items: [
+    { romaji: 'tsa', char: 'ツァ' }, { romaji: 'tsi', char: 'ツィ' }, { romaji: 'tse', char: 'ツェ' }, { romaji: 'tso', char: 'ツォ' },
+  ]},
+  { group: 'ファ行 (F)', items: [
+    { romaji: 'fa', char: 'ファ' }, { romaji: 'fi', char: 'フィ' }, { romaji: 'hu', char: 'ホゥ' }, { romaji: 'fe', char: 'フェ' }, { romaji: 'fo', char: 'フォ' },
+  ]},
+  { group: 'フャ行 (Fy)', items: [
+    { romaji: 'fya', char: 'フャ' }, { romaji: 'fyu', char: 'フュ' }, { romaji: 'fyo', char: 'フョ' },
+  ]},
+  { group: 'ウァ行 (W)', items: [
+    { romaji: 'wa', char: 'ウァ' }, { romaji: 'wi', char: 'ウィ' }, { romaji: 'we', char: 'ウェ' }, { romaji: 'wo', char: 'ウォ' },
+  ]},
+  { group: 'ウャ行 (Wy)', items: [
+    { romaji: 'wya', char: 'ウャ' }, { romaji: 'wyu', char: 'ウュ' }, { romaji: 'wyo', char: 'ウョ' },
+  ]},
+  { group: 'クァ行 (Kw)', items: [
+    { romaji: 'kwa', char: 'クァ' }, { romaji: 'kwi', char: 'クィ' }, { romaji: 'kwu', char: 'クゥ' }, { romaji: 'kwe', char: 'クェ' }, { romaji: 'kwo', char: 'クォ' },
+  ]},
+  { group: 'グァ行 (Gw)', items: [
+    { romaji: 'gwa', char: 'グァ' }, { romaji: 'gwi', char: 'グィ' }, { romaji: 'gwu', char: 'グゥ' }, { romaji: 'gwe', char: 'グェ' }, { romaji: 'gwo', char: 'グォ' },
+  ]},
+  { group: 'イェ・リェ', items: [
+    { romaji: 'ye', char: 'イェ' }, { romaji: 'rye', char: 'リェ' },
+  ]},
+];
 ---
 
 <html lang="id">
@@ -23,6 +78,55 @@ const katakana = [
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tabel Katakana - JPASELI</title>
   <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+  <style is:inline>
+    .modern-section {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 2px solid var(--border-color);
+    }
+    .modern-section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .modern-section-header h2 {
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 800;
+    }
+    .modern-badge {
+      background: linear-gradient(135deg, #f59e0b, #ef4444);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.75rem;
+      border-radius: 99px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .modern-desc {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+    .modern-group {
+      margin-bottom: 1.5rem;
+    }
+    .modern-group-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+      padding-left: 0.25rem;
+      letter-spacing: 0.02em;
+    }
+    .modern-group-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1rem;
+    }
+  </style>
 </head>
 <body data-theme="light">
   <div class="dashboard-container">
@@ -38,10 +142,11 @@ const katakana = [
       <input type="text" class="search-bar" id="search-input" placeholder="Cari huruf (romaji / katakana)..." />
     </div>
     
+    <!-- Katakana Dasar -->
     <main class="day-list" style="grid-template-columns: repeat(5, 1fr); gap: 1rem;">
       {katakana.map(h => (
         h.char ? (
-          <div class="day-card" style="padding: 2rem 1rem; cursor: pointer; position: relative;" data-text={h.char}>
+          <div class="day-card kana-card" style="padding: 2rem 1rem; cursor: pointer; position: relative;" data-text={h.char}>
             <strong style="font-size: 3rem; font-weight: normal;">{h.char}</strong>
             <span style="font-size: 1.2rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">{h.romaji}</span>
             <div style="position: absolute; top: 0.5rem; right: 0.5rem; opacity: 0.5;">
@@ -53,6 +158,35 @@ const katakana = [
         )
       ))}
     </main>
+
+    <!-- Katakana Modern / Gabungan -->
+    <div class="modern-section" id="modern-section">
+      <div class="modern-section-header">
+        <h2>Katakana Modern</h2>
+        <span class="modern-badge">Gabungan</span>
+      </div>
+      <p class="modern-desc">
+        Huruf-huruf ini adalah tambahan modern untuk menuliskan kata-kata asing (gairaigo). 
+        Katakana gabungan ini tidak memiliki padanan Hiragana.
+      </p>
+
+      {katakanaModern.map(group => (
+        <div class="modern-group">
+          <div class="modern-group-title">{group.group}</div>
+          <div class="modern-group-grid">
+            {group.items.map(item => (
+              <div class="day-card kana-card" style="padding: 2rem 1rem; cursor: pointer; position: relative;" data-text={item.char}>
+                <strong style="font-size: 3rem; font-weight: normal;">{item.char}</strong>
+                <span style="font-size: 1.2rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">{item.romaji}</span>
+                <div style="position: absolute; top: 0.5rem; right: 0.5rem; opacity: 0.5;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
   </div>
   <script is:inline>
     // Theme logic
@@ -61,29 +195,40 @@ const katakana = [
 
     // Search logic
     const searchInput = document.getElementById('search-input');
-    const cards = document.querySelectorAll('.day-card');
+    const cards = document.querySelectorAll('.kana-card');
     const placeholders = document.querySelectorAll('.empty-placeholder');
+    const modernGroups = document.querySelectorAll('.modern-group');
+    const modernSection = document.getElementById('modern-section');
     
     if (searchInput) {
       searchInput.addEventListener('input', (e) => {
         const val = e.target.value.toLowerCase().trim();
+        
+        // Filter semua kartu (dasar + modern)
         cards.forEach(c => {
           const text = c.innerText.toLowerCase();
-          if (text.includes(val)) {
-            c.style.display = 'flex';
-          } else {
-            c.style.display = 'none';
-          }
+          c.style.display = text.includes(val) ? 'flex' : 'none';
         });
         
         // Hide empty placeholders when searching
         placeholders.forEach(p => {
           p.style.display = val.length > 0 ? 'none' : 'block';
         });
+
+        // Sembunyikan grup modern yang semua kartunya tersembunyi
+        modernGroups.forEach(g => {
+          const visibleCards = g.querySelectorAll('.kana-card[style*="flex"], .kana-card:not([style*="none"])');
+          const allCards = g.querySelectorAll('.kana-card');
+          let hasVisible = false;
+          allCards.forEach(c => {
+            if (c.style.display !== 'none') hasVisible = true;
+          });
+          g.style.display = hasVisible ? 'block' : 'none';
+        });
       });
     }
 
-    // TTS Logic
+    // TTS Logic untuk semua kartu
     cards.forEach(btn => {
       btn.addEventListener('click', () => {
         const text = btn.getAttribute('data-text');
@@ -97,7 +242,7 @@ const katakana = [
         
         window.speechSynthesis.speak(utterance);
         
-        // Animasi kecil di popup icon
+        // Animasi kecil
         const icon = btn.querySelector('svg');
         if (icon) {
           icon.style.transform = 'scale(1.3)';

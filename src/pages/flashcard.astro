@@ -212,6 +212,13 @@ import '../styles/global.css';
       max-width: 100%;
       color: var(--text-main);
     }
+    .fc-card-main ruby { ruby-position: over; }
+    .fc-card-main rt {
+      font-size: 0.35em;
+      color: var(--text-muted);
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
     .fc-card-sub {
       font-size: clamp(1.25rem, 3.5vw, 1.75rem);
       font-weight: 500;
@@ -514,19 +521,19 @@ import '../styles/global.css';
     }
     .fc-template-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 0.6rem;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 0.5rem;
     }
     .fc-template-card {
       background: var(--bg-secondary);
       border: 1px solid var(--border-color);
-      border-radius: 10px;
-      padding: 0.85rem 1rem;
+      border-radius: 8px;
+      padding: 0.6rem 0.8rem;
       cursor: pointer;
       transition: all 0.2s ease;
       display: flex;
       flex-direction: column;
-      gap: 0.25rem;
+      gap: 0.2rem;
     }
     .fc-template-card:hover {
       border-color: var(--accent);
@@ -539,14 +546,14 @@ import '../styles/global.css';
       box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
     }
     .fc-template-name {
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       font-weight: 700;
       color: var(--text-main);
     }
     .fc-template-desc {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: var(--text-muted);
-      line-height: 1.4;
+      line-height: 1.3;
     }
     .fc-template-badge {
       font-size: 0.7rem;
@@ -778,7 +785,7 @@ import '../styles/global.css';
 
       <!-- Template Selector -->
       <div class="fc-template-section">
-        <span class="fc-template-label">📚 Template Tersedia</span>
+        <span class="fc-template-label">MNN</span>
         <div class="fc-template-grid" id="template-grid">
           <div class="fc-template-empty">Memuat template...</div>
         </div>
@@ -1004,6 +1011,48 @@ import '../styles/global.css';
       }
     }
 
+    function isKanji(ch) {
+      const c = ch.charCodeAt(0);
+      return (c >= 0x4E00 && c <= 0x9FFF) || (c >= 0x3400 && c <= 0x4DBF) || (c >= 0xF900 && c <= 0xFAFF);
+    }
+
+    function escapeHtmlChars(str) {
+      const d = document.createElement('div');
+      d.textContent = str;
+      return d.innerHTML;
+    }
+
+    function generateFurigana(text, reading) {
+      if (!reading || !text) return escapeHtmlChars(text || '');
+      const chars = [...text];
+      if (!chars.some(isKanji)) return escapeHtmlChars(text);
+      if (chars.every(isKanji)) return `<ruby>${escapeHtmlChars(text)}<rt>${escapeHtmlChars(reading)}</rt></ruby>`;
+
+      let result = '';
+      let ti = 0, ri = 0;
+      while (ti < text.length) {
+        if (!isKanji(text[ti])) {
+          result += escapeHtmlChars(text[ti]);
+          ti++;
+          ri++;
+        } else {
+          let ks = ti;
+          while (ti < text.length && isKanji(text[ti])) ti++;
+          const kanji = text.slice(ks, ti);
+          let re;
+          if (ti < text.length) {
+            re = reading.indexOf(text[ti], ri);
+            if (re === -1) re = reading.length;
+          } else {
+            re = reading.length;
+          }
+          result += `<ruby>${escapeHtmlChars(kanji)}<rt>${escapeHtmlChars(reading.slice(ri, re))}</rt></ruby>`;
+          ri = re;
+        }
+      }
+      return result;
+    }
+
     function adjustFontSize(element, text) {
       const len = text.length;
       if (len < 6) {
@@ -1060,16 +1109,29 @@ import '../styles/global.css';
           hintText = isReverse ? card.extra : card.hint;
           extraText = isReverse ? card.hint : card.extra;
         }
+
+        // Tentukan apakah furigana bisa ditampilkan
+        const canFuriganaFront = !isReverse && studyMode === 'normal' && card.hint && card.hint.trim() !== card.front.trim();
+        const canFuriganaBack = isReverse && studyMode === 'normal' && card.hint && card.hint.trim() !== card.front.trim();
         
         const frontEl = document.getElementById('card-front-text');
-        frontEl.textContent = frontText;
+        if (canFuriganaFront) {
+          frontEl.innerHTML = generateFurigana(frontText, card.hint);
+          hintText = ''; // Hint sudah tampil sebagai furigana
+        } else {
+          frontEl.textContent = frontText;
+        }
         adjustFontSize(frontEl, frontText);
 
         const hintEl = document.getElementById('card-front-hint');
         if (hintText) { hintEl.textContent = hintText; hintEl.style.display = 'block'; } else { hintEl.style.display = 'none'; }
         
         const backEl = document.getElementById('card-back-text');
-        backEl.textContent = backText;
+        if (canFuriganaBack) {
+          backEl.innerHTML = generateFurigana(card.front, card.hint);
+        } else {
+          backEl.textContent = backText;
+        }
         adjustFontSize(backEl, backText);
         const extraEl = document.getElementById('card-back-extra');
         if (extraText) { extraEl.textContent = extraText; extraEl.style.display = 'block'; } else { extraEl.style.display = 'none'; }
