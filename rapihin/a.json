@@ -1,0 +1,177 @@
+[
+    {
+        "front": "私",
+        "back": "Saya",
+        "hint": "わたし"
+    },
+    {
+        "front": "あなた",
+        "back": "Kamu"
+    },
+    {
+        "front": "あの人",
+        "back": "Orang itu (biasa)",
+        "hint": "あのひと"
+    },
+    {
+        "front": "あの方",
+        "back": "Orang itu (sopan)",
+        "hint": "あのかた"
+    },
+    {
+        "front": "～さん",
+        "back": "Saudara……."
+    },
+    {
+        "front": "～ちゃん",
+        "back": "Panggilan untuk anak laki/perempuan"
+    },
+    {
+        "front": "～人",
+        "back": "Orang…….",
+        "hint": "～じん"
+    },
+    {
+        "front": "先生",
+        "back": "Guru,dosen",
+        "hint": "せんせい"
+    },
+    {
+        "front": "教師",
+        "back": "Guru,dosen (dipakai untuk kalangan sendiri)",
+        "hint": "きょうし"
+    },
+    {
+        "front": "学生",
+        "back": "Siswa,murid",
+        "hint": "がくせい"
+    },
+    {
+        "front": "会社員",
+        "back": "Pegawai perusahaan",
+        "hint": "かいしゃいん"
+    },
+    {
+        "front": "社員",
+        "back": "Pegawai perusahaan",
+        "hint": "しゃいん"
+    },
+    {
+        "front": "銀行員",
+        "back": "Pegawai bank",
+        "hint": "ぎんこういん"
+    },
+    {
+        "front": "医者",
+        "back": "Dokter",
+        "hint": "いしゃ"
+    },
+    {
+        "front": "研究者",
+        "back": "Peneliti",
+        "hint": "けんきゅうしゃ"
+    },
+    {
+        "front": "大学",
+        "back": "Universitas",
+        "hint": "だいがく"
+    },
+    {
+        "front": "病院",
+        "back": "Rumah sakit",
+        "hint": "びょういん"
+    },
+    {
+        "front": "だれ",
+        "back": "Siapa (biasa)"
+    },
+    {
+        "front": "どなた",
+        "back": "Siapa (sopan)"
+    },
+    {
+        "front": "～歳",
+        "back": "Umur…..",
+        "hint": "～さい"
+    },
+    {
+        "front": "何歳",
+        "back": "Umur berapa?(biasa)",
+        "hint": "なんさい"
+    },
+    {
+        "front": "おいくつ",
+        "back": "Umur berapa?(sopan)"
+    },
+    {
+        "front": "はい",
+        "back": "Iya"
+    },
+    {
+        "front": "いいえ",
+        "back": "Tidak"
+    },
+    {
+        "front": "はじめまして",
+        "back": "Perkenalkan"
+    },
+    {
+        "front": "～から来ました",
+        "back": "Datang dari…..",
+        "hint": "～からきました"
+    },
+    {
+        "front": "どうぞよろしくお願します",
+        "back": "Terimalah perkenalan saya",
+        "hint": "どうぞよろしくおねがいします"
+    },
+    {
+        "front": "失礼ですが",
+        "back": "Permisi",
+        "hint": "しつれいですが"
+    },
+    {
+        "front": "お名前は",
+        "back": "Nama anda siapa?",
+        "hint": "おなまえは"
+    },
+    {
+        "front": "アメリカ",
+        "back": "Amerika"
+    },
+    {
+        "front": "イギリス",
+        "back": "Inggris"
+    },
+    {
+        "front": "インド",
+        "back": "India"
+    },
+    {
+        "front": "インドネシア",
+        "back": "Indonesia"
+    },
+    {
+        "front": "韓国",
+        "back": "Korea",
+        "hint": "かんこく"
+    },
+    {
+        "front": "中国",
+        "back": "China",
+        "hint": "ちゅうごく"
+    },
+    {
+        "front": "ドイツ",
+        "back": "Jerman"
+    },
+    {
+        "front": "日本",
+        "back": "Jepang",
+        "hint": "にほん"
+    },
+    {
+        "front": "フランス",
+        "back": "Perancis"
+    }
+]

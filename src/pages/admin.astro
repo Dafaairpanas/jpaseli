@@ -176,9 +176,33 @@ Catatan penting:
       statusBox.innerText = 'Mengupload...';
       statusBox.style.display = 'block';
 
+      // Validasi input tidak kosong
+      const rawInput = input.value.trim();
+      if (!rawInput) {
+        statusBox.classList.add('error');
+        statusBox.innerText = 'Textarea kosong. Paste data JSON terlebih dahulu.';
+        return;
+      }
+
+      // Parsing JSON di client
+      let payload;
       try {
-        const payload = JSON.parse(input.value);
-        
+        payload = JSON.parse(rawInput);
+      } catch (parseError) {
+        statusBox.classList.add('error');
+        statusBox.innerText = 'Format JSON tidak valid! Pastikan tidak ada koma berlebih atau kutipan yang salah.\n\nDetail: ' + parseError.message;
+        return;
+      }
+
+      // Validasi struktur dasar
+      if (!payload.day) {
+        statusBox.classList.add('error');
+        statusBox.innerText = 'Field "day" wajib ada di JSON. Contoh: { "day": 1, "bunpou": [...], "kanji": [...], "kotoba": [...] }';
+        return;
+      }
+
+      // Kirim ke server
+      try {
         const res = await fetch('/api/import', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -187,17 +211,21 @@ Catatan penting:
 
         const data = await res.json();
         
-        if (res.ok) {
+        if (res.ok && data.success) {
           statusBox.classList.add('success');
-          statusBox.innerText = data.message;
+          statusBox.innerText = data.message + (data.detail ? '\n' + data.detail : '');
           input.value = '';
         } else {
+          let errorText = 'Error: ' + (data.error || 'Terjadi kesalahan');
+          if (data.detail) {
+            errorText += '\n\nDetail:\n' + (Array.isArray(data.detail) ? data.detail.join('\n') : data.detail);
+          }
           statusBox.classList.add('error');
-          statusBox.innerText = 'Error Database: ' + data.error;
+          statusBox.innerText = errorText;
         }
-      } catch (e) {
+      } catch (fetchError) {
         statusBox.classList.add('error');
-        statusBox.innerText = 'Format JSON tidak valid! Pastikan tidak ada "koma" yang lebih atau kutipan yang salah. Detail: ' + e.message;
+        statusBox.innerText = 'Gagal terhubung ke server. Pastikan server berjalan.\n\nDetail: ' + fetchError.message;
       }
     });
   </script>

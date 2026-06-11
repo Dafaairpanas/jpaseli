@@ -187,6 +187,14 @@ Contoh:
       </div>
 
       <!-- Daftar Template -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 style="margin: 0; font-size: 1.2rem;">Daftar Template</h3>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn-sm" id="btn-import-all" style="padding: 0.6rem 1.2rem;">IMPORT ALL</button>
+          <button class="btn-sm btn-accent" id="btn-export-all" style="padding: 0.6rem 1.2rem;">EXPORT ALL</button>
+          <input type="file" id="file-import-all" accept=".json" style="display: none;" />
+        </div>
+      </div>
       <div class="tpl-list" id="tpl-list">
         <p class="loading">Memuat template...</p>
       </div>
@@ -471,7 +479,8 @@ Contoh:
               <div class="tpl-card-meta">${t.jumlah_kartu} kartu · Urutan: ${t.urutan}</div>
             </div>
             <div style="display: flex; gap: 0.5rem; flex-shrink: 0;">
-              <button class="btn-sm btn-accent" onclick="editTemplate(${t.id})">EDIT</button>
+              <a href="/flashcard/${t.id}" class="btn-sm btn-accent" style="text-decoration:none; display:inline-flex; align-items:center;">BELAJAR</a>
+              <button class="btn-sm" onclick="editTemplate(${t.id})">EDIT</button>
               <button class="btn-sm btn-danger" onclick="deleteTemplate(${t.id}, '${escapeHtmlAdmin(t.nama)}')">HAPUS</button>
             </div>
           </div>
@@ -590,6 +599,129 @@ Contoh:
         }
       );
     };
+
+    // Export All
+    document.getElementById('btn-export-all').addEventListener('click', async () => {
+      try {
+        const res = await fetch('/api/flashcard-template?action=export');
+        const data = await res.json();
+
+        if (!res.ok) {
+          showToast(data.error || 'Gagal mengexport template', 'error');
+          return;
+        }
+
+        if (!Array.isArray(data) || data.length === 0) {
+          showToast('Tidak ada template untuk diexport', 'error');
+          return;
+        }
+        
+        // Parse data_json agar hasil exportnya rapi
+        const formattedData = data.map(tpl => {
+          let parsedData = tpl.data_json;
+          try {
+            if (typeof tpl.data_json === 'string') {
+              parsedData = JSON.parse(tpl.data_json);
+            }
+          } catch (e) {
+            console.warn('Gagal parse data_json untuk template:', tpl.nama);
+          }
+          return { ...tpl, data_json: parsedData };
+        });
+
+        const blob = new Blob([JSON.stringify(formattedData, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `flashcard_all_bab_${new Date().toISOString().slice(0,10)}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast(`Export berhasil! (${formattedData.length} template)`, 'success');
+      } catch (e) {
+        showToast('Gagal export: ' + e.message, 'error');
+      }
+    });
+
+    // Import All
+    const fileImportAll = document.getElementById('file-import-all');
+    document.getElementById('btn-import-all').addEventListener('click', () => {
+      fileImportAll.click();
+    });
+    fileImportAll.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      // Validasi ekstensi file
+      if (!file.name.endsWith('.json')) {
+        showToast('File harus berformat .json', 'error');
+        fileImportAll.value = '';
+        return;
+      }
+
+      // Validasi ukuran file (max 10MB)
+      if (file.size > 10 * 1024 * 1024) {
+        showToast('Ukuran file terlalu besar (maks 10MB)', 'error');
+        fileImportAll.value = '';
+        return;
+      }
+
+      const reader = new FileReader();
+
+      reader.onerror = () => {
+        showToast('Gagal membaca file. Coba lagi.', 'error');
+        fileImportAll.value = '';
+      };
+
+      reader.onload = async (ev) => {
+        let json;
+        try {
+          json = JSON.parse(ev.target.result);
+        } catch (parseErr) {
+          showToast('JSON tidak valid: ' + parseErr.message, 'error');
+          fileImportAll.value = '';
+          return;
+        }
+
+        if (!Array.isArray(json)) {
+          showToast('Format JSON harus berupa array. Contoh: [{...}, {...}]', 'error');
+          fileImportAll.value = '';
+          return;
+        }
+
+        if (json.length === 0) {
+          showToast('File JSON kosong, tidak ada template untuk diimport', 'error');
+          fileImportAll.value = '';
+          return;
+        }
+
+        showConfirm('Import All Flashcard?', `Semua template lama akan DIHAPUS dan diganti dengan ${json.length} template dari file ini. Lanjutkan?`, async () => {
+          try {
+            const res = await fetch('/api/flashcard-template?action=importAll', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(json)
+            });
+            const result = await res.json();
+
+            if (result.success) {
+              showToast(result.message, 'success');
+              loadTemplates();
+            } else {
+              const errorMsg = result.detail
+                ? (Array.isArray(result.detail) ? result.detail.join(', ') : result.detail)
+                : result.error;
+              showToast('Error: ' + errorMsg, 'error');
+            }
+          } catch (fetchErr) {
+            showToast('Gagal import: ' + fetchErr.message, 'error');
+          }
+        });
+
+        fileImportAll.value = '';
+      };
+
+      reader.readAsText(file);
+    });
 
     // Init
     loadStats();
