@@ -80,41 +80,18 @@ import '../../styles/global.css';
       text-transform: uppercase;
       letter-spacing: 0.08em;
     }
-    .fc-mode-toggle {
-      display: flex;
-      gap: 0.25rem;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 0.2rem;
-    }
-    .fc-mode-btn {
-      background: transparent;
-      border: none;
-      padding: 0.4rem 0.75rem;
+    .fc-select-hint {
       font-size: 0.75rem;
-      font-weight: 700;
       color: var(--text-muted);
-      cursor: pointer;
-      border-radius: 6px;
-      transition: all 0.2s;
-      font-family: inherit;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    .fc-mode-btn.active {
-      background: var(--accent);
-      color: #000;
-    }
-    .fc-mode-btn:hover:not(.active) {
-      color: var(--text-main);
-      background: var(--highlight-bg);
+      font-style: italic;
     }
 
     .fc-template-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
       gap: 0.6rem;
+      user-select: none;
+      -webkit-user-select: none;
     }
     .fc-template-card {
       background: var(--bg-secondary);
@@ -122,7 +99,7 @@ import '../../styles/global.css';
       border-radius: 10px;
       padding: 0.8rem 1rem;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.15s ease;
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
@@ -137,8 +114,9 @@ import '../../styles/global.css';
     }
     .fc-template-card.selected {
       border-color: var(--accent);
-      background: rgba(16, 185, 129, 0.06);
-      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+      background: rgba(16, 185, 129, 0.08);
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3);
+      transform: translateY(-1px);
     }
     .fc-template-card .fc-check-icon {
       display: none;
@@ -182,6 +160,17 @@ import '../../styles/global.css';
       text-align: center;
       background: var(--highlight-bg);
       border-radius: 10px;
+    }
+
+    /* Drag selection highlight */
+    .fc-drag-selection {
+      position: fixed;
+      border: 2px dashed var(--accent);
+      background: rgba(16, 185, 129, 0.08);
+      pointer-events: none;
+      z-index: 998;
+      border-radius: 4px;
+      display: none;
     }
 
     /* Divider */
@@ -326,12 +315,15 @@ import '../../styles/global.css';
 
     @media (max-width: 480px) {
       .fc-template-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
-      .fc-mode-toggle { width: 100%; justify-content: center; }
+      .fc-select-hint { display: none; }
     }
   </style>
 </head>
 <body data-theme="light">
-  <!-- FAB for multi-select mode -->
+  <!-- Drag selection box -->
+  <div class="fc-drag-selection" id="drag-selection"></div>
+
+  <!-- FAB for multi-select -->
   <div class="fc-fab" id="fab-bar">
     <span class="fc-fab-text" id="fab-text">0 Bab Terpilih</span>
     <button class="fc-fab-btn" id="btn-fab-start">GABUNG & MULAI</button>
@@ -355,10 +347,7 @@ import '../../styles/global.css';
     <div class="fc-template-section">
       <div class="fc-template-header">
         <span class="fc-template-label">MNN</span>
-        <div class="fc-mode-toggle">
-          <button class="fc-mode-btn active" id="mode-browse" data-mode="browse">Belajar</button>
-          <button class="fc-mode-btn" id="mode-select" data-mode="select">Pilih Bab</button>
-        </div>
+        <span class="fc-select-hint">Klik = belajar · Double-click / seret = pilih beberapa bab</span>
       </div>
       <div class="fc-template-grid" id="template-grid">
         <div class="fc-template-empty">Memuat template...</div>
@@ -396,8 +385,18 @@ import '../../styles/global.css';
     const fabText = document.getElementById('fab-text');
     const jsonInput = document.getElementById('json-input');
     const jsonError = document.getElementById('json-error');
+    const dragSelBox = document.getElementById('drag-selection');
+
     let selectedTemplates = new Set();
-    let currentMode = 'browse'; // 'browse' or 'select'
+    let allTemplates = [];
+    let isMultiSelectMode = false;
+
+    /* Drag-select state */
+    let isDragging = false;
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let clickTimer = null;
+    let preventSingleClick = false;
 
     function showToast(msg) {
       const t = document.getElementById('fc-toast');
@@ -412,26 +411,11 @@ import '../../styles/global.css';
       return div.innerHTML;
     }
 
-    /* Mode toggle */
-    document.querySelectorAll('.fc-mode-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.fc-mode-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentMode = btn.dataset.mode;
-        selectedTemplates.clear();
-        fabBar.classList.remove('show');
-        renderTemplateCards();
-      });
-    });
-
     /* Load templates */
-    let allTemplates = [];
-
     async function loadTemplates() {
       try {
         const res = await fetch('/api/flashcard-template?action=list');
         allTemplates = await res.json();
-
         if (!Array.isArray(allTemplates) || allTemplates.length === 0) {
           templateGrid.innerHTML = '<div class="fc-template-empty">Belum ada template. Tambahkan via Admin Panel atau Generator.</div>';
           return;
@@ -444,14 +428,11 @@ import '../../styles/global.css';
 
     function renderTemplateCards() {
       if (allTemplates.length === 0) return;
-
       templateGrid.innerHTML = allTemplates.map(t => {
         const isSelected = selectedTemplates.has(String(t.id));
         return `
           <div class="fc-template-card ${isSelected ? 'selected' : ''}" 
-               data-id="${t.id}" tabindex="0"
-               role="button"
-               aria-label="${escapeHtml(t.nama)}">
+               data-id="${t.id}" tabindex="0">
             <span class="fc-check-icon">✓</span>
             <span class="fc-template-name">${escapeHtml(t.nama)}</span>
             ${t.deskripsi ? `<span class="fc-template-desc">${escapeHtml(t.deskripsi)}</span>` : ''}
@@ -459,28 +440,61 @@ import '../../styles/global.css';
           </div>
         `;
       }).join('');
+      bindCardEvents();
+    }
 
+    function bindCardEvents() {
       templateGrid.querySelectorAll('.fc-template-card').forEach(card => {
-        card.addEventListener('click', () => handleCardClick(card));
+        /* Single click = belajar langsung (tapi delay sedikit untuk cek double-click) */
+        card.addEventListener('click', (e) => {
+          if (preventSingleClick) { preventSingleClick = false; return; }
+          if (isDragging) return;
+
+          const id = card.dataset.id;
+
+          /* Kalau sudah dalam mode multi-select, click = toggle selection */
+          if (isMultiSelectMode) {
+            toggleSelect(card, id);
+            return;
+          }
+
+          /* Single click normal: buka halaman belajar */
+          /* Delay sedikit untuk cek apakah user double-click */
+          if (clickTimer) clearTimeout(clickTimer);
+          clickTimer = setTimeout(() => {
+            if (!preventSingleClick) {
+              window.location.href = `/flashcard/${id}`;
+            }
+            preventSingleClick = false;
+          }, 250);
+        });
+
+        /* Double-click = masuk mode multi-select */
+        card.addEventListener('dblclick', (e) => {
+          e.preventDefault();
+          if (clickTimer) clearTimeout(clickTimer);
+          preventSingleClick = true;
+
+          const id = card.dataset.id;
+          isMultiSelectMode = true;
+          toggleSelect(card, id);
+        });
       });
     }
 
-    function handleCardClick(card) {
-      const id = card.dataset.id;
-
-      if (currentMode === 'browse') {
-        /* Single click = navigasi langsung ke halaman belajar per bab */
-        window.location.href = `/flashcard/${id}`;
+    function toggleSelect(card, id) {
+      if (selectedTemplates.has(id)) {
+        selectedTemplates.delete(id);
+        card.classList.remove('selected');
       } else {
-        /* Multi-select mode */
-        if (selectedTemplates.has(id)) {
-          selectedTemplates.delete(id);
-          card.classList.remove('selected');
-        } else {
-          selectedTemplates.add(id);
-          card.classList.add('selected');
-        }
-        updateFab();
+        selectedTemplates.add(id);
+        card.classList.add('selected');
+      }
+      updateFab();
+
+      /* Kalau semua di-deselect, keluar dari multi-select mode */
+      if (selectedTemplates.size === 0) {
+        isMultiSelectMode = false;
       }
     }
 
@@ -493,9 +507,79 @@ import '../../styles/global.css';
       }
     }
 
+    /* Drag-select: mousedown pada grid area */
+    templateGrid.addEventListener('mousedown', (e) => {
+      /* Hanya mulai drag kalau bukan klik langsung pada card */
+      if (e.target.closest('.fc-template-card')) {
+        /* Mulai tracking posisi untuk drag dari card juga */
+        dragStartX = e.clientX;
+        dragStartY = e.clientY;
+        return;
+      }
+      dragStartX = e.clientX;
+      dragStartY = e.clientY;
+      isDragging = false;
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (e.buttons !== 1) return; /* Hanya left button */
+      
+      const dx = Math.abs(e.clientX - dragStartX);
+      const dy = Math.abs(e.clientY - dragStartY);
+
+      /* Mulai drag kalau sudah bergerak cukup jauh */
+      if (dx > 10 || dy > 10) {
+        if (!isDragging) {
+          isDragging = true;
+          isMultiSelectMode = true;
+          preventSingleClick = true;
+          if (clickTimer) clearTimeout(clickTimer);
+        }
+
+        /* Gambar selection box */
+        const x = Math.min(dragStartX, e.clientX);
+        const y = Math.min(dragStartY, e.clientY);
+        const w = Math.abs(e.clientX - dragStartX);
+        const h = Math.abs(e.clientY - dragStartY);
+
+        dragSelBox.style.display = 'block';
+        dragSelBox.style.left = x + 'px';
+        dragSelBox.style.top = y + 'px';
+        dragSelBox.style.width = w + 'px';
+        dragSelBox.style.height = h + 'px';
+
+        /* Cek card mana yang berada di dalam selection box */
+        const selRect = { left: x, top: y, right: x + w, bottom: y + h };
+        templateGrid.querySelectorAll('.fc-template-card').forEach(card => {
+          const cardRect = card.getBoundingClientRect();
+          const overlap = !(cardRect.right < selRect.left || cardRect.left > selRect.right ||
+                           cardRect.bottom < selRect.top || cardRect.top > selRect.bottom);
+          const id = card.dataset.id;
+          if (overlap) {
+            if (!selectedTemplates.has(id)) {
+              selectedTemplates.add(id);
+              card.classList.add('selected');
+            }
+          } else {
+            /* Hanya deselect kalau card ini di-select oleh drag saat ini */
+            /* Biarkan card yang sudah di-select sebelumnya tetap selected */
+          }
+        });
+        updateFab();
+      }
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (isDragging) {
+        dragSelBox.style.display = 'none';
+        setTimeout(() => { isDragging = false; }, 50);
+      }
+    });
+
     /* FAB cancel */
     document.getElementById('btn-fab-cancel').addEventListener('click', () => {
       selectedTemplates.clear();
+      isMultiSelectMode = false;
       fabBar.classList.remove('show');
       renderTemplateCards();
     });
@@ -518,7 +602,6 @@ import '../../styles/global.css';
         }
 
         if (combinedData.length > 0) {
-          /* Simpan data gabungan di sessionStorage lalu navigasi ke halaman belajar */
           sessionStorage.setItem('fc-combined-data', JSON.stringify(combinedData));
           sessionStorage.setItem('fc-combined-label', `${selectedTemplates.size} Bab Gabungan`);
           window.location.href = '/flashcard/combined';
