@@ -80,10 +80,25 @@ import '../../styles/global.css';
       text-transform: uppercase;
       letter-spacing: 0.08em;
     }
-    .fc-select-hint {
-      font-size: 0.75rem;
+    .fc-quick-select {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .fc-quick-btn {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
       color: var(--text-muted);
-      font-style: italic;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .fc-quick-btn:hover {
+      background: var(--text-main);
+      color: var(--bg-secondary);
     }
 
     .fc-template-grid {
@@ -160,17 +175,6 @@ import '../../styles/global.css';
       text-align: center;
       background: var(--highlight-bg);
       border-radius: 10px;
-    }
-
-    /* Drag selection highlight */
-    .fc-drag-selection {
-      position: fixed;
-      border: 2px dashed var(--accent);
-      background: rgba(16, 185, 129, 0.08);
-      pointer-events: none;
-      z-index: 998;
-      border-radius: 4px;
-      display: none;
     }
 
     /* Divider */
@@ -315,14 +319,11 @@ import '../../styles/global.css';
 
     @media (max-width: 480px) {
       .fc-template-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
-      .fc-select-hint { display: none; }
+      .fc-quick-select { width: 100%; justify-content: center; }
     }
   </style>
 </head>
 <body data-theme="light">
-  <!-- Drag selection box -->
-  <div class="fc-drag-selection" id="drag-selection"></div>
-
   <!-- FAB for multi-select -->
   <div class="fc-fab" id="fab-bar">
     <span class="fc-fab-text" id="fab-text">0 Bab Terpilih</span>
@@ -347,7 +348,11 @@ import '../../styles/global.css';
     <div class="fc-template-section">
       <div class="fc-template-header">
         <span class="fc-template-label">MNN</span>
-        <span class="fc-select-hint">Klik = belajar · Double-click / seret = pilih beberapa bab</span>
+        <div class="fc-quick-select">
+          <button class="fc-quick-btn" id="btn-sel-1-25">Bab 1 - 25</button>
+          <button class="fc-quick-btn" id="btn-sel-26-50">Bab 26 - 50</button>
+          <button class="fc-quick-btn" id="btn-sel-all">Semua</button>
+        </div>
       </div>
       <div class="fc-template-grid" id="template-grid">
         <div class="fc-template-empty">Memuat template...</div>
@@ -385,18 +390,9 @@ import '../../styles/global.css';
     const fabText = document.getElementById('fab-text');
     const jsonInput = document.getElementById('json-input');
     const jsonError = document.getElementById('json-error');
-    const dragSelBox = document.getElementById('drag-selection');
 
     let selectedTemplates = new Set();
     let allTemplates = [];
-    let isMultiSelectMode = false;
-
-    /* Drag-select state */
-    let isDragging = false;
-    let dragStartX = 0;
-    let dragStartY = 0;
-    let clickTimer = null;
-    let preventSingleClick = false;
 
     function showToast(msg) {
       const t = document.getElementById('fc-toast');
@@ -445,141 +441,58 @@ import '../../styles/global.css';
 
     function bindCardEvents() {
       templateGrid.querySelectorAll('.fc-template-card').forEach(card => {
-        /* Single click = belajar langsung (tapi delay sedikit untuk cek double-click) */
         card.addEventListener('click', (e) => {
-          if (preventSingleClick) { preventSingleClick = false; return; }
-          if (isDragging) return;
-
-          const id = card.dataset.id;
-
-          /* Kalau sudah dalam mode multi-select, click = toggle selection */
-          if (isMultiSelectMode) {
-            toggleSelect(card, id);
-            return;
-          }
-
-          /* Single click normal: buka halaman belajar */
-          /* Delay sedikit untuk cek apakah user double-click */
-          if (clickTimer) clearTimeout(clickTimer);
-          clickTimer = setTimeout(() => {
-            if (!preventSingleClick) {
-              window.location.href = `/flashcard/${id}`;
-            }
-            preventSingleClick = false;
-          }, 250);
-        });
-
-        /* Double-click = masuk mode multi-select */
-        card.addEventListener('dblclick', (e) => {
           e.preventDefault();
-          if (clickTimer) clearTimeout(clickTimer);
-          preventSingleClick = true;
-
           const id = card.dataset.id;
-          isMultiSelectMode = true;
-          toggleSelect(card, id);
+          if (selectedTemplates.has(id)) {
+            selectedTemplates.delete(id);
+            card.classList.remove('selected');
+          } else {
+            selectedTemplates.add(id);
+            card.classList.add('selected');
+          }
+          updateFab();
         });
       });
-    }
-
-    function toggleSelect(card, id) {
-      if (selectedTemplates.has(id)) {
-        selectedTemplates.delete(id);
-        card.classList.remove('selected');
-      } else {
-        selectedTemplates.add(id);
-        card.classList.add('selected');
-      }
-      updateFab();
-
-      /* Kalau semua di-deselect, keluar dari multi-select mode */
-      if (selectedTemplates.size === 0) {
-        isMultiSelectMode = false;
-      }
     }
 
     function updateFab() {
       if (selectedTemplates.size > 0) {
         fabText.textContent = `${selectedTemplates.size} Bab Terpilih`;
+        document.getElementById('btn-fab-start').textContent = selectedTemplates.size === 1 ? 'MULAI BELAJAR' : 'GABUNG & MULAI';
         fabBar.classList.add('show');
       } else {
         fabBar.classList.remove('show');
       }
     }
 
-    /* Drag-select: mousedown pada grid area */
-    templateGrid.addEventListener('mousedown', (e) => {
-      /* Hanya mulai drag kalau bukan klik langsung pada card */
-      if (e.target.closest('.fc-template-card')) {
-        /* Mulai tracking posisi untuk drag dari card juga */
-        dragStartX = e.clientX;
-        dragStartY = e.clientY;
-        return;
-      }
-      dragStartX = e.clientX;
-      dragStartY = e.clientY;
-      isDragging = false;
-    });
-
-    document.addEventListener('mousemove', (e) => {
-      if (e.buttons !== 1) return; /* Hanya left button */
-      
-      const dx = Math.abs(e.clientX - dragStartX);
-      const dy = Math.abs(e.clientY - dragStartY);
-
-      /* Mulai drag kalau sudah bergerak cukup jauh */
-      if (dx > 10 || dy > 10) {
-        if (!isDragging) {
-          isDragging = true;
-          isMultiSelectMode = true;
-          preventSingleClick = true;
-          if (clickTimer) clearTimeout(clickTimer);
-        }
-
-        /* Gambar selection box */
-        const x = Math.min(dragStartX, e.clientX);
-        const y = Math.min(dragStartY, e.clientY);
-        const w = Math.abs(e.clientX - dragStartX);
-        const h = Math.abs(e.clientY - dragStartY);
-
-        dragSelBox.style.display = 'block';
-        dragSelBox.style.left = x + 'px';
-        dragSelBox.style.top = y + 'px';
-        dragSelBox.style.width = w + 'px';
-        dragSelBox.style.height = h + 'px';
-
-        /* Cek card mana yang berada di dalam selection box */
-        const selRect = { left: x, top: y, right: x + w, bottom: y + h };
-        templateGrid.querySelectorAll('.fc-template-card').forEach(card => {
-          const cardRect = card.getBoundingClientRect();
-          const overlap = !(cardRect.right < selRect.left || cardRect.left > selRect.right ||
-                           cardRect.bottom < selRect.top || cardRect.top > selRect.bottom);
-          const id = card.dataset.id;
-          if (overlap) {
-            if (!selectedTemplates.has(id)) {
-              selectedTemplates.add(id);
-              card.classList.add('selected');
-            }
+    function selectRange(start, end) {
+      selectedTemplates.clear();
+      templateGrid.querySelectorAll('.fc-template-card').forEach(card => {
+        const nameText = card.querySelector('.fc-template-name').textContent;
+        const match = nameText.match(/Bab\s*(\d+)/i);
+        if (match) {
+          const num = parseInt(match[1]);
+          if (num >= start && num <= end) {
+            selectedTemplates.add(card.dataset.id);
+            card.classList.add('selected');
           } else {
-            /* Hanya deselect kalau card ini di-select oleh drag saat ini */
-            /* Biarkan card yang sudah di-select sebelumnya tetap selected */
+            card.classList.remove('selected');
           }
-        });
-        updateFab();
-      }
-    });
+        } else {
+          card.classList.remove('selected');
+        }
+      });
+      updateFab();
+    }
 
-    document.addEventListener('mouseup', () => {
-      if (isDragging) {
-        dragSelBox.style.display = 'none';
-        setTimeout(() => { isDragging = false; }, 50);
-      }
-    });
+    document.getElementById('btn-sel-1-25').addEventListener('click', () => selectRange(1, 25));
+    document.getElementById('btn-sel-26-50').addEventListener('click', () => selectRange(26, 50));
+    document.getElementById('btn-sel-all').addEventListener('click', () => selectRange(1, 999));
 
     /* FAB cancel */
     document.getElementById('btn-fab-cancel').addEventListener('click', () => {
       selectedTemplates.clear();
-      isMultiSelectMode = false;
       fabBar.classList.remove('show');
       renderTemplateCards();
     });
