@@ -8,6 +8,11 @@ import '../../styles/global.css';
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Flashcard - JPASELI</title>
   <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+  <meta name="theme-color" content="#10b981" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="JPASELI" />
   <style is:inline>
     .fc-app {
       max-width: 900px;
@@ -336,8 +341,12 @@ import '../../styles/global.css';
 
   <div class="fc-app">
     <header class="fc-header">
-      <h1>Flashcard</h1>
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <div style="color: var(--accent);"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layers"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg></div>
+        <h1 style="margin: 0;">Flashcard</h1>
+      </div>
       <div class="fc-header-actions">
+        <a href="/kotoba" class="btn-action" style="border-color: var(--accent); color: var(--accent);">Cari Kotoba</a>
         <a href="/" class="btn-action">Kembali</a>
       </div>
     </header>
@@ -387,6 +396,12 @@ import '../../styles/global.css';
   </div>
 
   <script is:inline>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW Reg Failed:', err));
+      });
+    }
+
     const savedTheme = localStorage.getItem('app-theme') || 'light';
     document.body.setAttribute('data-theme', savedTheme);
 
@@ -572,5 +587,6 @@ import '../../styles/global.css';
 
     loadTemplates();
   </script>
+  <script src="/pomodoro-widget.js" is:inline></script>
 </body>
 </html>

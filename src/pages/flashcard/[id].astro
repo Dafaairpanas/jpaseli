@@ -10,13 +10,23 @@ const { id } = Astro.params;
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Flashcard - JPASELI</title>
   <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+  <meta name="theme-color" content="#10b981" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="JPASELI" />
   <style is:inline>
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
     .fc-app {
       max-width: 900px;
       margin: 0 auto;
-      padding: clamp(1.25rem, 4vw, 3rem);
-      min-height: 100vh;
-      min-height: 100dvh;
+      padding: clamp(0.75rem, 2vw, 1.5rem);
+      height: 100dvh;
       display: flex;
       flex-direction: column;
     }
@@ -28,8 +38,9 @@ const { id } = Astro.params;
       gap: 0.5rem;
       font-size: 0.85rem;
       color: var(--text-muted);
-      margin-bottom: 1rem;
+      margin-bottom: 0.75rem;
       flex-wrap: wrap;
+      flex-shrink: 0;
     }
     .fc-breadcrumb a {
       color: var(--text-muted);
@@ -44,11 +55,12 @@ const { id } = Astro.params;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: clamp(1rem, 2vh, 1.5rem);
+      margin-bottom: clamp(0.75rem, 1.5vh, 1.25rem);
       border-bottom: 1px solid var(--border-color);
-      padding-bottom: clamp(0.75rem, 1.5vh, 1rem);
+      padding-bottom: clamp(0.5rem, 1vh, 0.75rem);
       flex-wrap: wrap;
       gap: 0.75rem;
+      flex-shrink: 0;
     }
     .fc-header h1 { 
       font-size: clamp(1.4rem, 3.5vw, 2rem); 
@@ -171,15 +183,16 @@ const { id } = Astro.params;
       flex: 1;
       display: none;
       flex-direction: column;
-      gap: clamp(1rem, 2vh, 2rem);
+      gap: clamp(0.75rem, 1.5vh, 1.25rem);
+      min-height: 0;
     }
-    .fc-progress-wrapper { display: flex; align-items: center; gap: 1rem; }
+    .fc-progress-wrapper { display: flex; align-items: center; gap: 1rem; flex-shrink: 0; }
     .fc-progress-bar { flex: 1; height: 8px; background: var(--border-color); border-radius: 99px; overflow: hidden; }
     .fc-progress-fill {
       height: 100%;
       background: linear-gradient(90deg, var(--accent) 0%, #34d399 100%);
       border-radius: 99px;
-      transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: width 0.2s ease;
       width: 0%;
       box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
     }
@@ -189,7 +202,7 @@ const { id } = Astro.params;
     .fc-card-container {
       perspective: 1500px;
       width: 100%;
-      min-height: clamp(300px, 55vh, 500px);
+      min-height: 0;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
       flex: 1;
@@ -201,7 +214,7 @@ const { id } = Astro.params;
       flex: 1;
       position: relative;
       transform-style: preserve-3d;
-      transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: transform 0.3s ease;
     }
     .fc-card.flipped { transform: rotateY(180deg); }
     .fc-card-face {
@@ -274,13 +287,13 @@ const { id } = Astro.params;
     .fc-card-label, .fc-tts-btn, .fc-flip-hint, .fc-card-badge-extra { z-index: 1; }
 
     /* Buttons */
-    .fc-study-actions { display: flex; flex-direction: column; gap: 1rem; width: 100%; max-width: 700px; margin: 0 auto; }
-    .fc-main-actions { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(0.75rem, 2vw, 1.5rem); }
-    .fc-main-actions .fc-btn { padding: clamp(0.85rem, 2vh, 1.25rem); font-size: clamp(0.95rem, 2.5vw, 1.1rem); border-radius: 16px; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
-    .fc-secondary-actions { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; }
-    .fc-secondary-actions .fc-btn { font-size: clamp(0.8rem, 1.5vw, 0.9rem); padding: 0.6rem 1rem; border-radius: 12px; flex: 1; }
-    .fc-secondary-actions .fc-btn-icon { flex: 0 0 auto; padding: 0.6rem; border-radius: 12px; }
-    .fc-secondary-actions .fc-btn-icon svg { width: 22px; height: 22px; }
+    .fc-study-actions { display: flex; flex-direction: column; gap: clamp(0.5rem, 1vh, 0.75rem); width: 100%; max-width: 700px; margin: 0 auto; flex-shrink: 0; }
+    .fc-main-actions { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(0.5rem, 1.5vw, 1rem); }
+    .fc-main-actions .fc-btn { padding: clamp(0.5rem, 1.5vh, 0.85rem); font-size: clamp(0.85rem, 2vw, 1rem); border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+    .fc-secondary-actions { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
+    .fc-secondary-actions .fc-btn { font-size: clamp(0.75rem, 1.2vw, 0.85rem); padding: 0.4rem 0.8rem; border-radius: 8px; flex: 1; }
+    .fc-secondary-actions .fc-btn-icon { flex: 0 0 auto; padding: 0.4rem; border-radius: 8px; }
+    .fc-secondary-actions .fc-btn-icon svg { width: 18px; height: 18px; }
     .fc-btn {
       background: var(--bg-secondary); border: 1px solid var(--border-color); color: var(--text-main);
       padding: clamp(0.6rem, 1.5vh, 0.85rem) clamp(1.2rem, 2vw, 2rem); font-size: clamp(0.85rem, 1.5vw, 0.95rem);
@@ -313,22 +326,22 @@ const { id } = Astro.params;
     .fc-stat-good .fc-stat-value { color: var(--accent); }
     .fc-stat-bad .fc-stat-value { color: #ef4444; }
 
-    .fc-shortcuts { display: flex; gap: clamp(1rem, 2vw, 2rem); justify-content: center; flex-wrap: wrap; font-size: clamp(0.75rem, 1.2vw, 0.85rem); color: var(--text-muted); margin-top: 1rem; }
-    .fc-shortcuts kbd { background: var(--bg-secondary); border: 1px solid var(--border-color); box-shadow: 0 2px 0 var(--border-color); padding: 0.25rem 0.5rem; border-radius: 6px; font-family: inherit; font-weight: 600; font-size: clamp(0.7rem, 1.1vw, 0.8rem); color: var(--text-main); }
+    .fc-shortcuts { display: flex; gap: clamp(0.5rem, 1vw, 1.5rem); justify-content: center; flex-wrap: wrap; font-size: clamp(0.7rem, 1vw, 0.8rem); color: var(--text-muted); margin-top: 0.25rem; flex-shrink: 0; }
+    .fc-shortcuts kbd { background: var(--bg-secondary); border: 1px solid var(--border-color); box-shadow: 0 2px 0 var(--border-color); padding: 0.15rem 0.35rem; border-radius: 6px; font-family: inherit; font-weight: 600; font-size: clamp(0.65rem, 1vw, 0.75rem); color: var(--text-main); }
 
     /* Animations */
     @keyframes slideOutLeft { 0% { transform: translateX(0) scale(1); opacity: 1; } 100% { transform: translateX(-100%) scale(0.9); opacity: 0; } }
     @keyframes slideInRight { 0% { transform: translateX(100%) scale(0.9); opacity: 0; } 100% { transform: translateX(0) scale(1); opacity: 1; } }
     @keyframes slideOutRight { 0% { transform: translateX(0) scale(1); opacity: 1; } 100% { transform: translateX(100%) scale(0.9); opacity: 0; } }
     @keyframes slideInLeft { 0% { transform: translateX(-100%) scale(0.9); opacity: 0; } 100% { transform: translateX(0) scale(1); opacity: 1; } }
-    .slide-out-left { animation: slideOutLeft 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-    .slide-in-right { animation: slideInRight 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-    .slide-out-right { animation: slideOutRight 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-    .slide-in-left { animation: slideInLeft 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-    @keyframes shakeDanger { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-5px); } 40%, 80% { transform: translateX(5px); } }
-    .shake-danger { animation: shakeDanger 0.4s ease; border-color: #ef4444 !important; }
-    @keyframes glowSuccess { 0% { box-shadow: 0 0 0 rgba(16,185,129,0); transform: scale(1); } 50% { box-shadow: 0 0 20px rgba(16,185,129,0.8); transform: scale(1.05); } 100% { box-shadow: 0 0 0 rgba(16,185,129,0); transform: scale(1); } }
-    .glow-success { animation: glowSuccess 0.4s ease; border-color: #10b981 !important; }
+    .slide-out-left { animation: slideOutLeft 0.15s ease forwards; }
+    .slide-in-right { animation: slideInRight 0.15s ease forwards; }
+    .slide-out-right { animation: slideOutRight 0.15s ease forwards; }
+    .slide-in-left { animation: slideInLeft 0.15s ease forwards; }
+    @keyframes shakeDanger { 0%, 100% { transform: translateX(0); } 25%, 75% { transform: translateX(-4px); } 50% { transform: translateX(4px); } }
+    .shake-danger { animation: shakeDanger 0.2s ease; border-color: #ef4444 !important; }
+    @keyframes glowSuccess { 0% { box-shadow: 0 0 0 rgba(16,185,129,0); } 50% { box-shadow: 0 0 15px rgba(16,185,129,0.8); } 100% { box-shadow: 0 0 0 rgba(16,185,129,0); } }
+    .glow-success { animation: glowSuccess 0.2s ease; border-color: #10b981 !important; }
 
     @media (max-width: 480px) {
       .fc-shortcuts { display: none; }
@@ -363,6 +376,9 @@ const { id } = Astro.params;
           </label>
           <label class="fc-chk-label">
             <input type="checkbox" id="modal-chk-extra" checked> Sertakan Kosakata Ekstra
+          </label>
+          <label class="fc-chk-label">
+            <input type="checkbox" id="modal-chk-only-extra"> Hanya Kosakata Ekstra
           </label>
         </div>
         <div class="fc-modal-section">
@@ -522,6 +538,12 @@ const { id } = Astro.params;
   </div>
 
   <script is:inline define:vars={{ id }}>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW Reg Failed:', err));
+      });
+    }
+
     const savedTheme = localStorage.getItem('app-theme') || 'light';
     document.body.setAttribute('data-theme', savedTheme);
 
@@ -631,6 +653,19 @@ const { id } = Astro.params;
       });
     });
 
+    const chkExtra = document.getElementById('modal-chk-extra');
+    const chkOnlyExtra = document.getElementById('modal-chk-only-extra');
+    if (chkExtra && chkOnlyExtra) {
+      chkOnlyExtra.addEventListener('change', () => {
+        if (chkOnlyExtra.checked) {
+          chkExtra.checked = true;
+          chkExtra.disabled = true;
+        } else {
+          chkExtra.disabled = false;
+        }
+      });
+    }
+
     document.getElementById('btn-modal-start').addEventListener('click', () => {
       modal.classList.remove('show');
       const shuffle = document.getElementById('modal-chk-random').checked;
@@ -638,8 +673,11 @@ const { id } = Astro.params;
       studyMode = document.querySelector('input[name="modal-mode"]:checked').value;
       audioSpeed = parseFloat(document.getElementById('modal-sel-speed').value);
       const includeExtra = document.getElementById('modal-chk-extra').checked;
+      const onlyExtra = document.getElementById('modal-chk-only-extra').checked;
 
-      if (!includeExtra) {
+      if (onlyExtra) {
+        cards = cards.filter(c => c.isExtra);
+      } else if (!includeExtra) {
         cards = cards.filter(c => !c.isExtra);
       }
       if (studyMode === 'kanji') {
@@ -651,7 +689,11 @@ const { id } = Astro.params;
         }
       }
       if (cards.length === 0) {
-        alert('Tidak ada kartu untuk dipelajari!');
+        if (onlyExtra) {
+          alert('Tidak ada kosakata ekstra pada bab ini!');
+        } else {
+          alert('Tidak ada kartu untuk dipelajari!');
+        }
         window.location.href = '/flashcard';
         return;
       }
@@ -869,5 +911,6 @@ const { id } = Astro.params;
     /* Init */
     initPage();
   </script>
+  <script src="/pomodoro-widget.js" is:inline></script>
 </body>
 </html>

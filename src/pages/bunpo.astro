@@ -1,160 +1,52 @@
 ---
-import db from '../lib/db.js';
-import '../styles/global.css';
-
-const bunpouList = db.prepare("SELECT * FROM bunpou ORDER BY urutan_slide ASC, id ASC").all();
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import '../styles/bunpo-global.css';
 ---
 
-<html lang="id">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kumpulan Bunpou (Tata Bahasa) - JPASELI</title>
-  <link rel="icon" type="image/svg+xml" href="/icon.svg" />
-</head>
-<body data-theme="light">
-  <div class="dashboard-container" style="max-width: 1000px;">
-    <header class="dashboard-header" style="flex-direction: column; align-items: flex-start; gap: 1rem;">
-      <div style="display: flex; gap: 2rem; align-items: center; width: 100%; justify-content: space-between;">
-        <h1 style="font-size: 3rem;">Kumpulan Pola Kalimat</h1>
-        <a href="/" class="btn-action">KEMBALI</a>
-      </div>
-      <p style="font-size: 1.2rem; color: var(--text-muted);">Total: {bunpouList.length} Tata Bahasa</p>
-    </header>
+<Layout title="Bunpo (文法) - Pola Tata Bahasa - JPASELI">
+  <div class="bp-wrap">
+    <Header 
+      title="文法 Bunpo" 
+      subtitle="Pola Tata Bahasa Jepang" 
+      icon='<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-puzzle"><path d="M19.439 7.85c-.049.322.059.648.289.878l1.568 1.568c.47.47.706 1.087.706 1.704s-.235 1.233-.706 1.704l-1.611 1.611a.98.98 0 0 1-.837.276c-.47-.07-.802-.48-.968-.925a2.501 2.501 0 1 0-3.214 3.214c.446.166.855.497.925.968a.979.979 0 0 1-.276.837l-1.61 1.611c-.47.47-1.088.706-1.705.706s-1.233-.235-1.704-.706l-1.568-1.568a1.026 1.026 0 0 0-.877-.29c-.493.074-.84.504-1.02.968a2.5 2.5 0 1 1-3.237-3.237c.464-.18.894-.527-.967-1.02a1.026 1.026 0 0 0-.289-.877l-1.568-1.568c-.47-.47-.706-1.087-.706-1.704s.235-1.233.706-1.704l1.611-1.611a.98.98 0 0 1 .837-.276c.47.07.802.48.968.925a2.501 2.501 0 1 0 3.214-3.214c-.446-.166-.855-.497-.925-.968a.979.979 0 0 1 .276-.837l1.61-1.611c.47-.47 1.088-.706 1.705-.706s1.233.235 1.704.706l1.568 1.568c.23.23.556.338.877.29.493-.074.84-.504 1.02-.968a2.5 2.5 0 1 1 3.237 3.237c-.464.18-.894.527-.967 1.02Z"/></svg>'
+    />
 
-    <div class="search-wrapper">
-      <input type="text" class="search-bar" id="search-input" placeholder="Cari pola tata bahasa, penjelasan, atau terjemahannya..." />
+    <!-- Search -->
+    <div class="bp-search-wrapper">
+      <input type="text" class="bp-search" id="bp-search" placeholder="Cari pola, arti, contoh kalimat..." />
     </div>
 
-    <!-- Filter & Sort Toolbar -->
-    <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: center;">
-      <span style="font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; color: var(--text-muted); margin-right: 0.25rem;">FILTER:</span>
-      <button class="btn-action filter-btn active" data-filter="all" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">SEMUA</button>
-      <button class="btn-action filter-btn" data-filter="learned" style="padding: 0.4rem 0.8rem; font-size: 0.75rem; border-color: var(--accent); color: var(--accent);">✓ SELESAI</button>
-      <button class="btn-action filter-btn" data-filter="not-learned" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">✗ BELUM</button>
-      <span style="font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; color: var(--text-muted); margin-left: 1rem; margin-right: 0.25rem;">URUT:</span>
-      <button class="btn-action sort-btn" data-sort="day-asc" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">DAY ↑</button>
-      <button class="btn-action sort-btn" data-sort="day-desc" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">DAY ↓</button>
-      <button class="btn-action sort-btn" data-sort="az" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">A → Z</button>
-      <button class="btn-action sort-btn" data-sort="za" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">Z → A</button>
+    <!-- Filter toolbar -->
+    <div class="bp-toolbar" id="bp-toolbar">
+      <span style="font-size:0.75rem; font-weight:800; letter-spacing:0.1em; color:var(--text-muted); margin-right: 0.5rem;">BAB:</span>
+      <button class="bp-chip active" data-bab="all">SEMUA</button>
     </div>
-    
-    <main id="card-container" style="display: flex; flex-direction: column; gap: 2rem;">
-      {bunpouList.map(item => (
-        <div class="bunpou-card" data-hari={item.hari} data-pola={item.pola} style="border: 1px solid var(--border-color); background-color: var(--bg-secondary); padding: 2rem; border-radius: 8px;">
-          <strong style="font-size: 2rem; display: block; margin-bottom: 1rem; color: var(--accent);">{item.pola}</strong>
-          <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">{item.penjelasan}</p>
-          
-          {item.contoh_kalimat && (
-            <div style="background-color: var(--bg-primary); padding: 1.5rem; border-left: 4px solid var(--text-main);">
-              <p style="font-size: 1.2rem; font-weight: 500; margin-bottom: 0.5rem;">{item.contoh_kalimat}</p>
-              <p style="font-size: 1rem; color: var(--text-muted);">{item.arti_contoh}</p>
-            </div>
-          )}
-        </div>
-      ))}
-    </main>
+
+    <!-- Stats -->
+    <div class="bp-stats" id="bp-stats">
+      <div class="bp-stat"><strong id="stat-total">0</strong> Pola</div>
+      <div class="bp-stat"><strong id="stat-showing">0</strong> Ditampilkan</div>
+    </div>
+
+    <!-- Grid Container -->
+    <div id="bp-container" class="bp-grid">
+      <div class="bp-loading">Memuat data tata bahasa...</div>
+    </div>
   </div>
-  <script is:inline>
-    const savedTheme = localStorage.getItem('app-theme') || 'light';
-    document.body.setAttribute('data-theme', savedTheme);
 
-    const container = document.getElementById('card-container');
-    const cards = Array.from(document.querySelectorAll('.bunpou-card[data-hari]'));
-    const searchInput = document.getElementById('search-input');
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const sortBtns = document.querySelectorAll('.sort-btn');
+  <!-- Modal Detail Bunpo -->
+  <div class="bp-modal-overlay" id="bp-modal" onclick="closeModalOnBackdrop(event)">
+    <div class="bp-modal-container">
+      <button class="bp-modal-close" onclick="closeModal()">&times;</button>
+      <div class="bp-modal-content" id="bp-modal-content">
+        <!-- Bento Grid akan dirender secara dinamis -->
+      </div>
+    </div>
+  </div>
 
-    let currentFilter = 'all';
-
-    // Tandai card yang hari-nya sudah learned
-    cards.forEach(card => {
-      const hari = card.getAttribute('data-hari');
-      if (localStorage.getItem('learned_day_' + hari) === 'true') {
-        card.classList.add('learned');
-      }
-    });
-
-    // Filter + search
-    function applyFilter() {
-      const searchVal = searchInput ? searchInput.value.toLowerCase().trim() : '';
-      cards.forEach(card => {
-        const isLearned = card.classList.contains('learned');
-        const text = card.innerText.toLowerCase();
-        let show = true;
-
-        if (currentFilter === 'learned' && !isLearned) show = false;
-        if (currentFilter === 'not-learned' && isLearned) show = false;
-        if (searchVal && !text.includes(searchVal)) show = false;
-
-        card.style.display = show ? 'block' : 'none';
-      });
-    }
-
-    // Sort DOM
-    function applySort(type) {
-      const sorted = [...cards];
-      if (type === 'day-asc') {
-        sorted.sort((a, b) => parseInt(a.dataset.hari) - parseInt(b.dataset.hari));
-      } else if (type === 'day-desc') {
-        sorted.sort((a, b) => parseInt(b.dataset.hari) - parseInt(a.dataset.hari));
-      } else if (type === 'az') {
-        sorted.sort((a, b) => (a.dataset.pola || '').localeCompare(b.dataset.pola || '', 'ja'));
-      } else if (type === 'za') {
-        sorted.sort((a, b) => (b.dataset.pola || '').localeCompare(a.dataset.pola || '', 'ja'));
-      }
-      sorted.forEach(card => container.appendChild(card));
-      applyFilter();
-    }
-
-    // Highlight tombol aktif
-    function setActiveBtn(group, activeBtn) {
-      group.forEach(b => {
-        b.classList.remove('active');
-        b.style.backgroundColor = 'transparent';
-        b.style.color = b.dataset.filter === 'learned' ? 'var(--accent)' : 'var(--text-main)';
-      });
-      activeBtn.classList.add('active');
-      activeBtn.style.backgroundColor = activeBtn.dataset.filter === 'learned' ? 'var(--accent)' : 'var(--text-main)';
-      activeBtn.style.color = activeBtn.dataset.filter === 'learned' ? 'var(--bg-primary)' : 'var(--bg-secondary)';
-    }
-
-    // Event: filter
-    filterBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        currentFilter = btn.dataset.filter;
-        setActiveBtn(filterBtns, btn);
-        applyFilter();
-      });
-    });
-
-    // Event: sort
-    sortBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        sortBtns.forEach(b => {
-          b.classList.remove('active');
-          b.style.backgroundColor = 'transparent';
-          b.style.color = 'var(--text-main)';
-        });
-        btn.classList.add('active');
-        btn.style.backgroundColor = 'var(--text-main)';
-        btn.style.color = 'var(--bg-secondary)';
-        applySort(btn.dataset.sort);
-      });
-    });
-
-    // Event: search
-    if (searchInput) {
-      searchInput.addEventListener('input', () => applyFilter());
-    }
-
-    // Keyboard shortcut
-    document.addEventListener('keydown', (e) => {
-      if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
-        e.preventDefault();
-        if (searchInput) searchInput.focus();
-      }
-    });
+  <script>
+    import '../scripts/bunpo.js';
   </script>
-</body>
-</html>
+</Layout>
+

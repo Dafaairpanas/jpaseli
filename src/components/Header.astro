@@ -1,0 +1,29 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  backTo?: string;
+  backText?: string;
+  icon?: string;
+}
+
+const { title, subtitle, backTo = "/", backText = "Kembali", icon } = Astro.props;
+---
+
+<header class="bp-header" style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--border-color); flex-wrap: wrap; gap: 1rem;">
+  <div style="display: flex; align-items: center; gap: 1rem;">
+    {icon && <div style="color: var(--accent);" set:html={icon}></div>}
+    <div>
+      <h1 style="font-size: 3rem; font-weight: 900; margin: 0; line-height: 1.1; letter-spacing: -0.03em;">
+        {title}
+        {subtitle && <span style="font-size: 1.2rem; color: var(--text-muted); font-weight: 500; display: block; margin-top: 0.5rem; letter-spacing: 0px;">{subtitle}</span>}
+      </h1>
+    </div>
+  </div>
+  <div class="bp-header-actions">
+    <a href={backTo} class="btn-action" style="padding: 0.6rem 1.2rem; font-size: 0.8rem; display: flex; align-items: center; gap: 0.5rem; text-decoration: none; text-transform: uppercase;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      {backText}
+    </a>
+  </div>
+</header>

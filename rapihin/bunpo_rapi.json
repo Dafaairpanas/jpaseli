@@ -1,0 +1,1798 @@
+[
+  {
+    "nama": "Bab 1 - Pola Dasar & Identitas",
+    "deskripsi": "Pola kalimat dasar (は～です, じゃありません, ですか), kata tunjuk, ungkapan konfirmasi",
+    "urutan": 1,
+    "data_json": [
+      {
+        "pola": "～は～です",
+        "arti": "~ adalah ~",
+        "penjelasan": "Digunakan untuk menyatakan identitas, status, profesi, atau sifat dari suatu subjek.",
+        "kapan_digunakan": "Saat memperkenalkan diri atau menerangkan status subjek secara sopan.",
+        "rumus": "Kata Benda (Subjek) + は + Kata Benda + です",
+        "contoh": [
+          {
+            "jp": "わたしは学生です。",
+            "romaji": "Watashi wa gakusei desu.",
+            "arti": "Saya adalah seorang pelajar.",
+            "catatan": "Desu berfungsi sebagai penutup kalimat formal."
+          }
+        ],
+        "catatan": "Partikel は di sini berfungsi sebagai penanda topik kalimat.",
+        "larangan": "Partikel は harus ditulis dengan hiragana 'ha' tetapi wajib dibaca 'wa'.",
+        "partikel": "は (wa)",
+        "level": "N5",
+        "kategori": "Pola Dasar"
+      },
+      {
+        "pola": "～は～じゃありません",
+        "arti": "~ bukan ~",
+        "penjelasan": "Bentuk negatif formal dari pola kalimat ～は～です.",
+        "kapan_digunakan": "Saat menyangkal suatu status, identitas, atau pernyataan kata benda.",
+        "rumus": "Kata Benda (Subjek) + は + Kata Benda + じゃありません",
+        "contoh": [
+          {
+            "jp": "わたしは会社員じゃありません。",
+            "romaji": "Watashi wa kaishain ja arimasen.",
+            "arti": "Saya bukan karyawan perusahaan.",
+            "catatan": "Ja arimasen adalah bentuk lisan yang umum digunakan."
+          }
+        ],
+        "catatan": "Bentuk yang lebih formal/tertulis adalah 'では arimasen' (dewa arimasen).",
+        "larangan": "Jangan gunakan dalam situasi kasual kepada teman dekat (gunakan 'ja nai').",
+        "partikel": "は (wa)",
+        "level": "N5",
+        "kategori": "Pola Dasar"
+      },
+      {
+        "pola": "～は～ですか",
+        "arti": "Apakah ~ adalah ~?",
+        "penjelasan": "Digunakan untuk membuat kalimat tanya nominal format formal.",
+        "kapan_digunakan": "Saat ingin mengonfirmasi atau menanyakan identitas/status seseorang atau sesuatu.",
+        "rumus": "Kata Benda (Subjek) + は + Kata Benda + ですか",
+        "contoh": [
+          {
+            "jp": "ミラさんはアメリカ人ですか。",
+            "romaji": "Mira-san wa amerikajin desu ka?",
+            "arti": "Apakah Miller seorang warga negara Amerika?",
+            "catatan": "Partikel ka berfungsi sebagai tanda tanya."
+          }
+        ],
+        "catatan": "Dalam penulisan bahasa Jepang formal, tanda tanya (?) tidak digunakan, melainkan diganti dengan partikel か dan tanda titik.",
+        "larangan": "Jangan menurunkan intonasi di akhir kata 'ka' karena ini adalah kalimat tanya.",
+        "partikel": "か (ka)",
+        "level": "N5",
+        "kategori": "Pola Dasar"
+      },
+      {
+        "pola": "～も～です",
+        "arti": "~ juga ~",
+        "penjelasan": "Menggantikan partikel は ketika subjek kedua memiliki predikat atau informasi yang sama dengan subjek pertama.",
+        "kapan_digunakan": "Saat menyatakan kesamaan informasi antar dua subjek.",
+        "rumus": "Kata Benda (Subjek) + も + Kata Benda + です",
+        "contoh": [
+          {
+            "jp": "サントスさんもブラジル人です。",
+            "romaji": "Santosu-san mo burajirujin desu.",
+            "arti": "Santos juga orang Brasil.",
+            "catatan": "Digunakan setelah ada pernyataan sebelumnya tentang orang lain yang juga warga Brasil."
+          }
+        ],
+        "catatan": "Partikel も langsung menggantikan posisi partikel は.",
+        "larangan": "Jangan menggunakan は dan も secara bersamaan pada satu subjek (Contoh salah: wa mo).",
+        "partikel": "も (mo)",
+        "level": "N5",
+        "kategori": "Pola Dasar"
+      },
+      {
+        "pola": "～の～",
+        "arti": "~ kepunyaan ~ / ~ bagian dari ~",
+        "penjelasan": "Menghubungkan dua kata benda untuk menunjukkan kepemilikan, asal, atau modifikasi spesifik.",
+        "kapan_digunakan": "Saat ingin menjelaskan kepemilikan objek atau kategori objek tersebut.",
+        "rumus": "Kata Benda 1 + の + Kata Benda 2",
+        "contoh": [
+          {
+            "jp": "これはわたしの本です。",
+            "romaji": "Kore wa watashi no hon desu.",
+            "arti": "Ini adalah buku saya.",
+            "catatan": "Watashi (KB1) menerangkan kepemilikan terhadap hon (KB2)."
+          }
+        ],
+        "catatan": "Kata benda yang menerangkan berada di depan (KB1), sedangkan yang diterangkan berada di belakang (KB2).",
+        "larangan": "Susunan kata tidak boleh terbalik seperti struktur bahasa Inggris atau Indonesia.",
+        "partikel": "の (no)",
+        "level": "N5",
+        "kategori": "Pola Dasar"
+      },
+      {
+        "pola": "これ / それ / あれ は ～です",
+        "arti": "Ini / Itu / Itu (Jauh) adalah ~",
+        "penjelasan": "Kata tunjuk benda yang berfungsi sebagai kata ganti subjek tanpa diikuti kata benda langsung di belakangnya.",
+        "kapan_digunakan": "Kore (dekat pembicara), Sore (dekat lawan bicara), Are (jauh dari keduanya).",
+        "rumus": "[これ/それ/あれ] + は + Kata Benda + です",
+        "contoh": [
+          {
+            "jp": "それは何ですか。",
+            "romaji": "Sore wa nan desu ka?",
+            "arti": "Itu apa?",
+            "catatan": "Digunakan untuk menunjuk benda yang dipegang atau dekat dengan lawan bicara."
+          }
+        ],
+        "catatan": "Kata-kata ini berdiri sendiri sebagai subjek kalimat.",
+        "larangan": "Jangan meletakkan kata benda langsung setelah kata kore/sore/are.",
+        "partikel": "は (wa)",
+        "level": "N5",
+        "kategori": "Kata Tunjuk Benda"
+      },
+      {
+        "pola": "この / その / あの [Benda] は ～です",
+        "arti": "[Benda] ini / itu / itu (jauh) adalah ~",
+        "penjelasan": "Kata tunjuk yang berfungsi sebagai demonstratif penentu yang wajib melekat pada kata benda.",
+        "kapan_digunakan": "Saat ingin menunjuk secara spesifik kata benda tertentu berdasarkan jarak dari pembicara dan lawan bicara.",
+        "rumus": "[この/その/あの] + Kata Benda + は + Predikat + です",
+        "contoh": [
+          {
+            "jp": "このカメラはわたしのです。",
+            "romaji": "Kono kamera wa watashi no desu.",
+            "arti": "Kamera ini adalah milik saya.",
+            "catatan": "Kono langsung memodifikasi kata kamera."
+          }
+        ],
+        "catatan": "Watashi no desu adalah singkatan dari watashi no kamera desu untuk menghindari repetisi.",
+        "larangan": "Jangan menggunakan kono/sono/ano tanpa diikuti oleh kata benda.",
+        "partikel": "は (wa)",
+        "level": "N5",
+        "kategori": "Kata Tunjuk Benda"
+      },
+      {
+        "pola": "そうです / ちがいます",
+        "arti": "Ya, benar / Bukan (Salah)",
+        "penjelasan": "Ungkapan ringkas untuk mengonfirmasi atau menyangkal pertanyaan kata benda.",
+        "kapan_digunakan": "Digunakan untuk merespons pertanyaan konfirmasi (pertanyaan 'apakah benar ini X?').",
+        "rumus": "Frasa Mandiri",
+        "contoh": [
+          {
+            "jp": "はい、そうです。/ いいえ、ちがいます。",
+            "romaji": "Hai, sou desu. / Iie, chigaimasu.",
+            "arti": "Ya, benar. / Tidak, salah.",
+            "catatan": "Jawaban standar untuk konfirmasi identitas objek."
+          }
+        ],
+        "catatan": "Chigaimasu berasal dari kata kerja chigaimasu (berbeda).",
+        "larangan": "Jangan gunakan 'sou desu' atau 'chigaimasu' untuk menjawab pertanyaan kata kerja.",
+        "partikel": "Tidak ada",
+        "level": "N5",
+        "kategori": "Ungkapan Dasar"
+      },
+      {
+        "pola": "ここ / そこ / あそこ は ～です",
+        "arti": "Di sini / Di situ / Di sana adalah ~",
+        "penjelasan": "Kata tunjuk tempat untuk menyatakan posisi atau lokasi geografis.",
+        "kapan_digunakan": "Koko (tempat pembicara berada), Soko (tempat lawan bicara berada), Asoko (jauh dari keduanya).",
+        "rumus": "[ここ/そこ/あそこ] + は + Tempat + です",
+        "contoh": [
+          {
+            "jp": "ここはロビーです。",
+            "romaji": "Koko wa robii desu.",
+            "arti": "Di sini adalah lobi.",
+            "catatan": "Menunjukkan ruangan tempat pembicara berada saat itu."
+          }
+        ],
+        "catatan": "Dapat juga dibalik strukturnya menjadi: [Tempat] wa [Koko/Soko/Asoko] desu.",
+        "larangan": "Hindari tertukar antara penggunaan kata tunjuk benda (kore) dan kata tunjuk tempat (koko).",
+        "partikel": "は (wa)",
+        "level": "N5",
+        "kategori": "Kata Tunjuk Tempat"
+      },
+      {
+        "pola": "～は どこですか",
+        "arti": "~ ada di mana?",
+        "penjelasan": "Pola kalimat interogatif untuk menanyakan lokasi keberadaan benda, tempat, ataupun seseorang.",
+        "kapan_digunakan": "Saat mencari arah, ruangan, lokasi fasilitas, atau keberadaan orang.",
+        "rumus": "Subjek (Benda/Orang/Tempat) + は + どこですか",
+        "contoh": [
+          {
+            "jp": "お手洗いはどこですか。",
+            "romaji": "Oterai wa doko desu ka?",
+            "arti": "Toilet ada di mana?",
+            "catatan": "Oterai adalah bentuk sopan untuk toilet."
+          }
+        ],
+        "catatan": "Bentuk yang lebih sopan dari doko adalah dochira.",
+        "larangan": "Jangan menggunakan partikel ni sebelum kata doko desuka dalam pola ini.",
+        "partikel": "は (wa), か (ka)",
+        "level": "N5",
+        "kategori": "Kata Tunjuk Tempat"
+      },
+      {
+        "pola": "こちら / そちら / あちら は ～です",
+        "arti": "Sebelah sini / Sebelah situ / Sebelah sana adalah ~",
+        "penjelasan": "Bentuk halus (keigo/polite) dari koko, soko, asoko yang juga menunjukkan arah.",
+        "kapan_digunakan": "Digunakan ketika berbicara dengan atasan, tamu bisnis, atau dalam konteks pelayanan formal.",
+        "rumus": "[こちら/そちら/あちら] + は + Kata Benda/Tempat + です",
+        "contoh": [
+          {
+            "jp": "エレベーターはこちらです。",
+            "romaji": "Erebeetaa wa kochira desu.",
+            "arti": "Lift berada di sebelah sini.",
+            "catatan": "Memberikan informasi arah dengan sopan kepada tamu."
+          }
+        ],
+        "catatan": "Kata tanya untuk pola ini adalah 'dochira' (sebelah mana / yang mana).",
+        "larangan": "Jangan gunakan bentuk kasar (koko/soko/asoko) saat melayani pelanggan atau berbicara dengan atasan.",
+        "partikel": "は (wa)",
+        "level": "N5",
+        "kategori": "Kata Tunjuk Tempat"
+      }
+    ]
+  },
+  {
+    "nama": "Bab 2 - Waktu & Perpindahan",
+    "deskripsi": "Keterangan waktu, partikel から・まで, perpindahan lokasi (へ行きます), transportasi (で), teman (と)",
+    "urutan": 2,
+    "data_json": [
+      {
+        "pola": "いま ～じ ～ふん です",
+        "arti": "Sekarang jam ~ menit ~",
+        "penjelasan": "Pola kalimat untuk menyatakan waktu terkini secara detail.",
+        "kapan_digunakan": "Saat menginformasikan waktu atau menjawab pertanyaan jam berapa.",
+        "rumus": "いま + Angka + じ (Jam) + Angka + ふん/ぷん (Menit) + です",
+        "contoh": [
+          {
+            "jp": "いま何時ですか。四時三十分です。",
+            "romaji": "Ima nan-ji desu ka? Yo-ji sanjuppun desu.",
+            "arti": "Sekarang jam berapa? Jam 4 lewat 30 menit.",
+            "catatan": "Perhatikan perubahan bunyi angka pada jam (4-ji dibaca yo-ji) dan menit."
+          }
+        ],
+        "catatan": "Menit dapat dibaca 'fun' atau 'pun' tergantung angka terakhirnya.",
+        "larangan": "Jangan sebut angka 4 pada jam sebagai 'yon-ji' atau 'shi-ji', melainkan 'yo-ji'.",
+        "partikel": "Tidak ada",
+        "level": "N5",
+        "kategori": "Waktu"
+      },
+      {
+        "pola": "～から ～まで",
+        "arti": "Dari ~ sampai ~",
+        "penjelasan": "Menunjukkan titik awal (kara) dan titik akhir (made) dari rentang waktu atau jarak tempat.",
+        "kapan_digunakan": "Saat menyatakan jam kerja, jam buka toko, durasi sekolah, atau rute perjalanan.",
+        "rumus": "Waktu/Tempat (A) + から + Waktu/Tempat (B) + まで",
+        "contoh": [
+          {
+            "jp": "銀行は９時から３時までです。",
+            "romaji": "Ginkou wa ku-ji kara san-ji made desu.",
+            "arti": "Bank buka dari jam 9 sampai jam 3.",
+            "catatan": "Pola ini bisa langsung diakhiri dengan desu tanpa kata kerja."
+          }
+        ],
+        "catatan": "Kara dan made tidak harus selalu digunakan bersamaan dalam satu kalimat.",
+        "larangan": "Jangan tertukar urutan antara kara (dari) dan made (sampai).",
+        "partikel": "から (kara), まで (made)",
+        "level": "N5",
+        "kategori": "Waktu & Tempat"
+      },
+      {
+        "pola": "Kata Kerja ます / ません / ました / ませんでした",
+        "arti": "Melakukan / Tidak melakukan / Sudah melakukan / Sudah tidak melakukan",
+        "penjelasan": "Perubahan bentuk kata kerja (konjugasi) formal berdasarkan aspek waktu (non-lampau dan lampau) serta jenis kalimat (positif dan negatif).",
+        "kapan_digunakan": "Digunakan sebagai predikat utama kalimat formal untuk menerangkan aktivitas sehari-hari atau kejadian tertentu.",
+        "rumus": "Kata Kerja Bentuk Kamus -> Ubah ke Bentuk ます / ません / ました / ませんでした",
+        "contoh": [
+          {
+            "jp": "きのうの晩勉強しませんでした。",
+            "romaji": "Kinou no ban benkyou shimasen deshita.",
+            "arti": "Tadi malam saya tidak belajar.",
+            "catatan": "Bentuk lampau negatif dari kata kerja benkyou shimasu."
+          }
+        ],
+        "catatan": "Bentuk ini merupakan fondasi komunikasi sopan (Teineigo) dalam bahasa Jepang.",
+        "larangan": "Jangan mencampurkan akhiran lampau nominal (deshita) langsung pada kata kerja ます (Contoh salah: mamasu deshita).",
+        "partikel": "Tidak ada",
+        "level": "N5",
+        "kategori": "Konjugasi Kata Kerja"
+      },
+      {
+        "pola": "[Waktu Angka] に [Kata Kerja]",
+        "arti": "Pada ~ [Melakukan Aktivitas]",
+        "penjelasan": "Partikel に berfungsi untuk menandakan titik waktu spesifik terjadinya suatu perbuatan atau aktivitas.",
+        "kapan_digunakan": "Saat menyebutkan jam, tanggal, hari, atau tahun terjadinya tindakan.",
+        "rumus": "Kata Benda Waktu (Angka/Hari) + に + Kata Kerja",
+        "contoh": [
+          {
+            "jp": "わたしは毎朝６時に起きます。",
+            "romaji": "Watashi wa maiasa roku-ji ni okimasu.",
+            "arti": "Saya bangun jam 6 setiap pagi.",
+            "catatan": "Roku-ji memiliki penunjuk angka waktu konkret sehingga wajib memakai ni."
+          }
+        ],
+        "catatan": "Kata keterangan waktu relatif (seperti asatte, kinou, kyo, maiasa) tidak memerlukan partikel に.",
+        "larangan": "Jangan gunakan partikel ni setelah kata keterangan waktu yang tidak menggunakan angka pasti.",
+        "partikel": "に (ni)",
+        "level": "N5",
+        "kategori": "Waktu"
+      },
+      {
+        "pola": "[Tempat] へ 行きます / 来ます / 帰ります",
+        "arti": "Pergi / Datang / Pulang ke [Tempat]",
+        "penjelasan": "Partikel へ (dibaca 'e') menunjukkan arah atau tujuan perpindahan pergerakan subjek.",
+        "kapan_digunakan": "Saat menyatakan perpindahan lokasi menuju ke suatu destinasi.",
+        "rumus": "Kata Benda (Tempat) + へ + [行きます/来ます/帰ります]",
+        "contoh": [
+          {
+            "jp": "会社へ帰ります。",
+            "romaji": "Kaisha e kaerimasu.",
+            "arti": "Saya pulang ke kantor.",
+            "catatan": "Kaerimasu digunakan jika tempat tujuan adalah basis asal (rumah atau kantor sendiri)."
+          }
+        ],
+        "catatan": "Partikel へ ditulis dengan hiragana 'he' tetapi wajib dibaca 'e'.",
+        "larangan": "Jangan gunakan 'kimasu' untuk arti pergi meninggalkan posisi pembicara saat ini.",
+        "partikel": "へ (e)",
+        "level": "N5",
+        "kategori": "Kalimat Perpindahan"
+      },
+      {
+        "pola": "どこへも 行きません",
+        "arti": "Tidak pergi ke mana pun",
+        "penjelasan": "Bentuk penyangkalan total terhadap arah pergerakan dengan menambahkan partikel も setelah kata tanya dan partikel arah.",
+        "kapan_digunakan": "Saat menegaskan bahwa subjek sama sekali tidak melakukan perpindahan ke lokasi mana pun.",
+        "rumus": "どこ + へ + も + Kata Kerja Negatif (行きません/帰りません/来ません)",
+        "contoh": [
+          {
+            "jp": "日曜日どこへも行きませんでした。",
+            "romaji": "Nichiyoubi doko e mo ikimasen deshita.",
+            "arti": "Hari Minggu kemarin saya tidak pergi ke mana-mana.",
+            "catatan": "Menggunakan bentuk lampau negatif karena menceritakan hari Minggu yang lalu."
+          }
+        ],
+        "catatan": "Partikel へ boleh dihilangkan sehingga menjadi 'doko mo ikimasen', namun menyertakannya dinilai lebih akurat secara tata bahasa.",
+        "larangan": "Wajib memasangkan pola interogatif + mo dengan bentuk kata kerja negatif.",
+        "partikel": "へ (e), も (mo)",
+        "level": "N5",
+        "kategori": "Kalimat Perpindahan"
+      },
+      {
+        "pola": "[Kendaraan] で [Kata Kerja]",
+        "arti": "Menggunakan / Naik [Kendaraan]",
+        "penjelasan": "Partikel で di sini berfungsi sebagai penanda alat, metode, atau sarana transportasi yang dipakai untuk berpindah.",
+        "kapan_digunakan": "Saat menerangkan akomodasi atau alat transportasi dalam perjalanan.",
+        "rumus": "Kata Benda (Kendaraan) + で + Kata Kerja Perpindahan",
+        "contoh": [
+          {
+            "jp": "新幹線で京都へ行きます。",
+            "romaji": "Shinkansen de Kyouto e ikimasu.",
+            "arti": "Pergi ke Kyoto menggunakan Shinkansen (kereta cepat).",
+            "catatan": "Shinkansen adalah sarana transportasinya."
+          }
+        ],
+        "catatan": "Jika melakukan perpindahan dengan berjalan kaki, gunakan frasa '歩いて' (aruite) tanpa menggunakan partikel で.",
+        "larangan": "Jangan katakan 'aruite de ikimasu'. Yang benar adalah cukup 'aruite ikimasu'.",
+        "partikel": "で (de)",
+        "level": "N5",
+        "kategori": "Kalimat Perpindahan"
+      },
+      {
+        "pola": "[Orang/Hewan] と [Kata Kerja]",
+        "arti": "Bersama / Dengan [Orang/Hewan]",
+        "penjelasan": "Partikel と menandakan mitra atau rekan pelaku dalam melakukan suatu aksi/kegiatan secara bersama-sama.",
+        "kapan_digunakan": "Saat menginformasikan pendamping kita ketika bepergian atau beraktivitas.",
+        "rumus": "Kata Benda (Orang/Hewan) + と + Kata Kerja",
+        "contoh": [
+          {
+            "jp": "家族と日本へ来ました。",
+            "romaji": "Kazoku to Nihon e kimashita.",
+            "arti": "Saya datang ke Jepang bersama keluarga.",
+            "catatan": "Kazoku (keluarga) adalah rekan dalam aktivitas perpindahan datang ke Jepang."
+          }
+        ],
+        "catatan": "Jika melakukan aktivitas sendirian, gunakan keterangan '一人で' (hitori de) tanpa partikel と.",
+        "larangan": "Jangan gunakan partikel to jika beraktivitas sendirian (Contoh salah: hitori to).",
+        "partikel": "と (to)",
+        "level": "N5",
+        "kategori": "Kalimat Perpindahan"
+      },
+      {
+        "pola": "いつ [Kata Kerja]",
+        "arti": "Kapan [Melakukan Aktivitas]?",
+        "penjelasan": "Kata tanya interogatif temporal untuk menanyakan titik waktu terjadinya peristiwa atau perbuatan.",
+        "kapan_digunakan": "Saat ingin mengetahui waktu pelaksanaan suatu agenda tanpa batasan format jam/hari khusus.",
+        "rumus": "いつ + Kata Kerja + か",
+        "contoh": [
+          {
+            "jp": "いつ日本へ行きますか。",
+            "romaji": "Itsu Nihon e ikimasu ka?",
+            "arti": "Kapan kamu akan pergi ke Jepang?",
+            "catatan": "Kata itsu langsung memodifikasi susunan predikat di belakangnya."
+          }
+        ],
+        "catatan": "Kata 'itsu' tidak boleh diikuti oleh partikel 'ni'.",
+        "larangan": "Dilarang keras menyambung kata itsu dengan partikel ni (Contoh salah: itsu ni).",
+        "partikel": "か (ka)",
+        "level": "N5",
+        "kategori": "Kalimat Perpindahan"
+      }
+    ]
+  },
+  {
+    "nama": "Bab 3 - Partikel & Tindakan",
+    "deskripsi": "Partikel を, で, ajakan (ませんか・ましょう), sarana/alat, pemberian & penerimaan",
+    "urutan": 3,
+    "data_json": [
+      {
+        "pola": "[Benda] を [Kata Kerja]",
+        "arti": "Mengerjakan / Melakukan tindakan pada [Benda]",
+        "penjelasan": "Partikel を menandakan objek langsung dari suatu tindakan (kata kerja transitif).",
+        "kapan_digunakan": "Saat menyebutkan benda yang dikenai suatu pekerjaan atau aksi.",
+        "rumus": "Kata Benda (Objek) + を + Kata Kerja Transitif",
+        "contoh": [
+          {
+            "jp": "ご飯を食べます。",
+            "romaji": "Gohan o tabemasu.",
+            "arti": "Makan nasi.",
+            "catatan": "Gohan adalah objek dari tindakan tabemasu."
+          }
+        ],
+        "catatan": "Partikel ini ditulis dengan hiragana 'wo' tetapi dibaca 'o'.",
+        "larangan": "Tidak digunakan pada kata kerja intransitif (seperti tidur, bangun).",
+        "partikel": "を (o)",
+        "level": "N5",
+        "kategori": "Objek Tindakan"
+      },
+      {
+        "pola": "[Tempat] で [Kata Kerja]",
+        "arti": "Melakukan aktivitas di [Tempat]",
+        "penjelasan": "Partikel で menunjukkan lokasi tempat terjadinya suatu aksi atau kejadian.",
+        "kapan_digunakan": "Saat menerangkan di mana sebuah tindakan dilakukan.",
+        "rumus": "Kata Benda (Tempat) + で + Kata Kerja Aksi",
+        "contoh": [
+          {
+            "jp": "食堂で食べます。",
+            "romaji": "Shokudou de tabemasu.",
+            "arti": "Makan di kantin.",
+            "catatan": "Fokus pada lokasi terjadinya aktivitas makan."
+          }
+        ],
+        "catatan": "Berbeda dengan partikel に yang menunjukkan titik eksistensi.",
+        "larangan": "Jangan gunakan で untuk kata kerja keberadaan seperti あります atau います.",
+        "partikel": "で (de)",
+        "level": "N5",
+        "kategori": "Keterangan Tempat"
+      },
+      {
+        "pola": "～ませんか",
+        "arti": "Maukah ~ / Tidakkah mau ~ ?",
+        "penjelasan": "Bentuk negatif tanya yang digunakan untuk mengajak, menawarkan, atau mengundang seseorang dengan sopan.",
+        "kapan_digunakan": "Saat ingin mengajak lawan bicara dan memberikan ruang kepada mereka untuk menolak tanpa canggung.",
+        "rumus": "Kata Kerja Bentuk ます (masu dicoret) + ませんか",
+        "contoh": [
+          {
+            "jp": "一緒に京都へ行きませんか。",
+            "romaji": "Issho ni Kyouto e ikimasen ka.",
+            "arti": "Maukah pergi ke Kyoto bersama-sama?",
+            "catatan": "Menggunakan bentuk negatif untuk memperhalus ajakan."
+          }
+        ],
+        "catatan": "Sering digunakan bersama kata 'issho ni' (bersama-sama).",
+        "larangan": "Bukan digunakan untuk menanyakan apakah seseorang tidak melakukan sesuatu (itu menggunakan bentuk lampau: masen deshita ka).",
+        "partikel": "か (ka)",
+        "level": "N5",
+        "kategori": "Ajakan"
+      },
+      {
+        "pola": "～ましょう",
+        "arti": "Ayo ~ / Mari ~",
+        "penjelasan": "Ungkapan ajakan yang bersifat aktif, proaktif, atau untuk menyetujui ajakan orang lain.",
+        "kapan_digunakan": "Saat mengajak secara langsung (mengasumsikan lawan bicara akan setuju) atau menjawab 'ya' pada ajakan.",
+        "rumus": "Kata Kerja Bentuk ます (masu dicoret) + ましょう",
+        "contoh": [
+          {
+            "jp": "ちょっと休みましょう。",
+            "romaji": "Chotto yasumimashou.",
+            "arti": "Ayo istirahat sebentar.",
+            "catatan": "Sering dipakai sebagai persetujuan dari ajakan ~masen ka."
+          }
+        ],
+        "catatan": "Terdengar lebih memaksa/antusias dibandingkan ~masen ka.",
+        "larangan": "Kurang sopan jika digunakan kepada atasan yang belum menawarkan ajakan.",
+        "partikel": "Tidak ada",
+        "level": "N5",
+        "kategori": "Ajakan"
+      },
+      {
+        "pola": "[Alat/Bahasa] で",
+        "arti": "Dengan (menggunakan) [Alat/Bahasa]",
+        "penjelasan": "Partikel で menunjukkan sarana, metode, bahan, atau alat yang dipakai untuk melakukan sesuatu.",
+        "kapan_digunakan": "Saat menjelaskan media atau alat yang memfasilitasi suatu tindakan.",
+        "rumus": "Kata Benda (Alat/Bahasa) + で + Kata Kerja",
+        "contoh": [
+          {
+            "jp": "日本語で話します。",
+            "romaji": "Nihongo de hanashimasu.",
+            "arti": "Berbicara menggunakan bahasa Jepang.",
+            "catatan": "Nihongo bertindak sebagai sarana komunikasi."
+          }
+        ],
+        "catatan": "Bisa untuk alat fisik (gunting, sendok) maupun abstrak (bahasa).",
+        "larangan": "Jangan gunakan untuk subjek manusia (gunakan partikel ni atau to).",
+        "partikel": "で (de)",
+        "level": "N5",
+        "kategori": "Sarana / Alat"
+      },
+      {
+        "pola": "[Orang] に [Benda] を あげます",
+        "arti": "Memberikan [Benda] kepada [Orang]",
+        "penjelasan": "Pola untuk menyatakan penyerahan suatu barang atau informasi dari pembicara (atau pihak ketiga) ke orang lain.",
+        "kapan_digunakan": "Saat subjek kalimat memberikan sesuatu kepada penerima.",
+        "rumus": "Subjek は + Penerima に + Benda を + あげます",
+        "contoh": [
+          {
+            "jp": "わたしは木村さんに花をあげます。",
+            "romaji": "Watashi wa Kimura-san ni hana o agemasu.",
+            "arti": "Saya memberikan bunga kepada Kimura.",
+            "catatan": "Partikel ni menandakan arah penerima."
+          }
+        ],
+        "catatan": "Subjek adalah si pemberi.",
+        "larangan": "Jangan gunakan agemasu jika ada orang lain yang memberikan barang kepada diri kita sendiri (gunakan kuremasu).",
+        "partikel": "に (ni), を (o)",
+        "level": "N5",
+        "kategori": "Pemberian"
+      },
+      {
+        "pola": "[Orang] に／から [Benda] を もらいます",
+        "arti": "Menerima [Benda] dari [Orang]",
+        "penjelasan": "Pola untuk menyatakan penerimaan suatu barang atau informasi dari pihak lain.",
+        "kapan_digunakan": "Saat subjek kalimat adalah pihak yang mendapatkan sesuatu.",
+        "rumus": "Subjek は + Pemberi に/から + Benda を + もらいます",
+        "contoh": [
+          {
+            "jp": "わたしはカリナさんにチョコレートをもらいました。",
+            "romaji": "Watashi wa Karina-san ni chokoreeto o moraimashita.",
+            "arti": "Saya menerima cokelat dari Karina.",
+            "catatan": "Partikel ni atau kara dapat digunakan secara bergantian di sini."
+          }
+        ],
+        "catatan": "Jika menerima dari instansi/perusahaan, wajib memakai から (kara), bukan に (ni).",
+        "larangan": "Subjek tidak boleh diisi oleh orang yang memberi.",
+        "partikel": "に (ni), から (kara), を (o)",
+        "level": "N5",
+        "kategori": "Penerimaan"
+      },
+      {
+        "pola": "もう [Kata Kerja Lampau]",
+        "arti": "Sudah [melakukan]",
+        "penjelasan": "Menunjukkan bahwa suatu perbuatan telah selesai dilakukan saat ini.",
+        "kapan_digunakan": "Saat menyatakan penyelesaian suatu tindakan.",
+        "rumus": "もう + Kata Kerja ました",
+        "contoh": [
+          {
+            "jp": "もう昼ごはんを食べました。",
+            "romaji": "Mou hirugohan o tabemashita.",
+            "arti": "Sudah makan siang.",
+            "catatan": "Harus diikuti kata kerja bentuk lampau positif."
+          }
+        ],
+        "catatan": "Jika ditanya 'mou ~mashita ka?', jawabannya adalah 'hai, mou ~mashita'.",
+        "larangan": "Dilarang memadukan 'mou' dengan kata kerja bentuk non-lampau (masu).",
+        "partikel": "Tidak ada",
+        "level": "N5",
+        "kategori": "Aspek Waktu"
+      },
+      {
+        "pola": "まだです",
+        "arti": "Belum",
+        "penjelasan": "Menyatakan bahwa suatu perbuatan belum selesai atau belum dilakukan.",
+        "kapan_digunakan": "Sebagai jawaban negatif untuk pertanyaan yang menggunakan 'mou ~mashita ka'.",
+        "rumus": "いいえ、まだです",
+        "contoh": [
+          {
+            "jp": "いいえ、まだです。",
+            "romaji": "Iie, mada desu.",
+            "arti": "Tidak, belum.",
+            "catatan": "Bentuk singkat dan sopan."
+          }
+        ],
+        "catatan": "Tidak perlu mengulang kata kerja bentuk negatif lampau (masen deshita) saat menjawab 'belum'.",
+        "larangan": "Jangan menjawab 'iie, ~masen deshita' untuk pertanyaan 'mou ~mashita ka' karena itu berarti 'tidak melakukan', bukan 'belum'.",
+        "partikel": "Tidak ada",
+        "level": "N5",
+        "kategori": "Aspek Waktu"
+      }
+    ]
+  },
+  {
+    "nama": "Bab 4 - Kata Sifat & Konjungsi",
+    "deskripsi": "Kata sifat い dan な (positif, negatif), konjungsi (そして, が), preferensi (すき・きらい)",
+    "urutan": 4,
+    "data_json": [
+      {
+        "pola": "[Subjek] は [Kata Sifat い/な] です",
+        "arti": "[Subjek] itu [Sifat]",
+        "penjelasan": "Mendeskripsikan ciri, keadaan, atau evaluasi dari suatu subjek menggunakan kata sifat dasar.",
+        "kapan_digunakan": "Saat memberikan penilaian atau deskripsi terhadap sesuatu.",
+        "rumus": "Kata Benda (Subjek) + は + Kata Sifat い/な + です",
+        "contoh": [
+          {
+            "jp": "このカメラは高いです。",
+            "romaji": "Kono kamera wa takai desu.",
+            "arti": "Kamera ini mahal.",
+            "catatan": "Kata sifat -i tidak memerlukan tambahan apa-apa sebelum desu."
+          }
+        ],
+        "catatan": "Kata sifat -na harus membuang 'na' sebelum ditambahkan 'desu' (contoh: kireina -> kirei desu).",
+        "larangan": "Jangan memasukkan hiragana 'na' di depan 'desu' (contoh salah: kireina desu).",
+        "partikel": "は (wa)",
+        "level": "N5",
+        "kategori": "Kata Sifat"
+      },
+      {
+        "pola": "～くないです",
+        "arti": "Tidak [Sifat]",
+        "penjelasan": "Bentuk negatif dari kata sifat berakhiran -i.",
+        "kapan_digunakan": "Saat menyangkal suatu deskripsi atau kondisi (kata sifat -i).",
+        "rumus": "Kata Sifat い (coret い) + くないです",
+        "contoh": [
+          {
+            "jp": "今日は暑くないです。",
+            "romaji": "Kyou wa atsukunai desu.",
+            "arti": "Hari ini tidak panas.",
+            "catatan": "Atsui menjadi atsukunai."
+          }
+        ],
+        "catatan": "Pengecualian utama: Kata sifat いい (bagus) menjadi よくない (yokunai).",
+        "larangan": "Jangan mempertahankan akhiran -i saat menambahkan kunai (contoh salah: atsuikunai).",
+        "partikel": "Tidak ada",
+        "level": "N5",
+        "kategori": "Kata Sifat"
+      },
+      {
+        "pola": "～じゃありません",
+        "arti": "Tidak [Sifat]",
+        "penjelasan": "Bentuk negatif dari kata sifat berakhiran -na.",
+        "kapan_digunakan": "Saat menyangkal suatu deskripsi atau kondisi (kata sifat -na).",
+        "rumus": "Kata Sifat な (coret な) + じゃありません",
+        "contoh": [
+          {
+            "jp": "あの人は親切じゃありません。",
+            "romaji": "Ano hito wa shinsetsu ja arimasen.",
+            "arti": "Orang itu tidak ramah.",
+            "catatan": "Sama persis dengan bentuk negatif kata benda."
+          }
+        ],
+        "catatan": "Dewa arimasen dapat digunakan untuk situasi yang lebih tertulis/formal.",
+        "larangan": "Tidak berlaku untuk kata sifat berakhiran -i.",
+        "partikel": "Tidak ada",
+        "level": "N5",
+        "kategori": "Kata Sifat"
+      },
+      {
+        "pola": "どんな [Benda]",
+        "arti": "[Benda] yang seperti apa/bagaimana?",
+        "penjelasan": "Kata tanya untuk meminta penjelasan detail mengenai sifat, bentuk, atau kategori suatu benda.",
+        "kapan_digunakan": "Saat meminta pendeskripsian sifat dari suatu objek.",
+        "rumus": "どんな + Kata Benda",
+        "contoh": [
+          {
+            "jp": "東京はどんな町ですか。",
+            "romaji": "Toukyou wa donna machi desu ka.",
+            "arti": "Tokyo adalah kota yang seperti apa?",
+            "catatan": "Dijawab dengan menggunakan kata sifat + benda (contoh: nigiyakana machi desu)."
+          }
+        ],
+        "catatan": "Wajib diikuti langsung oleh kata benda, tidak bisa berdiri sendiri.",
+        "larangan": "Jangan bingung dengan 'dou desu ka' (bagaimana kabarnya/pendapatnya). 'Donna' butuh kata benda.",
+        "partikel": "か (ka)",
+        "level": "N5",
+        "kategori": "Kata Tanya"
+      },
+      {
+        "pola": "～、そして ～",
+        "arti": "Dan / Kemudian",
+        "penjelasan": "Kata sambung di awal kalimat untuk merangkaikan dua kalimat yang sejalan atau berurutan.",
+        "kapan_digunakan": "Saat menambahkan informasi atau sifat yang setara dengan pernyataan sebelumnya.",
+        "rumus": "Kalimat 1。そして、Kalimat 2。",
+        "contoh": [
+          {
+            "jp": "日本の地下鉄はきれいです。そして、便利です。",
+            "romaji": "Nihon no chikatetsu wa kirei desu. Soshite, benri desu.",
+            "arti": "Kereta bawah tanah di Jepang bersih. Dan juga, praktis.",
+            "catatan": "Sifat positif digabungkan dengan sifat positif."
+          }
+        ],
+        "catatan": "Lebih sering dipakai memisahkan dua kalimat utuh.",
+        "larangan": "Jangan gunakan untuk menyambung sifat yang bertentangan (misal: mahal dan enak).",
+        "partikel": "Tidak ada",
+        "level": "N5",
+        "kategori": "Konjungsi"
+      },
+      {
+        "pola": "～が、～",
+        "arti": "Tetapi",
+        "penjelasan": "Partikel penyambung untuk dua klausa yang saling berlawanan maknanya (kontras).",
+        "kapan_digunakan": "Saat menggabungkan sifat positif dan negatif dari satu subjek.",
+        "rumus": "Klausa 1 + が、Klausa 2",
+        "contoh": [
+          {
+            "jp": "日本の食べ物はおいしいですが、高いです。",
+            "romaji": "Nihon no tabemono wa oishii desu ga, takai desu.",
+            "arti": "Makanan Jepang enak, tetapi mahal.",
+            "catatan": "Menghubungkan sifat 'enak' (positif) dan 'mahal' (negatif)."
+          }
+        ],
+        "catatan": "Diposisikan persis di belakang desu/masu pada klausa pertama.",
+        "larangan": "Partikel が di sini berbeda fungsi dengan penanda subjek が.",
+        "partikel": "が (ga)",
+        "level": "N5",
+        "kategori": "Konjungsi"
+      },
+      {
+        "pola": "[Benda] が すき／きらい です",
+        "arti": "Suka / Benci (Tidak suka) [Benda]",
+        "penjelasan": "Menyatakan preferensi atau selera terhadap sesuatu.",
+        "kapan_digunakan": "Saat mengungkapkan hal yang disenangi atau dibenci.",
+        "rumus": "Subjek は + Objek が + すき/きらい + です",
+        "contoh": [
+          {
+            "jp": "わたしはスポーツが好きです。",
+            "romaji": "Watashi wa supootsu ga suki desu.",
+            "arti": "Saya suka olahraga.",
+            "catatan": "Objek preferensi wajib ditandai dengan partikel ga."
+          }
+        ],
+        "catatan": "Suki dan kirai tergolong kata sifat -na, bukan kata kerja.",
+        "larangan": "Dilarang menggunakan partikel を (o) untuk objek pada pola ini.",
+        "partikel": "が (ga)",
+        "level": "N5",
+        "kategori": "Preferensi"
+      },
+      {
+        "pola": "[Benda] が わかります／あります",
+        "arti": "Mengerti / Memiliki [Benda]",
+        "penjelasan": "Menyatakan pemahaman terhadap suatu hal atau kepemilikan benda.",
+        "kapan_digunakan": "Saat menginformasikan kemampuan memahami bahasa/situasi, atau memiliki barang/waktu.",
+        "rumus": "Subjek は + Objek が + わかります/あります",
+        "contoh": [
+          {
+            "jp": "わたしは日本語がわかります。",
+            "romaji": "Watashi wa nihongo ga wakarimasu.",
+            "arti": "Saya mengerti bahasa Jepang.",
+            "catatan": "Meskipun transitif dalam bahasa Indonesia, dalam bahasa Jepang memakai partikel ga."
+          }
+        ],
+        "catatan": "Kata kerja wakarimasu dan arimasu selalu mengambil partikel が, bukan を.",
+        "larangan": "Dilarang menggunakan partikel を (o) untuk objek pada pola ini.",
+        "partikel": "が (ga)",
+        "level": "N5",
+        "kategori": "Kemampuan & Kepemilikan"
+      },
+      {
+        "pola": "Kata Keterangan Tingkatan (よく、だいたい、たくさん、少し、あまり、全然)",
+        "arti": "Sangat / Sebagian besar / Banyak / Sedikit / Tidak terlalu / Sama sekali tidak",
+        "penjelasan": "Adverbia yang diletakkan sebelum kata kerja/sifat untuk menunjukkan kadar kuantitas atau derajat pemahaman.",
+        "kapan_digunakan": "Saat ingin merinci seberapa paham, seberapa banyak, atau seberapa intens suatu keadaan.",
+        "rumus": "Kata Keterangan + [Kata Kerja / Kata Sifat]",
+        "contoh": [
+          {
+            "jp": "お金が全然ありません。",
+            "romaji": "Okane ga zenzen arimasen.",
+            "arti": "Sama sekali tidak punya uang.",
+            "catatan": "Zenzen wajib diikuti bentuk negatif."
+          }
+        ],
+        "catatan": "Amari dan Zenzen wajib berpasangan dengan predikat negatif (masen/nai).",
+        "larangan": "Jangan memakai amari atau zenzen dengan kalimat berbentuk positif.",
+        "partikel": "Tidak ada",
+        "level": "N5",
+        "kategori": "Kata Keterangan"
+      },
+      {
+        "pola": "[Alasan] から、[Kesimpulan]",
+        "arti": "Karena [Alasan], maka [Kesimpulan]",
+        "penjelasan": "Menyambungkan klausa sebab dan akibat.",
+        "kapan_digunakan": "Saat memberikan alasan untuk suatu keadaan, tindakan, atau penolakan.",
+        "rumus": "Klausa Alasan (berakhiran desu/masu) + から、Klausa Kesimpulan",
+        "contoh": [
+          {
+            "jp": "時間がありませんから、新聞を読みません。",
+            "romaji": "Jikan ga arimasen kara, shinbun o yomimasen.",
+            "arti": "Karena tidak ada waktu, saya tidak membaca koran.",
+            "catatan": "Sebab selalu diucapkan di awal, berbeda dengan struktur kalimat 'because' dalam bahasa Inggris."
+          }
+        ],
+        "catatan": "Kara ditempatkan di akhir klausa alasan.",
+        "larangan": "Dilarang membalik urutan (Kesimpulan + kara + Alasan) dalam pola dasar N5 ini.",
+        "partikel": "から (kara)",
+        "level": "N5",
+        "kategori": "Sebab Akibat"
+      },
+      {
+        "pola": "～くて / ～で",
+        "arti": "~ dan ~",
+        "penjelasan": "Menyambungkan dua kata sifat atau lebih dalam satu kalimat secara paralel.",
+        "kapan_digunakan": "Saat memberikan lebih dari satu deskripsi pada sebuah benda atau orang.",
+        "rumus": "Sifat い (coret い) + くて / Sifat な (coret な) / Benda + で",
+        "contoh": [
+          {
+            "jp": "このパンは安くて、おいしいです。",
+            "romaji": "Kono pan wa yasukute, oishii desu.",
+            "arti": "Roti ini murah dan enak.",
+            "catatan": "Yasui menjadi yasukute."
+          }
+        ],
+        "catatan": "Untuk kata benda juga menggunakan で (Contoh: Gakusei de, 20-sai desu).",
+        "larangan": "Jangan gunakan untuk menyambungkan sifat yang saling bertentangan (gunakan 'ga' untuk itu).",
+        "partikel": "Tidak ada",
+        "level": "N5",
+        "kategori": "Konjungsi"
+      }
+    ]
+  },
+  {
+    "nama": "Bab 5 - Keberadaan & Bilangan",
+    "deskripsi": "Pola あります・います, posisi (上・下・中), partikel penyambung や, counter, frekuensi",
+    "urutan": 5,
+    "data_json": [
+      {
+        "pola": "[Tempat] に [Benda Mati] が あります",
+        "arti": "Di [Tempat] ada [Benda Mati]",
+        "penjelasan": "Menyatakan keberadaan eksistensi untuk benda tak hidup (termasuk tanaman).",
+        "kapan_digunakan": "Saat menunjukkan lokasi persis suatu barang atau tumbuhan.",
+        "rumus": "Tempat に + Benda Mati が + あります",
+        "contoh": [
+          {
+            "jp": "部屋に机があります。",
+            "romaji": "Heya ni tsukue ga arimasu.",
+            "arti": "Di kamar ada meja.",
+            "catatan": "Tsukue (meja) adalah benda mati."
+          }
+        ],
+        "catatan": "Partikel に di sini berfungsi sebagai penanda titik lokasi eksistensi.",
+        "larangan": "Jangan pakai あります untuk manusia atau hewan.",
+        "partikel": "に (ni), が (ga)",
+        "level": "N5",
+        "kategori": "Keberadaan"
+      },
+      {
+        "pola": "[Tempat] に [Benda Hidup] が います",
+        "arti": "Di [Tempat] ada [Makhluk Hidup]",
+        "penjelasan": "Menyatakan keberadaan eksistensi untuk makhluk bernyawa (manusia dan hewan) yang bisa bergerak sendiri.",
+        "kapan_digunakan": "Saat mencari atau menunjukkan posisi orang/hewan.",
+        "rumus": "Tempat に + Makhluk Hidup が + います",
+        "contoh": [
+          {
+            "jp": "庭に犬がいます。",
+            "romaji": "Niwa ni inu ga imasu.",
+            "arti": "Di halaman ada anjing.",
+            "catatan": "Inu (anjing) adalah makhluk hidup."
+          }
+        ],
+        "catatan": "Pola ini juga dapat dibalik menjadi: [Makhluk Hidup] wa [Tempat] ni imasu.",
+        "larangan": "Jangan pakai います untuk benda mati atau tanaman.",
+        "partikel": "に (ni), が (ga)",
+        "level": "N5",
+        "kategori": "Keberadaan"
+      },
+      {
+        "pola": "Posisi (上、下、前、後ろ、右、左、中、外、隣、近く、間)",
+        "arti": "Atas, Bawah, Depan, Belakang, Kanan, Kiri, Dalam, Luar, Samping, Dekat, Di antara",
+        "penjelasan": "Kata benda posisi yang digunakan dengan partikel の untuk merinci lokasi secara presisi.",
+        "kapan_digunakan": "Saat letak barang sangat spesifik relatif terhadap benda lain.",
+        "rumus": "Kata Benda Acuan + の + Kata Benda Posisi",
+        "contoh": [
+          {
+            "jp": "机の上に本があります。",
+            "romaji": "Tsukue no ue ni hon ga arimasu.",
+            "arti": "Di atas meja ada buku.",
+            "catatan": "Posisi (ue) dirangkai dengan benda acuan (tsukue) memakai partikel no."
+          }
+        ],
+        "catatan": "Kata posisi di Jepang diperlakukan seperti kata benda biasa.",
+        "larangan": "Partikel ni diletakkan setelah kata posisi, bukan sebelum kata posisi.",
+        "partikel": "の (no), に (ni)",
+        "level": "N5",
+        "kategori": "Keberadaan"
+      },
+      {
+        "pola": "[Benda 1] や [Benda 2]",
+        "arti": "[Benda 1] dan [Benda 2] (dan lain-lain)",
+        "penjelasan": "Menyebutkan dua atau lebih benda sebagai perwakilan dari sekumpulan barang (tidak semuanya disebutkan).",
+        "kapan_digunakan": "Saat mendaftar benda di mana masih ada benda lain selain yang disebutkan.",
+        "rumus": "Kata Benda 1 + や + Kata Benda 2 (+ など)",
+        "contoh": [
+          {
+            "jp": "箱の中に手紙や写真があります。",
+            "romaji": "Hako no naka ni tegami ya shashin ga arimasu.",
+            "arti": "Di dalam kotak ada surat, foto, dan lain-lain.",
+            "catatan": "Sering ditambah kata 'nado' di akhir untuk menegaskan 'dan lain-lain'."
+          }
+        ],
+        "catatan": "Berbeda dengan partikel と (to) yang berarti menyebutkan keseluruhan benda tanpa sisa.",
+        "larangan": "Jangan gunakan partikel や untuk merangkaikan kata kerja atau kata sifat.",
+        "partikel": "や (ya)",
+        "level": "N5",
+        "kategori": "Partikel Penyambung"
+      },
+      {
+        "pola": "Kata Bantu Bilangan (Counter)",
+        "arti": "Menyatakan jumlah barang",
+        "penjelasan": "Kata bantu bilangan diletakkan langsung setelah partikel objek (sebelum kata kerja) untuk menyatakan jumlah benda.",
+        "kapan_digunakan": "Saat menghitung jumlah barang, mesin, lembaran, atau orang.",
+        "rumus": "Kata Benda + を + [Jumlah/Counter] + Kata Kerja",
+        "contoh": [
+          {
+            "jp": "りんごを３つ食べます。",
+            "romaji": "Ringo o mittsu tabemasu.",
+            "arti": "Makan 3 buah apel.",
+            "catatan": "Mittsu adalah counter untuk benda umum."
+          }
+        ],
+        "catatan": "Macam counter: ~tsu (umum), ~mai (tipis), ~dai (mesin), ~nin (orang).",
+        "larangan": "Jangan meletakkan partikel を setelah kata bantu bilangan.",
+        "partikel": "を (o)",
+        "level": "N5",
+        "kategori": "Kata Bantu Bilangan"
+      },
+      {
+        "pola": "どのくらい",
+        "arti": "Berapa lama?",
+        "penjelasan": "Kata tanya untuk menanyakan durasi atau rentang waktu suatu kejadian.",
+        "kapan_digunakan": "Saat ingin mengetahui seberapa lama sebuah aktivitas memakan waktu.",
+        "rumus": "どのくらい + Kata Kerja + か",
+        "contoh": [
+          {
+            "jp": "どのくらい日本語を勉強しましたか。",
+            "romaji": "Dono kurai nihongo o benkyou shimashita ka.",
+            "arti": "Berapa lama kamu telah belajar bahasa Jepang?",
+            "catatan": "Jawabannya menggunakan durasi seperti ~jikan, ~shuukan, ~nen."
+          }
+        ],
+        "catatan": "Dapat diikuti partikel ぐらい (gurai) di jawabannya untuk arti 'kira-kira'.",
+        "larangan": "Jangan tertukar dengan 'itsu' yang menanyakan titik waktu pasti (kapan).",
+        "partikel": "か (ka)",
+        "level": "N5",
+        "kategori": "Durasi Waktu"
+      },
+      {
+        "pola": "[Rentang Waktu] に ～回",
+        "arti": "~ kali dalam ~ (durasi)",
+        "penjelasan": "Menyatakan frekuensi suatu aktivitas dalam satu periode waktu tertentu.",
+        "kapan_digunakan": "Saat menjelaskan seberapa sering suatu perbuatan dilakukan.",
+        "rumus": "Rentang Waktu + に + Angka + 回 + Kata Kerja",
+        "contoh": [
+          {
+            "jp": "１か月に２回映画を見ます。",
+            "romaji": "Ikkagetsu ni ni-kai eiga o mimasu.",
+            "arti": "Menonton film 2 kali dalam 1 bulan.",
+            "catatan": "Partikel ni di sini berfungsi menetapkan porsi/frekuensi."
+          }
+        ],
+        "catatan": "Bisa digabung dengan counter frekuensi lainnya jika relevan.",
+        "larangan": "Jangan gunakan partikel de untuk menyatakan perbandingan frekuensi ini.",
+        "partikel": "に (ni)",
+        "level": "N5",
+        "kategori": "Frekuensi"
+      }
+    ]
+  },
+  {
+    "nama": "Bab 6 - Aspek Lampau & Perbandingan",
+    "deskripsi": "Bentuk lampau (でした, かったです), perbandingan (より), superlatif (いちばん), keinginan (ほしい・たい)",
+    "urutan": 6,
+    "data_json": [
+      {
+        "pola": "～でした / ～じゃありませんでした",
+        "arti": "Telah menjadi ~ / Dulu bukan ~",
+        "penjelasan": "Bentuk lampau untuk Kata Benda dan Kata Sifat な (na).",
+        "kapan_digunakan": "Saat menceritakan status, kondisi, atau sifat di masa lalu.",
+        "rumus": "KB/Sifat-na + でした / じゃありませんでした",
+        "contoh": [
+          {
+            "jp": "きのうは雨でした。",
+            "romaji": "Kinou wa ame deshita.",
+            "arti": "Kemarin hujan.",
+            "catatan": "Ame adalah kata benda, sehingga memakai deshita untuk lampau."
+          }
+        ],
+        "catatan": "Untuk bentuk tulisan/formal dari 'ja arimasen deshita' adalah 'dewa arimasen deshita'.",
+        "larangan": "Tidak boleh digunakan untuk kata sifat berakhiran い (i).",
+        "partikel": "Tidak ada",
+        "level": "N5",
+        "kategori": "Aspek Lampau"
+      },
+      {
+        "pola": "～かったです / ～くなかったです",
+        "arti": "Dulu ~ / Dulu tidak ~",
+        "penjelasan": "Bentuk lampau untuk Kata Sifat い (i).",
+        "kapan_digunakan": "Saat menceritakan perasaan atau kondisi sifat (berakhiran i) di masa lalu.",
+        "rumus": "Kata Sifat い (coret い) + かったです / くなかったです",
+        "contoh": [
+          {
+            "jp": "パーティーは楽しかったです。",
+            "romaji": "Paatii wa tanoshikatta desu.",
+            "arti": "Pestanya menyenangkan.",
+            "catatan": "Tanoshii (menyenangkan) diubah menjadi tanoshikatta."
+          }
+        ],
+        "catatan": "Pengecualian: いい (bagus) menjadi よかったです (yokatta desu) / よくなかったです (yokunakatta desu).",
+        "larangan": "Jangan menggunakan deshita setelah kata sifat i yang belum diubah (Contoh salah: tanoshii deshita).",
+        "partikel": "Tidak ada",
+        "level": "N5",
+        "kategori": "Aspek Lampau"
+      },
+      {
+        "pola": "[A] は [B] より [Sifat] です",
+        "arti": "[A] lebih [Sifat] daripada [B]",
+        "penjelasan": "Membandingkan dua hal, di mana A memiliki kadar sifat lebih tinggi dari B.",
+        "kapan_digunakan": "Saat menyatakan keunggulan/perbandingan satu benda terhadap benda lain.",
+        "rumus": "A + は + B + より + Kata Sifat + です",
+        "contoh": [
+          {
+            "jp": "車は自転車より速いです。",
+            "romaji": "Kuruma wa jitensha yori hayai desu.",
+            "arti": "Mobil lebih cepat daripada sepeda.",
+            "catatan": "Yori menempel pada benda yang menjadi standar pembanding (B)."
+          }
+        ],
+        "catatan": "Subjek utama (A) selalu ditandai dengan は.",
+        "larangan": "Jangan salah meletakkan より, artinya akan terbalik.",
+        "partikel": "は (wa), より (yori)",
+        "level": "N5",
+        "kategori": "Perbandingan"
+      },
+      {
+        "pola": "[A] と [B] と どちらが [Sifat] ですか",
+        "arti": "Antara [A] dan [B], mana yang lebih [Sifat]?",
+        "penjelasan": "Pertanyaan untuk meminta lawan bicara memilih mana yang lebih memiliki sifat tertentu antara dua opsi.",
+        "kapan_digunakan": "Saat meminta perbandingan langsung dari dua pilihan.",
+        "rumus": "A + と + B + と + どちらが + Kata Sifat + ですか",
+        "contoh": [
+          {
+            "jp": "サッカーと野球とどちらがおもしろいですか。",
+            "romaji": "Sakkaa to yakyuu to dochira ga omoshiroi desu ka.",
+            "arti": "Antara sepak bola dan bisbol, mana yang lebih menarik?",
+            "catatan": "Dochira adalah kata tanya khusus untuk membandingkan 2 benda."
+          }
+        ],
+        "catatan": "Cara menjawab: [A/B] のほうが [Sifat] です (no hou ga).",
+        "larangan": "Jangan gunakan kata tanya 'dore' (yang mana) untuk membandingkan dua opsi.",
+        "partikel": "と (to), が (ga)",
+        "level": "N5",
+        "kategori": "Perbandingan"
+      },
+      {
+        "pola": "[Kategori] で [A] が いちばん [Sifat] です",
+        "arti": "Di antara [Kategori], [A] yang paling [Sifat]",
+        "penjelasan": "Menyatakan status superlatif (paling) dalam suatu kelompok atau ruang lingkup tertentu.",
+        "kapan_digunakan": "Saat menyebutkan hal yang terbaik, terbesar, termurah, dll dalam suatu kelompok (3 benda atau lebih).",
+        "rumus": "Kategori + で + A + が + いちばん + Kata Sifat + です",
+        "contoh": [
+          {
+            "jp": "果物でりんごがいちばん好きです。",
+            "romaji": "Kudamono de ringo ga ichiban suki desu.",
+            "arti": "Di antara buah-buahan, apel yang paling saya suka.",
+            "catatan": "Partikel de berfungsi menunjukkan ruang lingkup kategori."
+          }
+        ],
+        "catatan": "Jika kategorinya tempat atau kelompok, ditandai dengan で (de).",
+        "larangan": "Jangan gunakan pola ini untuk membandingkan hanya dua benda (gunakan dochira).",
+        "partikel": "で (de), が (ga)",
+        "level": "N5",
+        "kategori": "Superlatif"
+      },
+      {
+        "pola": "～がほしいです",
+        "arti": "Ingin [Benda]",
+        "penjelasan": "Menyatakan keinginan untuk memiliki suatu barang atau benda mati/hidup.",
+        "kapan_digunakan": "Saat mengutarakan apa yang sedang diinginkan pembicara.",
+        "rumus": "Kata Benda + が + ほしいです",
+        "contoh": [
+          {
+            "jp": "わたしはパソコンがほしいです。",
+            "romaji": "Watashi wa pasokon ga hoshii desu.",
+            "arti": "Saya ingin komputer/laptop.",
+            "catatan": "Hoshii berfungsi sebagai kata sifat い, bukan kata kerja."
+          }
+        ],
+        "catatan": "Tidak bisa digunakan untuk menyatakan keinginan orang ketiga (dia/mereka).",
+        "larangan": "Jangan gunakan partikel を (o) sebelum hoshii, wajib menggunakan が (ga).",
+        "partikel": "が (ga)",
+        "level": "N5",
+        "kategori": "Keinginan"
+      },
+      {
+        "pola": "～たいです",
+        "arti": "Ingin melakukan [Aktivitas]",
+        "penjelasan": "Menyatakan keinginan untuk melakukan suatu perbuatan (kata kerja).",
+        "kapan_digunakan": "Saat mengutarakan niat atau kehendak untuk bertindak.",
+        "rumus": "Objek + を/が + Kata Kerja (masu coret) + たいです",
+        "contoh": [
+          {
+            "jp": "寿司を食べたいです。",
+            "romaji": "Sushi o tabetai desu.",
+            "arti": "Ingin makan sushi.",
+            "catatan": "Partikel o dan ga dapat digunakan secara bergantian dalam pola ini."
+          }
+        ],
+        "catatan": "Bentuk たい (tai) secara gramatikal berubah seperti kata sifat い (negatif: takunai desu, lampau: takatta desu).",
+        "larangan": "Tidak dapat digunakan untuk menceritakan keinginan orang ketiga.",
+        "partikel": "を (o) / が (ga)",
+        "level": "N5",
+        "kategori": "Keinginan"
+      },
+      {
+        "pola": "～へ ～に行きます / 来ます / 帰ります",
+        "arti": "Pergi / Datang / Pulang ke [Tempat] untuk [Tujuan]",
+        "penjelasan": "Menyatakan tujuan dari suatu perpindahan.",
+        "kapan_digunakan": "Saat menjelaskan alasan mengapa pergi ke suatu tempat.",
+        "rumus": "Tempat + へ + KK (masu coret) / KB + に + 行きます/来ます/帰ります",
+        "contoh": [
+          {
+            "jp": "京都へ写真を撮りに行きます。",
+            "romaji": "Kyouto e shashin o tori ni ikimasu.",
+            "arti": "Pergi ke Kyoto untuk memotret (mengambil foto).",
+            "catatan": "Tori berasal dari torimasu (masu dihilangkan)."
+          }
+        ],
+        "catatan": "Untuk Kata Benda yang menyatakan aksi (seperti kaimono, benkyou), tidak perlu diubah, langsung tambahkan に.",
+        "larangan": "Jangan menggunakan bentuk utuh 'masu' sebelum partikel ni (Contoh salah: torimasu ni ikimasu).",
+        "partikel": "へ (e), に (ni)",
+        "level": "N5",
+        "kategori": "Tujuan Pergerakan"
+      }
+    ]
+  },
+  {
+    "nama": "Bab 7 - Bentuk Te & Aturan",
+    "deskripsi": "Bentuk て (instruksi, progresif, keadaan), izin (てもいいです), larangan (てはいけません), kewajiban (なければなりません)",
+    "urutan": 7,
+    "data_json": [
+      {
+        "pola": "～てください",
+        "arti": "Tolong lakukan ~ / Silakan ~",
+        "penjelasan": "Bentuk sopan untuk memberikan instruksi, menyuruh, meminta, atau mempersilakan orang lain melakukan sesuatu.",
+        "kapan_digunakan": "Saat memberi perintah secara halus atau meminta tolong.",
+        "rumus": "Kata Kerja Bentuk て (te) + ください",
+        "contoh": [
+          {
+            "jp": "ちょっと待ってください。",
+            "romaji": "Chotto matte kudasai.",
+            "arti": "Tolong tunggu sebentar.",
+            "catatan": "Matte adalah bentuk-te dari machimasu (Grup 1)."
+          }
+        ],
+        "catatan": "Perlu menguasai perubahan Grup Kata Kerja 1, 2, dan 3 ke dalam bentuk TE.",
+        "larangan": "Meskipun sopan, jangan sering digunakan kepada atasan karena bernada perintah. Untuk atasan gunakan pola yang lebih halus.",
+        "partikel": "Tidak ada",
+        "level": "N5",
+        "kategori": "Instruksi"
+      },
+      {
+        "pola": "～ています (Sedang Berlangsung)",
+        "arti": "Sedang melakukan ~",
+        "penjelasan": "Menyatakan bahwa suatu aktivitas sedang berlangsung saat ini (Present Continuous Tense).",
+        "kapan_digunakan": "Saat melaporkan atau mendeskripsikan tindakan yang sedang berjalan di depan mata atau saat dibicarakan.",
+        "rumus": "Kata Kerja Bentuk て (te) + います",
+        "contoh": [
+          {
+            "jp": "今雨が降っています。",
+            "romaji": "Ima ame ga futte imasu.",
+            "arti": "Sekarang hujan sedang turun.",
+            "catatan": "Furu (turun) berubah menjadi futte."
+          }
+        ],
+        "catatan": "Berbeda dengan ~masu yang menyatakan kebiasaan atau aktivitas yang akan datang.",
+        "larangan": "Jangan digunakan untuk kata kerja yang menunjukkan keadaan instan tanpa durasi jika maksudnya 'sedang berlangsung'.",
+        "partikel": "Tidak ada",
+        "level": "N5",
+        "kategori": "Aspek Progresif"
+      },
+      {
+        "pola": "～ましょうか",
+        "arti": "Biar saya yang lakukan ~ / Maukah saya bantu ~",
+        "penjelasan": "Ungkapan untuk menawarkan bantuan secara proaktif kepada lawan bicara.",
+        "kapan_digunakan": "Saat melihat seseorang kesulitan dan ingin mengajukan diri untuk membantunya.",
+        "rumus": "Kata Kerja Bentuk ます (masu coret) + ましょうか",
+        "contoh": [
+          {
+            "jp": "荷物を持ちましょうか。",
+            "romaji": "Nimotsu o mochimashou ka.",
+            "arti": "Biar saya bawakan barang bawaannya.",
+            "catatan": "Dijawab dengan 'E, onegaishimasu' jika menerima, atau 'Iie, kekkou desu' jika menolak."
+          }
+        ],
+        "catatan": "Pola ini menunjukkan inisiatif yang tinggi dari pembicara.",
+        "larangan": "Jangan gunakan bentuk te+mashouka.",
+        "partikel": "か (ka)",
+        "level": "N5",
+        "kategori": "Penawaran"
+      },
+      {
+        "pola": "～てもいいです / ～てもいいですか",
+        "arti": "Boleh melakukan ~ / Bolehkah melakukan ~?",
+        "penjelasan": "Digunakan untuk memberikan izin atau meminta izin melakukan sesuatu.",
+        "kapan_digunakan": "Saat meminta persetujuan untuk bertindak atau memberikan kelonggaran/izin.",
+        "rumus": "Kata Kerja Bentuk て (te) + もいいです(か)",
+        "contoh": [
+          {
+            "jp": "写真を撮ってもいいですか。",
+            "romaji": "Shashin o totte mo ii desu ka.",
+            "arti": "Bolehkah saya mengambil foto?",
+            "catatan": "Meminta izin. Jika boleh dijawab 'e, ii desu yo'."
+          }
+        ],
+        "catatan": "Pola ini menggabungkan bentuk-te, partikel mo, dan ii (baik).",
+        "larangan": "Jangan hilangkan partikel mo (Contoh salah: te ii desu ka).",
+        "partikel": "も (mo)",
+        "level": "N5",
+        "kategori": "Izin"
+      },
+      {
+        "pola": "～てはいけません",
+        "arti": "Tidak boleh / Dilarang melakukan ~",
+        "penjelasan": "Ungkapan larangan kuat atau peringatan aturan.",
+        "kapan_digunakan": "Saat melarang secara keras karena melanggar aturan, berbahaya, atau tidak pantas.",
+        "rumus": "Kata Kerja Bentuk て (te) + はいけません",
+        "contoh": [
+          {
+            "jp": "ここでたばこを吸ってはいけません。",
+            "romaji": "Koko de tabako o sutte wa ikemasen.",
+            "arti": "Dilarang keras merokok di sini.",
+            "catatan": "Partikel wa di sini ditulis dengan hiragana 'ha'."
+          }
+        ],
+        "catatan": "Digunakan sebagai jawaban penolakan dari 'te mo ii desu ka' jika aturannya mutlak.",
+        "larangan": "Tidak disarankan dipakai untuk menolak izin biasa secara sopan (lebih baik gunakan 'sumimasen, chotto...').",
+        "partikel": "は (wa)",
+        "level": "N5",
+        "kategori": "Larangan"
+      },
+      {
+        "pola": "～ています (Keadaan/Status)",
+        "arti": "Berstatus ~ / Dalam keadaan ~",
+        "penjelasan": "Selain berarti 'sedang', bentuk te-imasu digunakan untuk suatu hasil tindakan di masa lalu yang statusnya/efeknya masih bertahan hingga sekarang.",
+        "kapan_digunakan": "Saat menyatakan tempat tinggal, tempat bekerja, status pernikahan, atau pemilikan.",
+        "rumus": "Kata Kerja Bentuk て (te) + います",
+        "contoh": [
+          {
+            "jp": "わたしは大阪に住んでいます。",
+            "romaji": "Watashi wa Oosaka ni sunde imasu.",
+            "arti": "Saya tinggal di Osaka.",
+            "catatan": "Berarti tindakan menetap telah dilakukan dan sekarang masih berstatus sebagai warga Osaka."
+          }
+        ],
+        "catatan": "Kata kerja umum yang sering memakai pola ini: kekkon shiteimasu (menikah), shitteimasu (tahu), motteimasu (memiliki).",
+        "larangan": "Jangan gunakan bentuk masu (sumimasu, kekkon shimasu) untuk menyatakan keadaan saat ini.",
+        "partikel": "Tidak ada",
+        "level": "N5",
+        "kategori": "Keadaan"
+      },
+      {
+        "pola": "～ないでください",
+        "arti": "Tolong jangan ~",
+        "penjelasan": "Meminta atau memohon seseorang agar tidak melakukan suatu tindakan.",
+        "kapan_digunakan": "Saat memberi peringatan, larangan halus, atau memohon agar hal tertentu dihindari.",
+        "rumus": "Kata Kerja ない + でください",
+        "contoh": [
+          {
+            "jp": "ここで写真を撮らないでください。",
+            "romaji": "Koko de shashin o toranaide kudasai.",
+            "arti": "Tolong jangan mengambil foto di sini.",
+            "catatan": "Torimasu diubah ke bentuk nai (toranai) lalu ditambah de kudasai."
+          }
+        ],
+        "catatan": "Sering digunakan di tempat umum untuk menegur dengan sopan.",
+        "larangan": "Jangan pisahkan bentuk nai dan de kudasai.",
+        "partikel": "Tidak ada",
+        "level": "N5",
+        "kategori": "Instruksi Negatif"
+      },
+      {
+        "pola": "～なければなりません",
+        "arti": "Wajib / Harus melakukan ~",
+        "penjelasan": "Menyatakan kewajiban atau suatu keharusan yang tidak dapat dihindari.",
+        "kapan_digunakan": "Saat menyebutkan tugas, aturan, atau hal yang mutlak harus dikerjakan.",
+        "rumus": "Kata Kerja ない (coret い) + ければなりません",
+        "contoh": [
+          {
+            "jp": "薬を飲まなければなりません。",
+            "romaji": "Kusuri o nomanakereba narimasen.",
+            "arti": "Harus minum obat.",
+            "catatan": "Nomimasu -> Nomanai -> Nomanakereba narimasen."
+          }
+        ],
+        "catatan": "Bentuk harfiahnya berarti 'jika tidak melakukan, tidak akan menjadi (benar/baik)'.",
+        "larangan": "Jangan menambahkan kata 'desu' di belakang pola ini.",
+        "partikel": "Tidak ada",
+        "level": "N5",
+        "kategori": "Kewajiban"
+      },
+      {
+        "pola": "～なくてもいいです",
+        "arti": "Tidak ~ pun tidak apa-apa / Tidak perlu ~",
+        "penjelasan": "Menyatakan ketiadaan kewajiban atau memberi kelonggaran kepada seseorang untuk tidak melakukan sesuatu.",
+        "kapan_digunakan": "Saat menyatakan bahwa sesuatu bersifat opsional dan tidak dipaksakan.",
+        "rumus": "Kata Kerja ない (coret い) + くてもいいです",
+        "contoh": [
+          {
+            "jp": "明日来なくてもいいです。",
+            "romaji": "Ashita konakutemo ii desu.",
+            "arti": "Besok tidak datang pun tidak apa-apa.",
+            "catatan": "Kimasu -> Konai -> Konakutemo ii desu."
+          }
+        ],
+        "catatan": "Berfungsi sebagai lawan atau pembatalan dari nakereba narimasen.",
+        "larangan": "Jangan sampai tertukar dengan larangan (te wa ikemasen).",
+        "partikel": "Tidak ada",
+        "level": "N5",
+        "kategori": "Kelonggaran"
+      },
+      {
+        "pola": "[Objek] は",
+        "arti": "Mengenai [Objek]...",
+        "penjelasan": "Menggeser objek yang biasanya menggunakan partikel を ke depan kalimat menjadi topik utama dengan partikel は.",
+        "kapan_digunakan": "Saat ingin memfokuskan pembicaraan pada benda yang menjadi objek tindakan.",
+        "rumus": "Objek (sebagai topik) + は + Keterangan + Kata Kerja",
+        "contoh": [
+          {
+            "jp": "荷物はここに置いてください。",
+            "romaji": "Nimotsu wa koko ni oite kudasai.",
+            "arti": "Barang bawaan tolong letakkan di sini.",
+            "catatan": "Nimotsu yang seharusnya pakai partikel o dipindah ke depan jadi topik dengan wa."
+          }
+        ],
+        "catatan": "Partikel を otomatis hilang jika digantikan oleh は.",
+        "larangan": "Jangan menggabungkan を dan は bersamaan (Contoh salah: o wa).",
+        "partikel": "は (wa)",
+        "level": "N5",
+        "kategori": "Penekanan Topik"
+      }
+    ]
+  },
+  {
+    "nama": "Bab 8 - Pola Lanjutan",
+    "deskripsi": "Urutan kejadian (て・てから), kemampuan (ことができます), pengalaman (たことがあります), opini (と思います), pengandaian (たら), pertentangan (ても)",
+    "urutan": 8,
+    "data_json": [
+      {
+        "pola": "～て、～て、～",
+        "arti": "Melakukan ~, lalu ~, lalu ~",
+        "penjelasan": "Menyambungkan dua atau lebih kata kerja secara berurutan sesuai dengan urutan waktu kejadian.",
+        "kapan_digunakan": "Saat menceritakan rangkaian aktivitas yang dilakukan secara beruntun.",
+        "rumus": "Kata Kerja て + Kata Kerja て + Kata Kerja Utama",
+        "contoh": [
+          {
+            "jp": "朝起きて、ご飯を食べて、学校へ行きます。",
+            "romaji": "Asa okite, gohan o tabete, gakkou e ikimasu.",
+            "arti": "Pagi bangun, makan nasi, lalu pergi ke sekolah.",
+            "catatan": "Tense (waktu) keseluruhan kalimat ditentukan oleh kata kerja yang diletakkan paling akhir."
+          }
+        ],
+        "catatan": "Urutan tidak boleh diacak karena menunjukkan kronologi yang sebenarnya.",
+        "larangan": "Jangan gunakan untuk menyambung kejadian yang terjadi secara bersamaan.",
+        "partikel": "Tidak ada",
+        "level": "N5",
+        "kategori": "Urutan Kejadian"
+      },
+      {
+        "pola": "～てから、～",
+        "arti": "Setelah selesai melakukan ~, (baru) ~",
+        "penjelasan": "Menekankan bahwa aksi kedua baru akan dimulai setelah aksi pertama benar-benar selesai.",
+        "kapan_digunakan": "Saat memberikan instruksi atau menceritakan prasyarat suatu tindakan.",
+        "rumus": "Kata Kerja て + から、Kata Kerja 2",
+        "contoh": [
+          {
+            "jp": "手を洗ってから、ご飯を食べます。",
+            "romaji": "Te o aratte kara, gohan o tabemasu.",
+            "arti": "Setelah mencuci tangan, makan nasi.",
+            "catatan": "Menunjukkan bahwa mencuci tangan adalah hal yang dilakukan lebih dulu secara mutlak."
+          }
+        ],
+        "catatan": "Berbeda dengan 'kara' yang berarti 'karena' atau 'dari'. Di sini nempel dengan kata kerja bentuk て.",
+        "larangan": "Jangan letakkan pada kata kerja kedua, posisinya harus di kata kerja pertama yang selesai lebih dulu.",
+        "partikel": "から (kara)",
+        "level": "N5",
+        "kategori": "Urutan Kejadian"
+      },
+      {
+        "pola": "～は～が [Kata Sifat] です",
+        "arti": "~ nya memiliki sifat ~",
+        "penjelasan": "Mendeskripsikan ciri fisik, bagian spesifik, atau sifat khusus yang dimiliki oleh subjek utama.",
+        "kapan_digunakan": "Saat menjelaskan fitur tubuh, karakteristik benda, atau kekhususan dari suatu tempat.",
+        "rumus": "Subjek Utama は + Bagian Spesifik が + Kata Sifat です",
+        "contoh": [
+          {
+            "jp": "象は鼻が長いです。",
+            "romaji": "Zou wa hana ga nagai desu.",
+            "arti": "Gajah belalainya panjang.",
+            "catatan": "Zou (Gajah) adalah subjek utama, hana (belalai) adalah bagian yang dideskripsikan."
+          }
+        ],
+        "catatan": "Partikel は untuk topik/pemilik, partikel が untuk bagian yang melekat.",
+        "larangan": "Jangan tertukar posisi antara は dan が.",
+        "partikel": "は (wa), が (ga)",
+        "level": "N5",
+        "kategori": "Deskripsi"
+      },
+      {
+        "pola": "～ことができます",
+        "arti": "Bisa / Mampu melakukan ~",
+        "penjelasan": "Menyatakan kapabilitas, kemampuan, atau kemungkinan untuk melakukan suatu aktivitas.",
+        "kapan_digunakan": "Saat menyebutkan keahlian seseorang atau menginformasikan bahwa suatu aksi dimungkinkan di tempat tertentu.",
+        "rumus": "Kata Kerja Kamus (Jisho-kei) + ことができる / Kata Benda + ができます",
+        "contoh": [
+          {
+            "jp": "わたしは漢字を読むことができます。",
+            "romaji": "Watashi wa kanji o yomu koto ga dekimasu.",
+            "arti": "Saya bisa membaca kanji.",
+            "catatan": "Kata kerja yomu (bentuk kamus) harus di-benda-kan dengan 'koto' sebelum ditambah ga dekimasu."
+          }
+        ],
+        "catatan": "Kata benda yang menyatakan keahlian atau kegiatan (seperti piano, sakkaa) bisa langsung disambung ke ga dekimasu.",
+        "larangan": "Jangan menggunakan bentuk masu (Contoh salah: yomimasu koto ga dekimasu).",
+        "partikel": "が (ga)",
+        "level": "N5",
+        "kategori": "Kemampuan"
+      },
+      {
+        "pola": "趣味は～ことです",
+        "arti": "Hobi saya adalah ~",
+        "penjelasan": "Pola untuk menerangkan hobi atau kegemaran secara spesifik menggunakan frasa kata kerja.",
+        "kapan_digunakan": "Saat memperkenalkan diri atau menjelaskan kegiatan yang disukai di waktu luang.",
+        "rumus": "趣味は + Kata Kerja Kamus (Jisho-kei) + こと + です",
+        "contoh": [
+          {
+            "jp": "わたしの趣味は映画を見ることです。",
+            "romaji": "Watashi no shumi wa eiga o miru koto desu.",
+            "arti": "Hobi saya adalah menonton film.",
+            "catatan": "Kata koto berfungsi mengubah kata kerja miru menjadi nomina (noun)."
+          }
+        ],
+        "catatan": "Jika hobinya berupa kata benda murni tunggal, tidak perlu pakai koto (Contoh: Shumi wa eiga desu).",
+        "larangan": "Jangan menyebutkan kata kerja langsung sebelum desu tanpa koto (Contoh salah: miru desu).",
+        "partikel": "は (wa)",
+        "level": "N5",
+        "kategori": "Hobi"
+      },
+      {
+        "pola": "～まえに、～",
+        "arti": "Sebelum ~",
+        "penjelasan": "Menerangkan bahwa kejadian pada klausa kedua terjadi lebih dulu sebelum kejadian di klausa pertama.",
+        "kapan_digunakan": "Saat menyatakan persiapan atau tindakan yang mendahului tindakan lain.",
+        "rumus": "Kata Kerja Kamus (Jisho-kei) / Kata Benda の / Waktu + まえに",
+        "contoh": [
+          {
+            "jp": "寝る前に、本を読みます。",
+            "romaji": "Neru mae ni, hon o yomimasu.",
+            "arti": "Sebelum tidur, membaca buku.",
+            "catatan": "Neru adalah bentuk kamus dari nemasu."
+          }
+        ],
+        "catatan": "Untuk kata benda kegiatan, wajib disisipkan の (Contoh: Shokuji no mae ni).",
+        "larangan": "Tense (waktu) pada klausa sebelum mae ni harus selalu dalam bentuk kamus (non-lampau), meskipun kejadiannya sudah berlalu.",
+        "partikel": "の (no), に (ni)",
+        "level": "N5",
+        "kategori": "Keterangan Waktu"
+      },
+      {
+        "pola": "～たことがあります",
+        "arti": "Pernah melakukan ~",
+        "penjelasan": "Menyatakan bahwa subjek memiliki pengalaman melakukan suatu aktivitas di masa lalu.",
+        "kapan_digunakan": "Saat membagikan pengalaman hidup yang telah terjadi setidaknya satu kali.",
+        "rumus": "Kata Kerja Bentuk た (Ta) + ことがあります",
+        "contoh": [
+          {
+            "jp": "日本へ行ったことがあります。",
+            "romaji": "Nihon e itta koto ga arimasu.",
+            "arti": "Pernah pergi ke Jepang.",
+            "catatan": "Itta adalah bentuk ta dari ikimasu."
+          }
+        ],
+        "catatan": "Bentuk negatifnya adalah ~ta koto ga arimasen (Belum pernah).",
+        "larangan": "Jangan digunakan untuk kejadian masa lalu yang baru saja terjadi hari ini atau rutinitas masa lalu.",
+        "partikel": "が (ga)",
+        "level": "N5",
+        "kategori": "Pengalaman"
+      },
+      {
+        "pola": "～たり、～たりします",
+        "arti": "Melakukan ~ dan ~ (di antara hal-hal lainnya)",
+        "penjelasan": "Menyebutkan beberapa tindakan secara acak sebagai perwakilan dari sekumpulan aktivitas tanpa memperhatikan urutan waktu.",
+        "kapan_digunakan": "Saat menceritakan berbagai kegiatan yang dilakukan pada waktu luang atau momen tertentu.",
+        "rumus": "Kata Kerja Bentuk た + り、Kata Kerja Bentuk た + り + します",
+        "contoh": [
+          {
+            "jp": "日曜日は買い物をしたり、映画を見たりします。",
+            "romaji": "Nichiyoubi wa kaimono o shitari, eiga o mitari shimasu.",
+            "arti": "Hari Minggu saya berbelanja, menonton film, dan lain-lain.",
+            "catatan": "Shimasu di akhir menentukan tense kalimat (berubah jadi shimashita jika kejadian di masa lalu)."
+          }
+        ],
+        "catatan": "Selalu diakhiri dengan kata kerja します (shimasu) atau perubahannya.",
+        "larangan": "Jangan mencampur dengan kata benda atau kata sifat. Hanya untuk kata kerja.",
+        "partikel": "Tidak ada",
+        "level": "N5",
+        "kategori": "Aktivitas Acak"
+      },
+      {
+        "pola": "～になります / ～くなります",
+        "arti": "Menjadi ~",
+        "penjelasan": "Menyatakan terjadinya sebuah perubahan keadaan dari satu kondisi ke kondisi lain.",
+        "kapan_digunakan": "Saat menggambarkan perubahan musim, perubahan usia, sifat, atau kondisi benda.",
+        "rumus": "Sifat い (coret い) + くなります / Sifat な (coret な) / Benda + になります",
+        "contoh": [
+          {
+            "jp": "寒くなります。",
+            "romaji": "Samuku narimasu.",
+            "arti": "Menjadi dingin.",
+            "catatan": "Samui diubah menjadi samuku."
+          }
+        ],
+        "catatan": "Narimasu berasal dari kata kerja yang berarti 'menjadi'.",
+        "larangan": "Jangan menggunakan partikel ni untuk kata sifat i (Contoh salah: samui ni narimasu).",
+        "partikel": "に (ni)",
+        "level": "N5",
+        "kategori": "Perubahan Keadaan"
+      },
+      {
+        "pola": "普通形 (Futsuukei / Bentuk Kasual)",
+        "arti": "Bentuk Biasa / Santai",
+        "penjelasan": "Gaya bahasa informal yang menanggalkan bentuk masu/desu.",
+        "kapan_digunakan": "Saat berbicara dengan teman dekat, keluarga, orang yang lebih muda, atau dalam penulisan artikel/buku.",
+        "rumus": "Positif: Kamus/だ, Negatif: ない/じゃない, Lampau: た/だった, Lampau Negatif: なかった/じゃなかった",
+        "contoh": [
+          {
+            "jp": "明日、東京へ行く？ うん、行く。",
+            "romaji": "Ashita, Toukyou e iku? Un, iku.",
+            "arti": "Besok pergi ke Tokyo? Ya, pergi.",
+            "catatan": "Partikel ka hilang dalam kalimat tanya, dijawab tanpa masu/desu."
+          }
+        ],
+        "catatan": "Bentuk santai dari desu adalah だ (da), namun sering dihilangkan di akhir kalimat lisan.",
+        "larangan": "Sangat dilarang digunakan saat berbicara dengan atasan, orang tidak dikenal, atau dalam konteks bisnis formal.",
+        "partikel": "Tidak ada",
+        "level": "N5",
+        "kategori": "Gaya Bahasa"
+      },
+      {
+        "pola": "～と思います",
+        "arti": "Saya pikir... / Menurut saya...",
+        "penjelasan": "Digunakan untuk menyatakan pendapat, dugaan, atau opini pribadi pembicara terhadap suatu hal.",
+        "kapan_digunakan": "Saat menyampaikan sudut pandang subjektif atau pemikiran pribadi.",
+        "rumus": "Kalimat Bentuk Biasa (Futsuukei) + と思います",
+        "contoh": [
+          {
+            "jp": "明日は雨が降ると思います。",
+            "romaji": "Ashita wa ame ga furu to omoimasu.",
+            "arti": "Menurut saya besok akan turun hujan.",
+            "catatan": "Furu adalah bentuk kamus/biasa dari furimasu."
+          }
+        ],
+        "catatan": "Jika sebelum 'to' adalah Kata Benda atau Kata Sifat Na, wajib ditambahkan だ (da).",
+        "larangan": "Jangan gunakan bentuk Masu/Desu sebelum partikel と (Contoh salah: furimasu to omoimasu).",
+        "partikel": "と (to)",
+        "level": "N5",
+        "kategori": "Opini"
+      },
+      {
+        "pola": "～と言いました",
+        "arti": "(Seseorang) berkata bahwa...",
+        "penjelasan": "Digunakan untuk mengutip atau melaporkan kembali perkataan yang diucapkan oleh orang lain.",
+        "kapan_digunakan": "Saat meneruskan informasi atau ucapan pihak ketiga.",
+        "rumus": "Kalimat Bentuk Biasa (Futsuukei) + と言いました",
+        "contoh": [
+          {
+            "jp": "田中さんは明日休むと言いました。",
+            "romaji": "Tanaka-san wa ashita yasumu to iimashita.",
+            "arti": "Tanaka berkata bahwa dia akan libur besok.",
+            "catatan": "Yasumu adalah bentuk kamus dari yasumimasu."
+          }
+        ],
+        "catatan": "Bisa juga mengutip langsung dengan tanda kutip (「...」) tanpa mengubah kalimat aslinya menjadi bentuk biasa.",
+        "larangan": "Jangan lupa menambahkan だ (da) jika mengutip kalimat benda/sifat na dalam bentuk biasa.",
+        "partikel": "と (to)",
+        "level": "N5",
+        "kategori": "Kutipan"
+      },
+      {
+        "pola": "[Tempat] で [Acara] があります",
+        "arti": "Di [Tempat] diselenggarakan / terjadi [Acara]",
+        "penjelasan": "Menyatakan tempat berlangsungnya sebuah acara, festival, rapat, atau kejadian dinamis.",
+        "kapan_digunakan": "Saat menginformasikan lokasi sebuah event atau insiden.",
+        "rumus": "Tempat + で + Acara/Kejadian + があります",
+        "contoh": [
+          {
+            "jp": "東京で祭りがあります。",
+            "romaji": "Toukyou de matsuri ga arimasu.",
+            "arti": "Di Tokyo diselenggarakan festival.",
+            "catatan": "Festival adalah acara dinamis, jadi menggunakan de, bukan ni."
+          }
+        ],
+        "catatan": "Berbeda dengan eksistensi benda diam (Bab 10) yang menggunakan partikel に (ni).",
+        "larangan": "Jangan gunakan partikel に untuk acara atau kejadian yang memakan waktu (seperti rapat/pesta).",
+        "partikel": "で (de), が (ga)",
+        "level": "N5",
+        "kategori": "Keberadaan & Acara"
+      },
+      {
+        "pola": "～でしょう？",
+        "arti": "...kan? / ...bukan?",
+        "penjelasan": "Digunakan untuk mengonfirmasi atau meminta persetujuan dari lawan bicara, dengan asumsi lawan bicara setuju/mengetahuinya.",
+        "kapan_digunakan": "Saat mengharapkan persetujuan atau jawaban 'ya' dari lawan bicara.",
+        "rumus": "Kalimat Bentuk Biasa + でしょう？ (Intonasi naik)",
+        "contoh": [
+          {
+            "jp": "日曜日は休みでしょう？",
+            "romaji": "Nichiyoubi wa yasumi deshou?",
+            "arti": "Hari Minggu libur, kan?",
+            "catatan": "Kata benda langsung disambung dengan deshou tanpa da."
+          }
+        ],
+        "catatan": "Untuk kata benda dan kata sifat na, tidak perlu menggunakan だ (da) sebelum deshou.",
+        "larangan": "Jangan dibaca dengan intonasi datar jika bermaksud bertanya, karena artinya bisa berubah menjadi dugaan ('mungkin').",
+        "partikel": "Tidak ada",
+        "level": "N5",
+        "kategori": "Konfirmasi"
+      },
+      {
+        "pola": "Anak Kalimat (Modifikasi Kata Benda)",
+        "arti": "[Kata Benda] yang [Kalimat]",
+        "penjelasan": "Menjelaskan suatu kata benda secara lebih spesifik menggunakan klausa utuh (berisi subjek dan predikat) dalam bentuk biasa.",
+        "kapan_digunakan": "Saat ingin memberikan detail lebih lanjut pada benda, seperti 'buku yang saya beli' atau 'orang yang pergi ke Tokyo'.",
+        "rumus": "Kalimat Bentuk Biasa (Futsuukei) + Kata Benda",
+        "contoh": [
+          {
+            "jp": "わたしが買った本",
+            "romaji": "Watashi ga katta hon",
+            "arti": "Buku yang saya beli",
+            "catatan": "Klausa 'watashi ga katta' berfungsi sebagai kata sifat (penjelas) untuk 'hon'."
+          }
+        ],
+        "catatan": "Partikel は (wa) di dalam anak kalimat wajib diubah menjadi が (ga).",
+        "larangan": "Dilarang keras menggunakan bentuk Masu/Desu di dalam anak kalimat yang menerangkan kata benda.",
+        "partikel": "が (ga)",
+        "level": "N5",
+        "kategori": "Modifikasi Benda"
+      },
+      {
+        "pola": "～とき",
+        "arti": "Saat / Ketika...",
+        "penjelasan": "Menunjukkan waktu atau keadaan terjadinya sesuatu, berfungsi sebagai penghubung klausa anak ke klausa induk.",
+        "kapan_digunakan": "Saat menceritakan kapan suatu kejadian berlangsung atau kapan suatu syarat berlaku.",
+        "rumus": "Bentuk Biasa / Sifat い / Sifat な(+な) / Benda(+の) + とき",
+        "contoh": [
+          {
+            "jp": "学生のとき、よく映画を見ました。",
+            "romaji": "Gakusei no toki, yoku eiga o mimashita.",
+            "arti": "Saat masih mahasiswa, saya sering menonton film.",
+            "catatan": "Kata benda harus disambung dengan partikel no."
+          }
+        ],
+        "catatan": "Perbedaan tense: KK Kamus + toki (saat belum selesai/sebelumnya), KK Ta + toki (saat sudah selesai/sesudahnya).",
+        "larangan": "Jangan menyambung kata benda langsung dengan toki tanpa の (no).",
+        "partikel": "の (no) untuk Kata Benda",
+        "level": "N5",
+        "kategori": "Keterangan Waktu"
+      },
+      {
+        "pola": "～と、～",
+        "arti": "Kalau... maka pasti...",
+        "penjelasan": "Menyatakan syarat yang jika dipenuhi, maka hasilnya mutlak dan alami akan terjadi.",
+        "kapan_digunakan": "Sangat spesifik untuk fakta alam, cara kerja mesin, dan petunjuk arah jalan.",
+        "rumus": "Kata Kerja Kamus / Kata Kerja ない + と",
+        "contoh": [
+          {
+            "jp": "このボタンを押すと、電気がつきます。",
+            "romaji": "Kono botan o osu to, denki ga tsukimasu.",
+            "arti": "Kalau tombol ini ditekan, lampunya menyala.",
+            "catatan": "Menunjukkan reaksi mutlak dari sebuah mesin."
+          }
+        ],
+        "catatan": "Tidak bisa diikuti oleh kalimat ajakan, perintah, atau keinginan.",
+        "larangan": "Dilarang menggunakan pola ini untuk pengandaian bebas/situasional.",
+        "partikel": "と (to)",
+        "level": "N5",
+        "kategori": "Kondisional / Fakta"
+      },
+      {
+        "pola": "～（て）くれます",
+        "arti": "(Orang lain) memberikan / melakukan untuk saya",
+        "penjelasan": "Menyatakan penerimaan barang atau jasa (kebaikan) dari pihak lain, dengan subjek adalah pemberi, dan penerima mutlak adalah saya (atau keluarga saya).",
+        "kapan_digunakan": "Saat ingin mengekspresikan rasa terima kasih atas apa yang dilakukan orang lain untuk kita.",
+        "rumus": "Pemberi が + (わたしに) + Benda を / KK て + くれます",
+        "contoh": [
+          {
+            "jp": "母がわたしに時計をくれました。",
+            "romaji": "Haha ga watashi ni tokei o kuremashita.",
+            "arti": "Ibu memberikan jam tangan kepada saya.",
+            "catatan": "Fokus kalimat adalah pada kebaikan ibu."
+          }
+        ],
+        "catatan": "Kata 'watashi ni' bisa dihilangkan karena sudah tersirat dari penggunaan kuremasu.",
+        "larangan": "Jangan gunakan kuremasu jika penerimanya bukan pembicara atau kelompok/keluarga pembicara.",
+        "partikel": "が (ga), に (ni)",
+        "level": "N5",
+        "kategori": "Pemberian Jasa"
+      },
+      {
+        "pola": "～てあげます",
+        "arti": "Melakukan kebaikan/jasa untuk orang lain",
+        "penjelasan": "Menyatakan bahwa subjek melakukan suatu tindakan (jasa/kebaikan) untuk orang lain.",
+        "kapan_digunakan": "Saat kita (atau orang lain) melakukan bantuan secara aktif kepada pihak lain.",
+        "rumus": "Pemberi は + Penerima に + KK て + あげます",
+        "contoh": [
+          {
+            "jp": "わたしは妹に漢字を教えてあげます。",
+            "romaji": "Watashi wa imouto ni kanji o oshiete agemasu.",
+            "arti": "Saya mengajarkan kanji kepada adik perempuan.",
+            "catatan": "Menunjukkan tindakan membantu adik."
+          }
+        ],
+        "catatan": "Harus berhati-hati saat digunakan kepada orang dewasa/atasan karena bisa terkesan sombong (seolah pamer kebaikan).",
+        "larangan": "Jangan gunakan kepada atasan jika tidak diminta.",
+        "partikel": "に (ni)",
+        "level": "N5",
+        "kategori": "Pemberian Jasa"
+      },
+      {
+        "pola": "～てもらいます",
+        "arti": "Menerima jasa dari orang lain",
+        "penjelasan": "Menyatakan bahwa subjek (biasanya 'saya') menerima tindakan atau jasa dari orang lain (orang lain melakukan sesuatu untuk subjek).",
+        "kapan_digunakan": "Saat kita fokus pada fakta bahwa kita adalah pihak yang mendapatkan kebaikan/bantuan.",
+        "rumus": "Penerima(Saya) は + Pemberi に/から + KK て + もらいます",
+        "contoh": [
+          {
+            "jp": "わたしは木村さんに傘を貸してもらいました。",
+            "romaji": "Watashi wa Kimura-san ni kasa o kashite moraimashita.",
+            "arti": "Saya dipinjami payung oleh Kimura (Kimura meminjamkan payung untuk saya).",
+            "catatan": "Subjek adalah watashi (saya)."
+          }
+        ],
+        "catatan": "Mirip dengan te kuremasu, namun posisi subjek kalimatnya adalah si penerima (watashi).",
+        "larangan": "Jangan gunakan jika pelaku tindakannya adalah diri sendiri.",
+        "partikel": "に (ni) / から (kara)",
+        "level": "N5",
+        "kategori": "Penerimaan Jasa"
+      },
+      {
+        "pola": "～たら",
+        "arti": "Kalau / Jika... / Kalau sudah...",
+        "penjelasan": "Bentuk kondisional (pengandaian) yang paling umum dan fleksibel. Dapat berarti pengandaian situasional atau kejadian pasti di masa depan.",
+        "kapan_digunakan": "Saat mengajukan syarat atau merencanakan tindakan setelah suatu kejadian selesai di masa depan.",
+        "rumus": "Bentuk Lampau Biasa (た / だった) + ら",
+        "contoh": [
+          {
+            "jp": "雨が降ったら、行きません。",
+            "romaji": "Ame ga futtara, ikimasen.",
+            "arti": "Kalau turun hujan, saya tidak pergi.",
+            "catatan": "Futte diubah ke bentuk ta (futta) lalu ditambah ra."
+          }
+        ],
+        "catatan": "Bisa diikuti kalimat ajakan, perintah, dan keinginan di klausa selanjutnya (berbeda dengan pola ～と).",
+        "larangan": "Jangan gunakan bentuk Masu/Desu sebelum ら.",
+        "partikel": "Tidak ada",
+        "level": "N5",
+        "kategori": "Pengandaian"
+      },
+      {
+        "pola": "～ても / ～でも",
+        "arti": "Meskipun / Walaupun...",
+        "penjelasan": "Menyatakan pertentangan atau kondisi terbalik, di mana tindakan tetap dilakukan meski situasinya tidak mendukung.",
+        "kapan_digunakan": "Saat ada kondisi yang bertolak belakang dengan hasil yang diharapkan.",
+        "rumus": "KK て / Sifat くて / Sifat な(+)で / Benda(+)で + も",
+        "contoh": [
+          {
+            "jp": "高くても、買います。",
+            "romaji": "Takakutemo, kaimasu.",
+            "arti": "Meskipun mahal, saya akan beli.",
+            "catatan": "Takai diubah menjadi takakute, lalu ditambah mo."
+          }
+        ],
+        "catatan": "Bentuknya 100% sama dengan konjugasi te/de, hanya ditambah mo di akhirnya.",
+        "larangan": "Jangan gabungkan dengan partikel が (ga) di akhir klausa yang sama (jangan pakai dua pola pertentangan bertumpuk).",
+        "partikel": "も (mo)",
+        "level": "N5",
+        "kategori": "Pertentangan"
+      }
+    ]
+  }
+]

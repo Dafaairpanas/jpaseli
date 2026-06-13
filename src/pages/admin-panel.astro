@@ -102,9 +102,12 @@ import '../styles/global.css';
   <div class="admin-wrap">
     <!-- Header -->
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--border-color);">
-      <div>
-        <h1 style="font-size: 2.5rem; margin: 0;">ADMIN PANEL</h1>
-        <p style="color: var(--text-muted); margin-top: 0.5rem;">Kelola seluruh data materi JPASELI</p>
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <div style="color: var(--accent);"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/></svg></div>
+        <div>
+          <h1 style="font-size: 2.5rem; margin: 0;">ADMIN PANEL</h1>
+          <p style="color: var(--text-muted); margin-top: 0.5rem;">Kelola seluruh data materi JPASELI</p>
+        </div>
       </div>
       <div style="display: flex; gap: 0.75rem;">
         <a href="/" class="btn-sm btn-accent" style="padding: 0.6rem 1.2rem;">HOME</a>
@@ -125,6 +128,7 @@ import '../styles/global.css';
       <button class="tab-btn active" data-tab="days">Daftar Day</button>
       <button class="tab-btn" data-tab="detail">Detail Materi</button>
       <button class="tab-btn" data-tab="template">Template FC</button>
+      <button class="tab-btn" data-tab="bunpo-tpl">Template Bunpo</button>
     </div>
 
     <!-- Tab: Daftar Day -->
@@ -197,6 +201,56 @@ Contoh:
       </div>
       <div class="tpl-list" id="tpl-list">
         <p class="loading">Memuat template...</p>
+      </div>
+    </div>
+
+    <!-- Tab: Template Bunpo -->
+    <div class="tab-panel" id="tab-bunpo-tpl">
+      <div class="tpl-form" id="bp-form">
+        <h3 id="bp-form-title">➕ Tambah Template Bunpo</h3>
+        <div class="tpl-row">
+          <input type="text" class="tpl-input tpl-input-sm" id="bp-nama" placeholder="Nama template (cth: Bab 1 - Partikel Dasar)" />
+          <input type="number" class="tpl-input tpl-input-sm" id="bp-urutan" placeholder="Urutan (0, 1, 2...)" style="max-width: 140px;" />
+        </div>
+        <input type="text" class="tpl-input tpl-input-sm" id="bp-deskripsi" placeholder="Deskripsi singkat (opsional)" />
+        <textarea class="tpl-input tpl-textarea" id="bp-json" placeholder='Paste data JSON bunpo...
+
+Contoh:
+[
+  {
+    "pola": "～は～です",
+    "arti": "A adalah B",
+    "penjelasan": "Pola dasar untuk menyatakan identitas atau keadaan sesuatu.",
+    "kapan_digunakan": "Digunakan untuk memperkenalkan diri, menjelaskan benda, atau menyatakan fakta.",
+    "rumus": "Kata Benda + は + Kata Benda / Kata Sifat + です",
+    "contoh": [
+      { "jp": "私は学生です。", "romaji": "Watashi wa gakusei desu.", "arti": "Saya adalah pelajar.", "catatan": "Formal" },
+      { "jp": "これは本です。", "romaji": "Kore wa hon desu.", "arti": "Ini adalah buku." }
+    ],
+    "catatan": "Partikel は dibaca 'wa' bukan 'ha'.",
+    "larangan": "Jangan gunakan は setelah kata kerja.",
+    "partikel": "は (wa)",
+    "level": "N5",
+    "kategori": "Pola Dasar"
+  }
+]'></textarea>
+        <div class="fc-error" id="bp-error" style="display:none; color:#ff5252; font-size:0.9rem; padding:0.5rem 0.75rem; background:rgba(255,82,82,0.08); border:1px solid rgba(255,82,82,0.2); border-radius:6px;"></div>
+        <div style="display: flex; gap: 0.75rem;">
+          <button class="btn-sm btn-accent" id="bp-btn-save" style="padding: 0.7rem 1.5rem;">SIMPAN</button>
+          <button class="btn-sm" id="bp-btn-cancel" style="padding: 0.7rem 1.5rem; display: none;">BATAL</button>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 style="margin: 0; font-size: 1.2rem;">Daftar Template Bunpo</h3>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn-sm" id="bp-btn-import" style="padding: 0.6rem 1.2rem;">IMPORT ALL</button>
+          <button class="btn-sm btn-accent" id="bp-btn-export" style="padding: 0.6rem 1.2rem;">EXPORT ALL</button>
+          <input type="file" id="bp-file-import" accept=".json" style="display: none;" />
+        </div>
+      </div>
+      <div class="tpl-list" id="bp-list">
+        <p class="loading">Memuat template bunpo...</p>
       </div>
     </div>
   </div>
@@ -723,10 +777,204 @@ Contoh:
       reader.readAsText(file);
     });
 
+    /* ========== Template Bunpo CRUD ========== */
+    const bpNama = document.getElementById('bp-nama');
+    const bpDeskripsi = document.getElementById('bp-deskripsi');
+    const bpJson = document.getElementById('bp-json');
+    const bpUrutan = document.getElementById('bp-urutan');
+    const bpError = document.getElementById('bp-error');
+    const bpList = document.getElementById('bp-list');
+    const bpBtnSave = document.getElementById('bp-btn-save');
+    const bpBtnCancel = document.getElementById('bp-btn-cancel');
+    const bpFormTitle = document.getElementById('bp-form-title');
+    let editingBpId = null;
+
+    async function loadBunpoTemplates() {
+      try {
+        const res = await fetch('/api/bunpo-template?action=list');
+        const templates = await res.json();
+        if (!Array.isArray(templates) || templates.length === 0) {
+          bpList.innerHTML = '<p style="text-align:center; color:var(--text-muted); padding:2rem;">Belum ada template bunpo. Buat template pertama di form atas.</p>';
+          return;
+        }
+        bpList.innerHTML = templates.map(t => `
+          <div class="tpl-card" data-id="${t.id}">
+            <div class="tpl-card-info">
+              <div class="tpl-card-name">${escapeHtmlAdmin(t.nama)}</div>
+              ${t.deskripsi ? `<div class="tpl-card-desc">${escapeHtmlAdmin(t.deskripsi)}</div>` : ''}
+              <div class="tpl-card-meta">${t.jumlah_pola} pola · Urutan: ${t.urutan}</div>
+            </div>
+            <div style="display: flex; gap: 0.5rem; flex-shrink: 0;">
+              <button class="btn-sm" onclick="editBpTemplate(${t.id})">EDIT</button>
+              <button class="btn-sm btn-danger" onclick="deleteBpTemplate(${t.id}, '${escapeHtmlAdmin(t.nama)}')">HAPUS</button>
+            </div>
+          </div>
+        `).join('');
+      } catch (e) {
+        bpList.innerHTML = '<p style="text-align:center; color:#ff5252; padding:2rem;">Gagal memuat template bunpo.</p>';
+      }
+    }
+
+    function resetBpForm() {
+      bpNama.value = '';
+      bpDeskripsi.value = '';
+      bpJson.value = '';
+      bpUrutan.value = '';
+      bpError.style.display = 'none';
+      editingBpId = null;
+      bpFormTitle.textContent = '➕ Tambah Template Bunpo';
+      bpBtnSave.textContent = 'SIMPAN';
+      bpBtnCancel.style.display = 'none';
+    }
+
+    bpBtnSave.addEventListener('click', async () => {
+      const nama = bpNama.value.trim();
+      const deskripsi = bpDeskripsi.value.trim();
+      const jsonStr = bpJson.value.trim();
+      const urutan = parseInt(bpUrutan.value) || 0;
+
+      if (!nama) { bpError.textContent = '⚠ Nama template wajib diisi.'; bpError.style.display = 'block'; return; }
+      if (!jsonStr) { bpError.textContent = '⚠ Data JSON wajib diisi.'; bpError.style.display = 'block'; return; }
+
+      try {
+        const parsed = JSON.parse(jsonStr);
+        if (!Array.isArray(parsed) || parsed.length === 0) throw new Error('Data harus array JSON yang tidak kosong.');
+      } catch (e) {
+        bpError.textContent = '⚠ JSON tidak valid: ' + e.message;
+        bpError.style.display = 'block';
+        return;
+      }
+
+      try {
+        let res;
+        if (editingBpId) {
+          res = await fetch('/api/bunpo-template', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: editingBpId, nama, deskripsi, data_json: jsonStr, urutan })
+          });
+        } else {
+          res = await fetch('/api/bunpo-template', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nama, deskripsi, data_json: jsonStr, urutan })
+          });
+        }
+        const result = await res.json();
+        if (result.success) {
+          showToast(editingBpId ? `Template "${nama}" berhasil diperbarui` : result.message, 'success');
+          resetBpForm();
+          loadBunpoTemplates();
+        } else {
+          showToast('Error: ' + result.error, 'error');
+        }
+      } catch (e) {
+        showToast('Gagal menyimpan: ' + e.message, 'error');
+      }
+    });
+
+    bpBtnCancel.addEventListener('click', resetBpForm);
+
+    window.editBpTemplate = async function(id) {
+      try {
+        const res = await fetch(`/api/bunpo-template?action=detail&id=${id}`);
+        const tpl = await res.json();
+        if (tpl.error) { showToast(tpl.error, 'error'); return; }
+        editingBpId = id;
+        bpNama.value = tpl.nama;
+        bpDeskripsi.value = tpl.deskripsi || '';
+        bpUrutan.value = tpl.urutan || 0;
+        bpJson.value = typeof tpl.data_json === 'string' ? tpl.data_json : JSON.stringify(tpl.data_json, null, 2);
+        bpFormTitle.textContent = '✏️ Edit Template Bunpo';
+        bpBtnSave.textContent = 'PERBARUI';
+        bpBtnCancel.style.display = '';
+        bpError.style.display = 'none';
+        bpNama.focus();
+        document.getElementById('bp-form').scrollIntoView({ behavior: 'smooth' });
+      } catch (e) {
+        showToast('Gagal memuat template: ' + e.message, 'error');
+      }
+    };
+
+    window.deleteBpTemplate = function(id, nama) {
+      showConfirm('Hapus Template Bunpo?', `Template "${nama}" akan dihapus permanen.`, async () => {
+        const res = await fetch('/api/bunpo-template', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast(data.message, 'success');
+          loadBunpoTemplates();
+        } else {
+          showToast('Error: ' + data.error, 'error');
+        }
+      });
+    };
+
+    // Export All Bunpo
+    document.getElementById('bp-btn-export').addEventListener('click', async () => {
+      try {
+        const res = await fetch('/api/bunpo-template?action=export');
+        const data = await res.json();
+        if (!res.ok) { showToast(data.error || 'Gagal export', 'error'); return; }
+        if (!Array.isArray(data) || data.length === 0) { showToast('Tidak ada template untuk diexport', 'error'); return; }
+        const formatted = data.map(tpl => {
+          let parsed = tpl.data_json;
+          try { if (typeof tpl.data_json === 'string') parsed = JSON.parse(tpl.data_json); } catch {}
+          return { ...tpl, data_json: parsed };
+        });
+        const blob = new Blob([JSON.stringify(formatted, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `bunpo_all_${new Date().toISOString().slice(0,10)}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast(`Export berhasil! (${formatted.length} template)`, 'success');
+      } catch (e) {
+        showToast('Gagal export: ' + e.message, 'error');
+      }
+    });
+
+    // Import All Bunpo
+    const bpFileImport = document.getElementById('bp-file-import');
+    document.getElementById('bp-btn-import').addEventListener('click', () => bpFileImport.click());
+    bpFileImport.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (!file.name.endsWith('.json')) { showToast('File harus berformat .json', 'error'); bpFileImport.value = ''; return; }
+      if (file.size > 10 * 1024 * 1024) { showToast('Ukuran file terlalu besar (maks 10MB)', 'error'); bpFileImport.value = ''; return; }
+      const reader = new FileReader();
+      reader.onerror = () => { showToast('Gagal membaca file.', 'error'); bpFileImport.value = ''; };
+      reader.onload = async (ev) => {
+        let json;
+        try { json = JSON.parse(ev.target.result); } catch (pe) { showToast('JSON tidak valid: ' + pe.message, 'error'); bpFileImport.value = ''; return; }
+        if (!Array.isArray(json)) { showToast('Format JSON harus berupa array.', 'error'); bpFileImport.value = ''; return; }
+        if (json.length === 0) { showToast('File JSON kosong.', 'error'); bpFileImport.value = ''; return; }
+        showConfirm('Import All Bunpo?', `Semua template bunpo lama akan DIHAPUS dan diganti dengan ${json.length} template dari file ini. Lanjutkan?`, async () => {
+          try {
+            const res = await fetch('/api/bunpo-template?action=importAll', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(json)
+            });
+            const result = await res.json();
+            if (result.success) { showToast(result.message, 'success'); loadBunpoTemplates(); }
+            else { showToast('Error: ' + (result.detail || result.error), 'error'); }
+          } catch (fe) { showToast('Gagal import: ' + fe.message, 'error'); }
+        });
+        bpFileImport.value = '';
+      };
+      reader.readAsText(file);
+    });
+
     // Init
     loadStats();
     loadDays();
     loadTemplates();
+    loadBunpoTemplates();
   </script>
 </body>
 </html>

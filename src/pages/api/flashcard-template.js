@@ -69,7 +69,36 @@ export const GET = async ({ url }) => {
       }
     }
 
-    return new Response(JSON.stringify({ error: 'Action tidak dikenali. Gunakan: list, detail, export' }), { status: 400 });
+    if (action === 'all-kotoba') {
+      const templates = db.prepare('SELECT id, nama, data_json FROM flashcard_template ORDER BY urutan ASC, id ASC').all();
+      let allKotoba = [];
+      for (const t of templates) {
+        try {
+          const cards = typeof t.data_json === 'string' ? JSON.parse(t.data_json) : t.data_json;
+          if (Array.isArray(cards)) {
+            for (const c of cards) {
+              allKotoba.push({
+                front: c.front || '',
+                back: c.back || '',
+                hint: c.hint || '',
+                extra: c.extra || '',
+                isExtra: !!c.isExtra,
+                bab_id: t.id,
+                bab_nama: t.nama
+              });
+            }
+          }
+        } catch (e) {
+          // Abaikan jika error parsing
+        }
+      }
+      return new Response(JSON.stringify(allKotoba), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    return new Response(JSON.stringify({ error: 'Action tidak dikenali. Gunakan: list, detail, export, all-kotoba' }), { status: 400 });
   } catch (error) {
     return new Response(JSON.stringify({ error: 'Terjadi kesalahan server.', detail: error.message }), { status: 500 });
   }

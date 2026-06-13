@@ -1,0 +1,87 @@
+[
+  {
+    "nama": "Bab 1 - Pola Dasar & Partikel",
+    "deskripsi": "Pola kalimat dasar, partikel は, が, の, を, に dan penggunaannya",
+    "urutan": 1,
+    "data_json": [
+      {
+        "pola": "～は～です",
+        "arti": "~ adalah ~",
+        "penjelasan": "Pola paling dasar dalam bahasa Jepang untuk menyatakan identitas, status, atau keadaan suatu hal. Digunakan dalam kalimat nominal (kata benda).",
+        "kapan_digunakan": "Digunakan saat memperkenalkan diri, menjelaskan identitas suatu benda/orang, atau menyatakan fakta umum dalam situasi formal maupun semi-formal.",
+        "rumus": "Subjek + は + Kata Benda / Kata Sifat-na + です",
+        "contoh": [
+          { "jp": "私は学生です。", "romaji": "Watashi wa gakusei desu.", "arti": "Saya adalah pelajar.", "catatan": "Kalimat formal / sopan" },
+          { "jp": "田中さんは先生です。", "romaji": "Tanaka-san wa sensei desu.", "arti": "Pak/Bu Tanaka adalah guru." },
+          { "jp": "これは本です。", "romaji": "Kore wa hon desu.", "arti": "Ini adalah buku." }
+        ],
+        "catatan": "Partikel は dibaca 'wa' (bukan 'ha') ketika berfungsi sebagai partikel penanda topik.",
+        "larangan": "Jangan gunakan は langsung setelah kata kerja. は hanya digunakan setelah kata benda atau frasa nominal.",
+        "partikel": "は (wa) — Partikel penanda topik",
+        "level": "N5",
+        "kategori": "Pola Dasar"
+      },
+      {
+        "pola": "～は～じゃないです / ではありません",
+        "arti": "~ bukan ~",
+        "penjelasan": "Bentuk negatif dari ～は～です. Digunakan untuk menyangkal atau menolak suatu identitas atau fakta. じゃないです lebih kasual, ではありません lebih formal.",
+        "kapan_digunakan": "Saat ingin menyatakan bahwa sesuatu BUKAN suatu hal. Misalnya menolak asumsi orang lain tentang identitas diri.",
+        "rumus": "Subjek + は + Kata Benda + じゃないです / ではありません",
+        "contoh": [
+          { "jp": "私は先生じゃないです。", "romaji": "Watashi wa sensei janai desu.", "arti": "Saya bukan guru.", "catatan": "Semi-formal" },
+          { "jp": "これはペンではありません。", "romaji": "Kore wa pen dewa arimasen.", "arti": "Ini bukan pulpen.", "catatan": "Sangat formal" }
+        ],
+        "catatan": "じゃないです dan ではありません memiliki arti yang sama, hanya berbeda tingkat formalitasnya.",
+        "level": "N5",
+        "kategori": "Pola Dasar"
+      },
+      {
+        "pola": "～が + あります / います",
+        "arti": "Ada ~ (benda mati / makhluk hidup)",
+        "penjelasan": "Pola untuk menyatakan keberadaan. あります digunakan untuk benda mati (buku, meja, dll). います digunakan untuk makhluk hidup (orang, hewan).",
+        "kapan_digunakan": "Digunakan saat menjelaskan bahwa sesuatu ada/eksis di suatu tempat, atau bahwa seseorang memiliki sesuatu.",
+        "rumus": "場所(tempat) + に + Benda + が + あります/います",
+        "contoh": [
+          { "jp": "机の上に本があります。", "romaji": "Tsukue no ue ni hon ga arimasu.", "arti": "Ada buku di atas meja." },
+          { "jp": "庭に猫がいます。", "romaji": "Niwa ni neko ga imasu.", "arti": "Ada kucing di halaman." },
+          { "jp": "兄弟がいますか？", "romaji": "Kyoudai ga imasu ka?", "arti": "Apakah kamu punya saudara?" }
+        ],
+        "catatan": "Untuk robot dan kendaraan yang 'hidup' (berjalan), terkadang digunakan います dalam konteks informal.",
+        "larangan": "Jangan gunakan あります untuk orang atau hewan — itu tidak sopan karena memperlakukan mereka seperti benda.",
+        "partikel": "が (ga) — Partikel penanda subjek; に (ni) — Partikel penanda tempat keberadaan",
+        "level": "N5",
+        "kategori": "Keberadaan"
+      },
+      {
+        "pola": "～を～ます",
+        "arti": "Melakukan ~ (objek langsung)",
+        "penjelasan": "Partikel を menandai objek langsung dari kata kerja transitif. Objek langsung adalah sesuatu yang menerima aksi dari subjek.",
+        "kapan_digunakan": "Setiap kali ada tindakan yang dilakukan terhadap suatu objek, gunakan を di antara objek dan kata kerja.",
+        "rumus": "Subjek + は + Objek + を + Kata Kerja (ます)",
+        "contoh": [
+          { "jp": "私は朝ごはんを食べます。", "romaji": "Watashi wa asagohan wo tabemasu.", "arti": "Saya makan sarapan." },
+          { "jp": "毎日日本語を勉強します。", "romaji": "Mainichi nihongo wo benkyou shimasu.", "arti": "Setiap hari saya belajar bahasa Jepang." }
+        ],
+        "partikel": "を (wo/o) — Partikel penanda objek langsung",
+        "level": "N5",
+        "kategori": "Partikel"
+      },
+      {
+        "pola": "～の～",
+        "arti": "~ punya ~, ~ dari ~",
+        "penjelasan": "Partikel の menghubungkan dua kata benda. Menunjukkan kepemilikan, asal, atau hubungan antara dua hal.",
+        "kapan_digunakan": "Digunakan untuk menyatakan kepemilikan (milik siapa), asal (dari mana), atau untuk mendeskripsikan kata benda lain.",
+        "rumus": "Kata Benda 1 + の + Kata Benda 2",
+        "contoh": [
+          { "jp": "私の本", "romaji": "Watashi no hon", "arti": "Buku saya" },
+          { "jp": "日本語の先生", "romaji": "Nihongo no sensei", "arti": "Guru bahasa Jepang" },
+          { "jp": "東京大学の学生", "romaji": "Toukyou daigaku no gakusei", "arti": "Mahasiswa Universitas Tokyo" }
+        ],
+        "catatan": "Bisa dirangkai: AのBのC = C dari B milik A.",
+        "partikel": "の (no) — Partikel penghubung kata benda (possesif / deskriptif)",
+        "level": "N5",
+        "kategori": "Partikel"
+      }
+    ]
+  }
+]
